@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+//Material theme light high contrast
+$background: #fdf7ff;
+$on-background: #1d1b20;
+$surface-bright: #fdf7ff;
+$surface-container-low: #f7f2fa;
+$surface-container: #f2ecf4;
+$primary: #27174e;
+$on-primary: #ffffff;
+$primary-container: #493971;
+$on-primary-container: #ffffff;
+
+//Personalizar Bootstrap antes de importarlo
+
+//Importar Bootstrap para aplicar los cambios
+@import "bootstrap/scss/bootstrap";

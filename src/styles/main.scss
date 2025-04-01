@@ -1,0 +1,17 @@
+@import "_custom.scss"; // Importa tus variables personalizadas
+
+.navbar-btn {
+  background-color: $surface-bright;
+  border-radius: 0%;
+  &.navbar-btn:hover {
+    background-color: $surface-container;
+    border-bottom-width: 0.25em;
+    border-bottom-color: $primary;
+  }
+}
+
+.label-medium {
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
