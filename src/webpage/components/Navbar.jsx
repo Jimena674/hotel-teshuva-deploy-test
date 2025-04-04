@@ -17,14 +17,14 @@ export default function Navbar() {
             />
             {/* Enlaces de Iniciar sesión y Registro */}
             <div>
-              <NavLink to="">
+              <NavLink to="/">
                 <Button
                   name="Iniciar Sesión"
                   btnCustom="navbar-btn"
                   btnText="label-medium"
                 />
               </NavLink>
-              <NavLink to="">
+              <NavLink to="/">
                 <Button
                   name="Registrarse"
                   btnCustom="navbar-btn"
@@ -56,7 +56,7 @@ export default function Navbar() {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <NavLink to="">
+                  <NavLink to="/">
                     <Button
                       name="Inicio"
                       btnCustom="navbar-btn"
@@ -65,7 +65,7 @@ export default function Navbar() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="">
+                  <NavLink to="/">
                     <Button
                       name="Habitaciones"
                       btnCustom="navbar-btn"
@@ -74,7 +74,7 @@ export default function Navbar() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="">
+                  <NavLink to="/">
                     <Button
                       name="Ofertas"
                       btnCustom="navbar-btn"
@@ -83,7 +83,7 @@ export default function Navbar() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="">
+                  <NavLink to="/">
                     <Button
                       name="Ubicación"
                       btnCustom="navbar-btn"
@@ -92,7 +92,7 @@ export default function Navbar() {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="">
+                  <NavLink to="/">
                     <Button
                       name="Buscar Reserva"
                       btnCustom="navbar-btn"

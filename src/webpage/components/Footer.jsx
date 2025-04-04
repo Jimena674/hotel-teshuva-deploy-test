@@ -15,17 +15,17 @@ export default function Footer() {
               </div>
               <div className="d-flex row justify-content-start">
                 <div className="col-1">
-                  <Link to="" className="text-decoration-none text-dark">
+                  <Link to="/" className="text-decoration-none text-dark">
                     <i className="bi bi-facebook" />
                   </Link>
                 </div>
                 <div className="col-1">
-                  <Link to="" className="text-decoration-none text-dark">
+                  <Link to="/" className="text-decoration-none text-dark">
                     <i className="bi bi-instagram" />
                   </Link>
                 </div>
                 <div className="col-1">
-                  <Link to="" className="text-decoration-none text-dark">
+                  <Link to="/" className="text-decoration-none text-dark">
                     <i className="bi bi-twitter" />
                   </Link>
                 </div>
@@ -39,13 +39,13 @@ export default function Footer() {
               className="d-flex flex-column justify-content-start text-end"
               style={{ height: "200px" }}
             >
-              <NavLink to="">Inicio</NavLink>
-              <NavLink to="">Habitaciones</NavLink>
-              <NavLink to="">Ofertas</NavLink>
-              <NavLink to="">Ubicación</NavLink>
-              <NavLink to="">Buscar reserva</NavLink>
-              <NavLink to="">Registrarse</NavLink>
-              <NavLink to="">Iniciar Sesión</NavLink>
+              <NavLink to="/">Inicio</NavLink>
+              <NavLink to="/">Habitaciones</NavLink>
+              <NavLink to="/">Ofertas</NavLink>
+              <NavLink to="/">Ubicación</NavLink>
+              <NavLink to="/">Buscar reserva</NavLink>
+              <NavLink to="/">Registrarse</NavLink>
+              <NavLink to="/">Iniciar Sesión</NavLink>
             </div>
           </div>
         </div>
