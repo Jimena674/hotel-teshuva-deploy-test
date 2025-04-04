@@ -1,3 +1,4 @@
+//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Button from "./webpage/components/Button.jsx";
 
 function App() {
@@ -8,6 +9,13 @@ function App() {
         btnCustom="navbar-btn"
         btnText="label-medium"
       />
+      {/*
+      <Router>
+        <Routes>
+          <Route></Route>
+        </Routes>
+      </Router>
+*/}
     </>
   );
 }
