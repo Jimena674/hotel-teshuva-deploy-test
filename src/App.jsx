@@ -1,10 +1,12 @@
-import Button from "./webpage/components/Button";
-import Navbar from "./webpage/components/Navbar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./webpage/pages/Home";
 function App() {
   return (
-    <>
-      <Navbar />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
+    </Router>
   );
 }
 

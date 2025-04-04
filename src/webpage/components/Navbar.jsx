@@ -1,4 +1,4 @@
-//import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Button from "./Button";
 
 export default function Navbar() {
@@ -17,20 +17,20 @@ export default function Navbar() {
             />
             {/* Enlaces de Iniciar sesión y Registro */}
             <div>
-              <a href="">
+              <NavLink to="">
                 <Button
                   name="Iniciar Sesión"
                   btnCustom="navbar-btn"
                   btnText="label-medium"
                 />
-              </a>
-              <a href="">
+              </NavLink>
+              <NavLink to="">
                 <Button
                   name="Registrarse"
                   btnCustom="navbar-btn"
                   btnText="label-medium"
                 />
-              </a>
+              </NavLink>
             </div>
           </div>
         </nav>
@@ -56,49 +56,49 @@ export default function Navbar() {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a href="">
+                  <NavLink to="">
                     <Button
                       name="Inicio"
                       btnCustom="navbar-btn"
                       btnText="label-medium"
                     />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="">
+                  <NavLink to="">
                     <Button
                       name="Habitaciones"
                       btnCustom="navbar-btn"
                       btnText="label-medium"
                     />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="">
+                  <NavLink to="">
                     <Button
                       name="Ofertas"
                       btnCustom="navbar-btn"
                       btnText="label-medium"
                     />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="">
+                  <NavLink to="">
                     <Button
                       name="Ubicación"
                       btnCustom="navbar-btn"
                       btnText="label-medium"
                     />
-                  </a>
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a href="">
+                  <NavLink to="">
                     <Button
                       name="Buscar Reserva"
                       btnCustom="navbar-btn"
                       btnText="label-medium"
                     />
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             </div>
