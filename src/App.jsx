@@ -1,21 +1,9 @@
-//import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Button from "./webpage/components/Button.jsx";
-
+import Button from "./webpage/components/Button";
+import Navbar from "./webpage/components/Navbar";
 function App() {
   return (
     <>
-      <Button
-        name="Registrarse"
-        btnCustom="navbar-btn"
-        btnText="label-medium"
-      />
-      {/*
-      <Router>
-        <Routes>
-          <Route></Route>
-        </Routes>
-      </Router>
-*/}
+      <Navbar />
     </>
   );
 }
