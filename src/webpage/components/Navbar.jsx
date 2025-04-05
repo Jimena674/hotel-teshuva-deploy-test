@@ -17,14 +17,14 @@ export default function Navbar() {
             />
             {/* Enlaces de Iniciar sesión y Registro */}
             <div>
-              <NavLink to="/">
+              <NavLink to="/signin">
                 <Button
                   name="Iniciar Sesión"
                   btnCustom="navbar-btn"
                   btnText="label-medium"
                 />
               </NavLink>
-              <NavLink to="/">
+              <NavLink to="/signup">
                 <Button
                   name="Registrarse"
                   btnCustom="navbar-btn"

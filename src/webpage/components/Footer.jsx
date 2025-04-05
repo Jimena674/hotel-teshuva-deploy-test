@@ -44,8 +44,8 @@ export default function Footer() {
               <NavLink to="/">Ofertas</NavLink>
               <NavLink to="/">Ubicación</NavLink>
               <NavLink to="/">Buscar reserva</NavLink>
-              <NavLink to="/">Registrarse</NavLink>
-              <NavLink to="/">Iniciar Sesión</NavLink>
+              <NavLink to="/signin">Iniciar Sesión</NavLink>
+              <NavLink to="/signup">Registrarse</NavLink>
             </div>
           </div>
         </div>
