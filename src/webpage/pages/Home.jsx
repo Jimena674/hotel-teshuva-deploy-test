@@ -2,7 +2,6 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BookingForm from "../components/BookingForm";
 import CardITDB from "../components/CardITDB";
-import CardITB from "../components/CardITB";
 
 export default function Home() {
   return (
