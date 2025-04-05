@@ -1,9 +1,9 @@
 // Importar variables personalizadas
 @import "_custom.scss";
 
+// Estilos de Botones
 .navbar-btn {
   border-radius: 0%;
-  color: $primary;
   &.navbar-btn:hover {
     background-color: $surface-container;
     border-bottom-width: 0.25em;
@@ -13,10 +13,9 @@
 
 .booking-form-btn {
   border-radius: 0.25rem;
-
-  color: $primary;
   &.booking-form-btn:hover {
     background-color: $surface-container;
+    color: $primary;
   }
 }
 
@@ -30,6 +29,7 @@
   }
 }
 
+// Estilos de textos
 .label-medium {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
@@ -44,6 +44,12 @@
 
 .body-large {
   font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 350;
+}
+
+.body-medium {
+  font-family: "Roboto", sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
@@ -51,5 +57,11 @@
 .body-small {
   font-family: "Roboto", sans-serif;
   font-size: 12px;
+  font-weight: 400;
+}
+
+.display-small {
+  font-family: "Playfair Display", serif;
+  font-size: 36px;
   font-weight: 400;
 }

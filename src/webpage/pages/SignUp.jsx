@@ -5,7 +5,6 @@ export default function SingUp() {
   return (
     <>
       <Navbar />
-      <hr />
       <main className="container d-flex justify-content-center">
         <div className="d-flex flex-column w-50">
           <h2 className="text-center">Únete al Hotel Teshuva</h2>

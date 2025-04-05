@@ -7,7 +7,6 @@ export default function Home() {
   return (
     <>
       <NavbarWebpage />
-      <hr className="mt-0" />
       <BookingForm />
       <main className="container mt-3">
         <img
@@ -16,11 +15,14 @@ export default function Home() {
           alt="Foto del hotel Teshuva"
           style={{ height: "600px", width: "100%", objectFit: "cover" }}
         />
-        <hr />
-        <h1 className="text-center">Hotel Teshuvá</h1>
-        <hr />
         {/*Información general del hotel.*/}
-        <section className="container p-0 my-5">
+        <section className="container p-0 mb-5">
+          <h1 className="display-small">Hotel Teshuvá</h1>
+          <p className="body-large">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a
+            volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor
+            vel, lacinia quis mauris.
+          </p>
           <div className="row gx-4">
             <div className="col">
               <CardITDB

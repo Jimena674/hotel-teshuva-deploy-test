@@ -9,7 +9,10 @@ export default function BookingForm() {
         <div className="container w-auto d-flex flex-column align-items-center">
           {/*Título*/}
           <div className="row w-100">
-            <span className="col text-start fw-bold mb-1 fs-6 label-medium p-0">
+            <span
+              className="col text-start fw-bold mb-1 fs-6 label-medium p-0"
+              style={{ color: "#27174e" }}
+            >
               Hacer una Reserva
             </span>
           </div>

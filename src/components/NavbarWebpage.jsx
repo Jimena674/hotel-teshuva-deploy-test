@@ -68,7 +68,7 @@ export default function NavbarWebpage() {
                     <Button
                       name="Inicio"
                       btnCustom="navbar-btn"
-                      btnText="body-large"
+                      btnText="body-medium"
                     />
                   </NavLink>
                 </li>
@@ -77,7 +77,7 @@ export default function NavbarWebpage() {
                     <Button
                       name="Habitaciones"
                       btnCustom="navbar-btn"
-                      btnText="body-large"
+                      btnText="body-medium"
                     />
                   </NavLink>
                 </li>
@@ -86,7 +86,7 @@ export default function NavbarWebpage() {
                     <Button
                       name="Ofertas"
                       btnCustom="navbar-btn"
-                      btnText="body-large"
+                      btnText="body-medium"
                     />
                   </NavLink>
                 </li>
@@ -95,7 +95,7 @@ export default function NavbarWebpage() {
                     <Button
                       name="Ubicación"
                       btnCustom="navbar-btn"
-                      btnText="body-large"
+                      btnText="body-medium"
                     />
                   </NavLink>
                 </li>
@@ -104,7 +104,7 @@ export default function NavbarWebpage() {
                     <Button
                       name="Buscar Reserva"
                       btnCustom="navbar-btn"
-                      btnText="body-large"
+                      btnText="body-medium"
                     />
                   </NavLink>
                 </li>
@@ -112,6 +112,7 @@ export default function NavbarWebpage() {
             </div>
           </div>
         </nav>
+        <hr className="mt-0" />
       </header>
     </>
   );
