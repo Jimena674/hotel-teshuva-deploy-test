@@ -5,9 +5,28 @@
   border-radius: 0%;
   color: $primary;
   &.navbar-btn:hover {
-    background-color: $surface-bright;
+    background-color: $surface-container;
     border-bottom-width: 0.25em;
     border-bottom-color: $primary;
+  }
+}
+
+.booking-form-btn {
+  border-radius: 0.25rem;
+
+  color: $primary;
+  &.booking-form-btn:hover {
+    background-color: $surface-container;
+  }
+}
+
+.solid-btn {
+  border-radius: 0.25rem;
+  background-color: $primary-container;
+  color: $on-primary-container;
+  &.solid-btn:hover {
+    background-color: $primary;
+    color: $on-primary;
   }
 }
 
@@ -17,8 +36,20 @@
   font-weight: 600;
 }
 
+.label-small {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .body-large {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
+  font-weight: 400;
+}
+
+.body-small {
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
   font-weight: 400;
 }

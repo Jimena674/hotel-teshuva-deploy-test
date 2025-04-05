@@ -9,7 +9,7 @@ export default function BookingForm() {
         <div className="container w-auto d-flex flex-column align-items-center">
           {/*Título*/}
           <div className="row w-100">
-            <span className="col text-start fw-bold mb-3 fs-6">
+            <span className="col text-start fw-bold mb-1 fs-6 label-medium p-0">
               Hacer una Reserva
             </span>
           </div>
@@ -17,7 +17,11 @@ export default function BookingForm() {
           <div className="row">
             {/*Botón de check-in y check-out*/}
             <div className="col-auto">
-              <Link to="" className="btn btn-light px-2 py-0" role="button">
+              <Link
+                to=""
+                className="btn booking-form-btn px-2 py-0"
+                role="button"
+              >
                 <div className="d-flex flex-row">
                   {/*Check-in*/}
                   <div className="d-flex flex-column me-3">
@@ -25,19 +29,15 @@ export default function BookingForm() {
                       <div className="d-flex flex-column me-3 justify-content-center">
                         <i
                           className="bi bi-calendar"
-                          style={{ fontSize: "2rem" }}
+                          style={{ fontSize: "1.5rem" }}
                         />
                       </div>
                       <div className="d-flex flex-column text-start">
-                        <div className="row fw-bold">
-                          <span>
-                            <small>Check-in</small>
-                          </span>
+                        <div className="row mb-0">
+                          <span className="label-small">Check-in</span>
                         </div>
-                        <div className="row">
-                          <span>
-                            <small>Añadir fecha</small>
-                          </span>
+                        <div className="row mb-0">
+                          <span className="body-small">Añadir fecha</span>
                         </div>
                       </div>
                     </div>
@@ -48,19 +48,15 @@ export default function BookingForm() {
                       <div className="d-flex flex-column me-3 justify-content-center">
                         <i
                           className="bi bi-calendar"
-                          style={{ fontSize: "2rem" }}
+                          style={{ fontSize: "1.5rem" }}
                         />
                       </div>
                       <div className="d-flex flex-column text-start">
                         <div className="row fw-bold">
-                          <span>
-                            <small>Check-out</small>
-                          </span>
+                          <span className="label-small">Check-out</span>
                         </div>
                         <div className="row">
-                          <span>
-                            <small>Añadir fecha</small>
-                          </span>
+                          <span className="body-small">Añadir fecha</span>
                         </div>
                       </div>
                     </div>
@@ -70,24 +66,24 @@ export default function BookingForm() {
             </div>
             {/*Habitaciones*/}
             <div className="col-auto">
-              <Link to="" className="btn btn-light px-2 py-0" role="button">
+              <Link
+                to=""
+                className="btn booking-form-btn px-2 py-0"
+                role="button"
+              >
                 <div className="d-flex flex-row">
                   <div className="d-flex flex-column me-3 justify-content-center">
                     <i
                       class="bi bi-file-person"
-                      style={{ fontSize: "2rem" }}
+                      style={{ fontSize: "1.5rem" }}
                     ></i>
                   </div>
                   <div className="d-flex flex-column text-start">
                     <div className="row fw-bold">
-                      <span>
-                        <small>Habitaciones</small>
-                      </span>
+                      <span className="label-small">Habitaciones</span>
                     </div>
                     <div className="row">
-                      <span>
-                        <small>1</small>
-                      </span>
+                      <span className="body-small">Cantidad</span>
                     </div>
                   </div>
                 </div>
@@ -95,24 +91,21 @@ export default function BookingForm() {
             </div>
             {/*Huespedes*/}
             <div className="col-auto">
-              <Link to="" className="btn btn-light px-2 py-0" role="button">
+              <Link
+                to=""
+                className="btn booking-form-btn px-2 py-0"
+                role="button"
+              >
                 <div className="d-flex flex-row">
                   <div className="d-flex flex-column me-3 justify-content-center">
-                    <i
-                      class="bi bi-file-person-fill"
-                      style={{ fontSize: "2rem" }}
-                    ></i>
+                    <i class="bi bi-people" style={{ fontSize: "1.5rem" }}></i>
                   </div>
                   <div className="d-flex flex-column text-start">
                     <div className="row fw-bold">
-                      <span>
-                        <small>Huéspedes</small>
-                      </span>
+                      <span className="label-small">Huéspedes</span>
                     </div>
                     <div className="row">
-                      <span>
-                        <small>1</small>
-                      </span>
+                      <span className="body-small">Cantidad</span>
                     </div>
                   </div>
                 </div>
@@ -120,7 +113,7 @@ export default function BookingForm() {
             </div>
             {/*Llamado a la acción*/}
             <div className="col-auto">
-              <button className="btn btn-light h-100 fw-bold" type="submit">
+              <button className="btn solid-btn h-100 label-small" type="submit">
                 Reservar Ahora
               </button>
             </div>
