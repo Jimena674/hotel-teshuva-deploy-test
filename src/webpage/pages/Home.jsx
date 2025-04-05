@@ -1,13 +1,13 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import BookingForm from "../components/BookingForm";
-import CardITDB from "../components/CardITDB";
+import NavbarWebpage from "../../components/NavbarWebpage";
+import Footer from "../../components/Footer";
+import BookingForm from "../../components/BookingForm";
+import CardITDB from "../../components/CardITDB";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <hr />
+      <NavbarWebpage />
+      <hr className="mt-0" />
       <BookingForm />
       <main className="container mt-3">
         <img

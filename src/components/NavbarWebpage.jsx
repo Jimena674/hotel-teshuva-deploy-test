@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import Button from "./Button";
+import ButtonIcon from "./ButtonIcon";
 
-export default function Navbar() {
+export default function NavbarWebpage() {
   return (
     <>
       <header>
@@ -18,17 +19,24 @@ export default function Navbar() {
             {/* Enlaces de Iniciar sesión y Registro */}
             <div>
               <NavLink to="/signin">
-                <Button
+                <ButtonIcon
                   name="Iniciar Sesión"
                   btnCustom="navbar-btn"
                   btnText="label-medium"
+                  icon="bi bi-person-fill-check"
+                  fontsize="1.1rem"
                 />
               </NavLink>
-              <NavLink to="/signup">
-                <Button
+              <NavLink
+                to="/signup"
+                className="border-start border-black border-2"
+              >
+                <ButtonIcon
                   name="Registrarse"
                   btnCustom="navbar-btn"
                   btnText="label-medium"
+                  icon="bi bi-person-fill-add"
+                  fontsize="1.1rem"
                 />
               </NavLink>
             </div>
@@ -60,7 +68,7 @@ export default function Navbar() {
                     <Button
                       name="Inicio"
                       btnCustom="navbar-btn"
-                      btnText="label-medium"
+                      btnText="body-large"
                     />
                   </NavLink>
                 </li>
@@ -69,7 +77,7 @@ export default function Navbar() {
                     <Button
                       name="Habitaciones"
                       btnCustom="navbar-btn"
-                      btnText="label-medium"
+                      btnText="body-large"
                     />
                   </NavLink>
                 </li>
@@ -78,7 +86,7 @@ export default function Navbar() {
                     <Button
                       name="Ofertas"
                       btnCustom="navbar-btn"
-                      btnText="label-medium"
+                      btnText="body-large"
                     />
                   </NavLink>
                 </li>
@@ -87,7 +95,7 @@ export default function Navbar() {
                     <Button
                       name="Ubicación"
                       btnCustom="navbar-btn"
-                      btnText="label-medium"
+                      btnText="body-large"
                     />
                   </NavLink>
                 </li>
@@ -96,7 +104,7 @@ export default function Navbar() {
                     <Button
                       name="Buscar Reserva"
                       btnCustom="navbar-btn"
-                      btnText="label-medium"
+                      btnText="body-large"
                     />
                   </NavLink>
                 </li>

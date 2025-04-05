@@ -2,10 +2,10 @@
 @import "_custom.scss";
 
 .navbar-btn {
-  background-color: $surface-bright;
   border-radius: 0%;
+  color: $primary;
   &.navbar-btn:hover {
-    background-color: $surface-container;
+    background-color: $surface-bright;
     border-bottom-width: 0.25em;
     border-bottom-color: $primary;
   }
@@ -13,6 +13,12 @@
 
 .label-medium {
   font-family: "Roboto", sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 600;
+}
+
+.body-large {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
 }
