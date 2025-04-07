@@ -4,22 +4,22 @@ export default function BookingForm() {
   return (
     <>
       {/*Contenedor principal que centra todo*/}
-      <div className="d-flex justify-content-center">
+      <div className="d-flex ">
         {/*Formulario de reserva*/}
-        <div className="container w-auto d-flex flex-column align-items-center">
+        <div className="container d-flex flex-column ">
           {/*Título*/}
-          <div className="row w-100">
+          <div className="flex-row w-100 mb-1">
             <span
-              className="col text-start fw-bold mb-1 fs-6 label-medium p-0"
+              className="fw-bold mb-1 fs-6 label-medium p-0 "
               style={{ color: "#27174e" }}
             >
               Hacer una Reserva
             </span>
           </div>
           {/*Franja de botones*/}
-          <div className="row">
+          <div className="d-flex flex-column flex-md-row justify-content-center">
             {/*Botón de check-in y check-out*/}
-            <div className="col-auto">
+            <div className="p-0 d-flex justify-content-center">
               <Link
                 to=""
                 className="btn booking-form-btn px-2 py-0"
@@ -67,56 +67,64 @@ export default function BookingForm() {
                 </div>
               </Link>
             </div>
-            {/*Habitaciones*/}
-            <div className="col-auto">
-              <Link
-                to=""
-                className="btn booking-form-btn px-2 py-0"
-                role="button"
-              >
-                <div className="d-flex flex-row">
-                  <div className="d-flex flex-column me-3 justify-content-center">
-                    <i
-                      class="bi bi-file-person"
-                      style={{ fontSize: "1.5rem" }}
-                    ></i>
-                  </div>
-                  <div className="d-flex flex-column text-start">
-                    <div className="row fw-bold">
-                      <span className="label-small">Habitaciones</span>
+            <div className="d-flex justify-content-center p-0 mx-md-2 mt-2 mt-md-0">
+              {/*Habitaciones*/}
+              <div className="border flex-grow-1">
+                <Link
+                  to=""
+                  className="btn booking-form-btn px-2 py-0 d-flex justify-content-center"
+                  role="button"
+                >
+                  <div className="d-flex flex-row">
+                    <div className="d-flex flex-column me-3 justify-content-center">
+                      <i
+                        class="bi bi-file-person"
+                        style={{ fontSize: "1.5rem" }}
+                      ></i>
                     </div>
-                    <div className="row">
-                      <span className="body-small">Cantidad</span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-            {/*Huespedes*/}
-            <div className="col-auto">
-              <Link
-                to=""
-                className="btn booking-form-btn px-2 py-0"
-                role="button"
-              >
-                <div className="d-flex flex-row">
-                  <div className="d-flex flex-column me-3 justify-content-center">
-                    <i class="bi bi-people" style={{ fontSize: "1.5rem" }}></i>
-                  </div>
-                  <div className="d-flex flex-column text-start">
-                    <div className="row fw-bold">
-                      <span className="label-small">Huéspedes</span>
-                    </div>
-                    <div className="row">
-                      <span className="body-small">Cantidad</span>
+                    <div className="d-flex flex-column text-start">
+                      <div className="row fw-bold">
+                        <span className="label-small">Habitaciones</span>
+                      </div>
+                      <div className="row">
+                        <span className="body-small">Cantidad</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
+              {/*Huespedes*/}
+              <div className="flex-grow-1 border ms-2">
+                <Link
+                  to=""
+                  className="btn booking-form-btn px-2 py-0 d-flex justify-content-center"
+                  role="button"
+                >
+                  <div className="d-flex flex-row">
+                    <div className="d-flex flex-column me-3 justify-content-center">
+                      <i
+                        class="bi bi-people"
+                        style={{ fontSize: "1.5rem" }}
+                      ></i>
+                    </div>
+                    <div className="d-flex flex-column text-start">
+                      <div className="row fw-bold">
+                        <span className="label-small">Huéspedes</span>
+                      </div>
+                      <div className="row">
+                        <span className="body-small">Cantidad</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
             </div>
             {/*Llamado a la acción*/}
-            <div className="col-auto">
-              <button className="btn solid-btn h-100 label-small" type="submit">
+            <div className="d-flex flex-column mt-md-0 mt-2">
+              <button
+                className="btn solid-btn h-100 label-small "
+                type="submit"
+              >
                 Reservar Ahora
               </button>
             </div>

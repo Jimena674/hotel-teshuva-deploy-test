@@ -7,8 +7,8 @@ export default function NavbarWebpage() {
     <>
       <header>
         {/* Primera Franja: Logo + Login/Register */}
-        <nav className="container navbar navbar-expand-lg py-2 w-100">
-          <div className="container-fluid d-flex justify-content-between align-items-center">
+        <nav className="container navbar navbar-expand-md py-2 w-100 pb-0 d-flex flex-column">
+          <div className="container-fluid d-flex justify-content-between align-items-center ">
             {/* Logo */}
             <img
               src="../../../public/images/logo-h-teshuva.png"
@@ -17,7 +17,7 @@ export default function NavbarWebpage() {
               width={80}
             />
             {/* Enlaces de Iniciar sesión y Registro */}
-            <div>
+            <div className="mt-2 mt-md-0">
               <NavLink to="/signin">
                 <ButtonIcon
                   name="Iniciar Sesión"
@@ -41,28 +41,23 @@ export default function NavbarWebpage() {
               </NavLink>
             </div>
           </div>
-        </nav>
-        {/* Segunda Franja: Menú de navegación */}
-        <nav className="container navbar navbar-expand-lg w-100">
-          <div className="container-fluid">
+          {/* Segunda Franja: Menú de navegación */}
+          <div className="container my-2 mt-md-0">
             {/* Botón para móviles */}
             <button
               className="navbar-toggler"
               type="button"
               data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
+              data-bs-target="#mainNavbar"
+              aria-controls="mainNavbar"
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
               <span className="navbar-toggler-icon" />
             </button>
             {/* Menú de navegación */}
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <div className="collapse navbar-collapse" id="mainNavbar">
+              <ul className="navbar-nav me-auto mb-2 mb-sm-0">
                 <li className="nav-item">
                   <NavLink to="/">
                     <Button
