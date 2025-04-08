@@ -19,7 +19,7 @@
   }
 }
 
-.solid-btn {
+.solid-btn-primary {
   border-radius: 0.25rem;
   background-color: $primary-container;
   color: $on-primary-container;
@@ -29,11 +29,64 @@
   }
 }
 
+.solid-btn-tertiary {
+  border-radius: 0.25rem;
+  background-color: $tertiary-container;
+  color: $on-primary-container;
+  &.solid-btn-tertiary:hover {
+    background-color: $surface-container;
+    color: $on-background;
+  }
+}
+
 // Estilos de textos
+
+.display-medium {
+  font-family: "Playfair", serif;
+  font-size: 45px;
+  font-weight: 500;
+}
+
+.display-small {
+  font-family: "Playfair", serif;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.headline-medium {
+  font-family: "Playfair", serif;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.headline-small {
+  font-family: "Playfair", serif;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.title-large {
+  font-family: "Roboto", sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.title-medium {
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.title-small {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .label-medium {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .label-small {
@@ -51,7 +104,7 @@
 .body-medium {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 350;
 }
 
 .body-small {
@@ -60,8 +113,34 @@
   font-weight: 400;
 }
 
-.display-small {
-  font-family: "Playfair Display", serif;
-  font-size: 36px;
-  font-weight: 400;
+@media (max-width: 576px) {
+  .label-medium {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .body-medium {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .headline-small {
+    font-family: "Playfair", serif;
+    font-size: 20px;
+    font-weight: 300;
+  }
+
+  .display-medium {
+    font-family: "Playfair", serif;
+    font-size: 32px;
+    font-weight: 500;
+  }
+
+  .body-large {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
 }

@@ -10,28 +10,30 @@ export default function Footer() {
               style={{ height: "200px" }}
             >
               <div className="row">
-                <h5>¿Cómo podemos ayudarte?</h5>
-                <h6>(+57) 000 000 0000</h6>
+                <h5 className="title-medium">¿Cómo podemos ayudarte?</h5>
+                <h6 className="title-large" style={{ color: "#27174e" }}>
+                  (+57) 000 000 0000
+                </h6>
               </div>
               <div className="d-flex row justify-content-start">
-                <div className="col-1">
+                <div className="col-auto">
                   <Link to="/" className="text-decoration-none text-dark">
-                    <i className="bi bi-facebook" />
+                    <i className="bi bi-facebook fs-3" />
                   </Link>
                 </div>
-                <div className="col-1">
+                <div className="col-auto">
                   <Link to="/" className="text-decoration-none text-dark">
-                    <i className="bi bi-instagram" />
+                    <i className="bi bi-instagram fs-3" />
                   </Link>
                 </div>
-                <div className="col-1">
+                <div className="col-auto">
                   <Link to="/" className="text-decoration-none text-dark">
-                    <i className="bi bi-twitter" />
+                    <i className="bi bi-twitter fs-3" />
                   </Link>
                 </div>
               </div>
               <div className="row">
-                <span>© 2024 Techuvá</span>
+                <span className="body-small">© 2025 Techuvá</span>
               </div>
             </div>
             {/* Enlaces del sitio web */}
@@ -39,13 +41,27 @@ export default function Footer() {
               className="d-flex flex-column justify-content-start text-end"
               style={{ height: "200px" }}
             >
-              <NavLink to="/">Inicio</NavLink>
-              <NavLink to="/">Habitaciones</NavLink>
-              <NavLink to="/">Ofertas</NavLink>
-              <NavLink to="/">Ubicación</NavLink>
-              <NavLink to="/">Buscar reserva</NavLink>
-              <NavLink to="/signin">Iniciar Sesión</NavLink>
-              <NavLink to="/signup">Registrarse</NavLink>
+              <NavLink to="/" className="title-small">
+                Inicio
+              </NavLink>
+              <NavLink to="/" className="title-small">
+                Habitaciones
+              </NavLink>
+              <NavLink to="/" className="title-small">
+                Ofertas
+              </NavLink>
+              <NavLink to="/" className="title-small">
+                Ubicación
+              </NavLink>
+              <NavLink to="/" className="title-small">
+                Buscar reserva
+              </NavLink>
+              <NavLink to="/signin" className="title-small">
+                Iniciar Sesión
+              </NavLink>
+              <NavLink to="/signup" className="title-small">
+                Registrarse
+              </NavLink>
             </div>
           </div>
         </div>

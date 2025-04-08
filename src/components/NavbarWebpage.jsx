@@ -45,7 +45,7 @@ export default function NavbarWebpage() {
           <div className="container my-2 mt-md-0">
             {/* Botón para móviles */}
             <button
-              className="navbar-toggler"
+              className="navbar-toggler fs-6"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#mainNavbar"

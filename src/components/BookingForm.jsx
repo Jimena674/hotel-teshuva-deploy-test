@@ -10,7 +10,7 @@ export default function BookingForm() {
           {/*Título*/}
           <div className="flex-row w-100 mb-1">
             <span
-              className="fw-bold mb-1 fs-6 label-medium p-0 "
+              className="mb-1 headline-small p-0 "
               style={{ color: "#27174e" }}
             >
               Hacer una Reserva
@@ -122,7 +122,7 @@ export default function BookingForm() {
             {/*Llamado a la acción*/}
             <div className="d-flex flex-column mt-md-0 mt-2">
               <button
-                className="btn solid-btn h-100 label-small "
+                className="btn solid-btn-primary h-100 label-small "
                 type="submit"
               >
                 Reservar Ahora
