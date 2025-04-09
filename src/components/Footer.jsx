@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 export default function Footer() {
   return (
     <>
+      <hr className="mt-0" />
       <footer className="mb-4">
         <div className="container w-100">
           <div className="container-fluid d-flex justify-content-between align-items-center">

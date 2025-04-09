@@ -26,7 +26,7 @@ export default function SingIn() {
               <hr className="mb-2 mt-0" />
 
               <div className="row mx-4">
-                <span className="p-0 body-medium">
+                <span className="p-0 form-text body-medium">
                   Todos los campos son requeridos.
                 </span>
               </div>
@@ -68,13 +68,14 @@ export default function SingIn() {
                   <span className="body-small">¿Olvidaste tu contraseña?</span>
                 </Link>
               </div>
-              <div className="row mx-4 mt-4">
-                <Link to="/" className="p-0">
+              <div className="row mx-4 mt-4 ">
+                <Link to="/" className="p-0 d-grid">
                   <Button
                     name="Iniciar Sesión"
                     btnCustom="solid-btn-tertiary"
                     btnText="label-medium"
-                    sizeBtn="w-100"
+                    sizeBtn=""
+                    btnType="submit"
                   />
                 </Link>
               </div>
@@ -92,7 +93,7 @@ export default function SingIn() {
           </div>
         </div>
       </main>
-      <hr />
+
       <Footer />
     </>
   );

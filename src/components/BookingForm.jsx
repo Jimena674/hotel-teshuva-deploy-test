@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Button from "./Button";
 
 export default function BookingForm() {
   return (
@@ -121,12 +122,15 @@ export default function BookingForm() {
             </div>
             {/*Llamado a la acción*/}
             <div className="d-flex flex-column mt-md-0 mt-2">
-              <button
-                className="btn solid-btn-primary h-100 label-small "
-                type="submit"
-              >
-                Reservar Ahora
-              </button>
+              <Button
+                name="Reservar Ahora"
+                btnCustom="solid-btn-primary"
+                btnText="label-small"
+                paddingBtn=""
+                marginBtn=""
+                btnType="submit"
+                btnSize="h-100"
+              />
             </div>
           </div>
         </div>

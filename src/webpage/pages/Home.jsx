@@ -29,30 +29,42 @@ export default function Home() {
           <div className="row gx-2">
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITD
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-mrsiraphol.jpg"
                 title="Hotel Teshuvá"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITD
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-freepik-4.jpg"
                 title="Hotel Teshuvá"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITD
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-rcnradio.jpg"
                 title="Hotel Teshuvá"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITD
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-cerosetenta.jpg"
                 title="Hotel Teshuvá"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
           </div>
@@ -68,30 +80,42 @@ export default function Home() {
           <div className="row gx-2">
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-freepik-3.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-dit26978.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-katemangostar.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-jcomp-1.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
           </div>
@@ -107,30 +131,42 @@ export default function Home() {
           <div className="row gx-2">
             <div className="col-12 col-lg-6 mb-4">
               <CardHorITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-freepik-1.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-lg-6 mb-4">
               <CardHorITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-dcstudio.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-lg-6 mb-4">
               <CardHorITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-freepik-2.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
             <div className="col-12 col-lg-6">
               <CardHorITDB
-                image="/images/hotel-freepik.jpg"
+                image="/images/hotel-jcomp.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
+                heightImg="200px"
+                widthImg="100%"
+                objectFitImg="cover"
               />
             </div>
           </div>
@@ -195,7 +231,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <hr />
       <Footer />
     </>
   );

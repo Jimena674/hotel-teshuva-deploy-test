@@ -10,6 +10,11 @@ export default function CardHorITDB(props) {
             src={props.image}
             alt={props.title}
             className="img-fluid rounded "
+            style={{
+              width: props.widthImg,
+              height: props.heightImg,
+              objectFit: props.objectFitImg,
+            }}
           />
         </div>
         <div className="col-12 col-md-6 mt-2 mt-md-0">

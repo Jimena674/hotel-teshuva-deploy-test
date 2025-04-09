@@ -1,27 +1,30 @@
 import Navbar from "../../components/NavbarWebpage";
 import Footer from "../../components/Footer";
+import ButtonIcon from "../../components/ButtonIcon";
+import Button from "../../components/Button";
+import { Link } from "react-router-dom";
 
 export default function SingUp() {
   return (
     <>
       <Navbar />
       <main className="container d-flex justify-content-center">
-        <div className="d-flex flex-column w-50">
-          <h2 className="text-center">Únete al Hotel Teshuva</h2>
-          <span className="form-text mt-4">
+        <div className="d-flex flex-column signup-container ">
+          <h2 className="text-center display-small">Únete al Hotel Teshuva</h2>
+          <span className="form-text mt-2 body-medium">
             Todos los campos son requeridos.
           </span>
-          <form action="" className="mt-5">
+          <form action="" className="mt-3">
             {/*Nombre*/}
             <div className="d-flex gap-2">
               <div className="col">
-                <label htmlFor="" className="form-label">
+                <label htmlFor="" className="form-label label-medium">
                   Nombres
                 </label>
                 <input type="text" className="form-control" id="" required="" />
               </div>
               <div className="col">
-                <label htmlFor="" className="form-label">
+                <label htmlFor="" className="form-label label-medium">
                   Apellidos
                 </label>
                 <input type="text" className="form-control" id="" required="" />
@@ -30,7 +33,7 @@ export default function SingUp() {
             {/*identificacion*/}
             <div className="d-flex gap-2 mt-4">
               <div className="col">
-                <label htmlFor="" className="form-label">
+                <label htmlFor="" className="form-label label-medium">
                   Tipo de Identificación
                 </label>
                 <select name="" id="" className="form-select" required="">
@@ -42,7 +45,7 @@ export default function SingUp() {
                 </select>
               </div>
               <div className="col">
-                <label htmlFor="" className="form-label">
+                <label htmlFor="" className="form-label label-medium">
                   Número de Identificación
                 </label>
                 <input type="text" className="form-control" id="" required="" />
@@ -51,7 +54,7 @@ export default function SingUp() {
             <div className="d-flex gap-2 mt-4">
               {/*Telefono*/}
               <div className="col">
-                <label htmlFor="" className="form-label">
+                <label htmlFor="" className="form-label label-medium">
                   Teléfono
                 </label>
                 <input
@@ -63,7 +66,7 @@ export default function SingUp() {
               </div>
               {/*Fecha de nacimiento*/}
               <div className="col">
-                <label htmlFor="" className="form-label">
+                <label htmlFor="" className="form-label label-medium">
                   Fecha de Nacimiento
                 </label>
                 <input
@@ -77,7 +80,7 @@ export default function SingUp() {
             </div>
             {/*Tipo de usuario*/}
             <div className="mt-4">
-              <label htmlFor="tipoUsuario" className="form-label">
+              <label htmlFor="tipoUsuario" className="form-label label-medium">
                 Tipo de Usuario
               </label>
               <select
@@ -91,12 +94,30 @@ export default function SingUp() {
                 <option value="huesped">Huésped</option>
               </select>
             </div>
+            {/*Correo electrónico*/}
+            <div className="mt-4">
+              <label htmlFor="tipoUsuario" className="form-label label-medium">
+                Correo Electrónico
+              </label>
+              <input type="email" className="form-control" id="" required="" />
+            </div>
             {/*Contraseña*/}
             <div className="d-flex flex-column mt-4">
               <div className="flex-row">
-                <label htmlFor="" className="form-label">
-                  Contraseña
-                </label>
+                <div className="p-0 d-flex justify-content-between">
+                  <label htmlFor="" className="form-label label-medium">
+                    Contraseña
+                  </label>
+                  <ButtonIcon
+                    name="mostrar"
+                    btnText="body-small"
+                    icon="bi bi-eye"
+                    fontSize="0.75rem"
+                    paddingBtn="p-0"
+                    textDecoration="text-decoration-underline"
+                    marginIcon="ms-2"
+                  />
+                </div>
                 <input
                   type="password"
                   className="form-control"
@@ -105,7 +126,7 @@ export default function SingUp() {
                 />
               </div>
               <div className="row">
-                <div className="col">
+                <div className="col-12 col-md-6">
                   <ul>
                     <li className="form-text">
                       Debe contener mínimo 8 caracteres.
@@ -115,7 +136,7 @@ export default function SingUp() {
                     </li>
                   </ul>
                 </div>
-                <div className="col">
+                <div className="col-12 col-md-6">
                   <ul>
                     <li className="form-text">
                       Debe contener un número (0-9).
@@ -129,7 +150,7 @@ export default function SingUp() {
             </div>
             {/*Confirmar contraseña*/}
             <div>
-              <label htmlFor="" className="form-label">
+              <label htmlFor="" className="form-label label-medium mt-4">
                 Confirmar Contraseña
               </label>
               <input type="password" className="form-control" required="" />
@@ -143,16 +164,20 @@ export default function SingUp() {
               electrónico, entendiendo que puedo cancelar la suscripción al
               cambiar las preferencias en mi perfil.
             </div>
-            <div className="d-flex justify-content-center">
-              <button type="submit" className="btn btn-primary mt-4">
-                Registrarse
-              </button>
+            <div className="my-4">
+              <Link to="/" className="p-0 d-grid">
+                <Button
+                  btnCustom="solid-btn-primary"
+                  btnText="label-small"
+                  name="Registrarse"
+                  btnType="submit"
+                  paddingBtn="px-4"
+                />
+              </Link>
             </div>
           </form>
         </div>
       </main>
-
-      <hr />
       <Footer />
     </>
   );

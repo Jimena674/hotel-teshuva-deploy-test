@@ -1,6 +1,16 @@
 // Importar variables personalizadas
 @import "_custom.scss";
 
+.signup-container {
+  width: 100%;
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+  @media (min-width: 576px) {
+    width: 75%;
+  }
+}
+
 // Estilos de Botones
 .navbar-btn {
   border-radius: 0%;
@@ -21,11 +31,11 @@
 
 .solid-btn-primary {
   border-radius: 0.25rem;
-  background-color: $primary-container;
-  color: $on-primary-container;
+  background-color: $primary;
+  color: $on-primary;
   &.solid-btn:hover {
-    background-color: $primary;
-    color: $on-primary;
+    background-color: $primary-container;
+    color: $on-primary-container;
   }
 }
 
