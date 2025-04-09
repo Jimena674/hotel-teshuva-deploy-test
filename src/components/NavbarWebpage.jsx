@@ -24,7 +24,8 @@ export default function NavbarWebpage() {
                   btnCustom="navbar-btn"
                   btnText="label-medium"
                   icon="bi bi-person-fill-check"
-                  fontsize="1.1rem"
+                  fontSize="1.1rem"
+                  marginIcon="ms-2"
                 />
               </NavLink>
               <NavLink
@@ -36,7 +37,8 @@ export default function NavbarWebpage() {
                   btnCustom="navbar-btn"
                   btnText="label-medium"
                   icon="bi bi-person-fill-add"
-                  fontsize="1.1rem"
+                  fontSize="1.1rem"
+                  marginIcon="ms-2"
                 />
               </NavLink>
             </div>

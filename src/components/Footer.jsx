@@ -10,10 +10,11 @@ export default function Footer() {
               style={{ height: "200px" }}
             >
               <div className="row">
-                <h5 className="title-medium">¿Cómo podemos ayudarte?</h5>
+                <h5 className="title-small">¿En qué podemos ayudarte?</h5>
                 <h6 className="title-large" style={{ color: "#27174e" }}>
                   (+57) 000 000 0000
                 </h6>
+                <h5 className="body-small">Número de asistencia</h5>
               </div>
               <div className="d-flex row justify-content-start">
                 <div className="col-auto">

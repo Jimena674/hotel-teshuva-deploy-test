@@ -3,7 +3,7 @@ export default function Button(props) {
   return (
     <button
       type="button"
-      className={`btn px-4 ${props.btnCustom} ${props.btnText}`}
+      className={`btn ${props.btnCustom} ${props.btnText} ${props.paddingBtn} ${props.marginBtn} ${props.sizeBtn}`}
     >
       {props.name}
     </button>

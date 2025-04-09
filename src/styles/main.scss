@@ -39,6 +39,10 @@
   }
 }
 
+.signin-card {
+  background-color: $surface-bright;
+}
+
 // Estilos de textos
 
 .display-medium {
@@ -86,7 +90,7 @@
 .label-medium {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .label-small {
