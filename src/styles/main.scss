@@ -3,17 +3,19 @@
 
 .signup-container {
   width: 100%;
-  @media (min-width: 768px) {
-    width: 50%;
-  }
+
   @media (min-width: 576px) {
     width: 75%;
+  }
+  @media (min-width: 992px) {
+    width: 50%;
   }
 }
 
 // Estilos de Botones
 .navbar-btn {
   border-radius: 0%;
+  text-decoration: none;
   &.navbar-btn:hover {
     background-color: $surface-container;
     border-bottom-width: 0.25em;
@@ -23,6 +25,7 @@
 
 .booking-form-btn {
   border-radius: 0.25rem;
+  text-decoration: none;
   &.booking-form-btn:hover {
     background-color: $surface-container;
     color: $primary;
@@ -33,6 +36,7 @@
   border-radius: 0.25rem;
   background-color: $primary;
   color: $on-primary;
+  text-decoration: none;
   &.solid-btn:hover {
     background-color: $primary-container;
     color: $on-primary-container;
@@ -43,6 +47,7 @@
   border-radius: 0.25rem;
   background-color: $tertiary-container;
   color: $on-primary-container;
+  text-decoration: none;
   &.solid-btn-tertiary:hover {
     background-color: $surface-container;
     color: $on-background;

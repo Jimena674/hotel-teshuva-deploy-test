@@ -126,8 +126,8 @@ export default function SingUp() {
                 />
               </div>
               <div className="row">
-                <div className="col-12 col-md-6">
-                  <ul>
+                <div className="col-12 col-lg-6 p-0 ">
+                  <ul className="ps-4 m-0">
                     <li className="form-text">
                       Debe contener mínimo 8 caracteres.
                     </li>
@@ -136,8 +136,8 @@ export default function SingUp() {
                     </li>
                   </ul>
                 </div>
-                <div className="col-12 col-md-6">
-                  <ul>
+                <div className="col-12 col-lg-6 p-0 ">
+                  <ul className="ps-4 m-0">
                     <li className="form-text">
                       Debe contener un número (0-9).
                     </li>
@@ -165,7 +165,7 @@ export default function SingUp() {
               cambiar las preferencias en mi perfil.
             </div>
             <div className="my-4">
-              <Link to="/" className="p-0 d-grid">
+              <Link to="/" className="p-0 d-grid text-decoration-none">
                 <Button
                   btnCustom="solid-btn-primary"
                   btnText="label-small"

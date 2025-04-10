@@ -69,7 +69,7 @@ export default function SingIn() {
                 </Link>
               </div>
               <div className="row mx-4 mt-4 ">
-                <Link to="/" className="p-0 d-grid">
+                <Link to="/" className="p-0 d-grid text-decoration-none">
                   <Button
                     name="Iniciar Sesión"
                     btnCustom="solid-btn-tertiary"
@@ -84,7 +84,7 @@ export default function SingIn() {
                   <span className="p-0 body-medium">¿No tienes usuario?</span>
                 </div>
                 <div className="col-auto p-0 ms-2">
-                  <Link to="/signup">
+                  <Link to="/signup" className="">
                     <span className="p-0 body-medium">Crear una cuenta</span>
                   </Link>
                 </div>

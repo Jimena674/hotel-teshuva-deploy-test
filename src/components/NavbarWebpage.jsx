@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 import Button from "./Button";
 import ButtonIcon from "./ButtonIcon";
 
@@ -18,7 +19,7 @@ export default function NavbarWebpage() {
             />
             {/* Enlaces de Iniciar sesión y Registro */}
             <div className="mt-2 mt-md-0">
-              <NavLink to="/signin">
+              <RouterLink to="/signin">
                 <ButtonIcon
                   name="Iniciar Sesión"
                   btnCustom="navbar-btn"
@@ -27,8 +28,8 @@ export default function NavbarWebpage() {
                   fontSize="1.1rem"
                   marginIcon="ms-2"
                 />
-              </NavLink>
-              <NavLink
+              </RouterLink>
+              <RouterLink
                 to="/signup"
                 className="border-start border-black border-2"
               >
@@ -40,7 +41,7 @@ export default function NavbarWebpage() {
                   fontSize="1.1rem"
                   marginIcon="ms-2"
                 />
-              </NavLink>
+              </RouterLink>
             </div>
           </div>
           {/* Segunda Franja: Menú de navegación */}
@@ -61,49 +62,49 @@ export default function NavbarWebpage() {
             <div className="collapse navbar-collapse" id="mainNavbar">
               <ul className="navbar-nav me-auto mb-2 mb-sm-0">
                 <li className="nav-item">
-                  <NavLink to="/">
+                  <RouterLink to="/">
                     <Button
                       name="Inicio"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </NavLink>
+                  </RouterLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/">
+                  <ScrollLink to="habitaciones" smooth={true} duration={500}>
                     <Button
                       name="Habitaciones"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </NavLink>
+                  </ScrollLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/">
+                  <ScrollLink to="ofertas" smooth={true} duration={500}>
                     <Button
                       name="Ofertas"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </NavLink>
+                  </ScrollLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/">
+                  <ScrollLink to="ubicacion" smooth={true} duration={500}>
                     <Button
                       name="Ubicación"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </NavLink>
+                  </ScrollLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to="/">
+                  <RouterLink to="/">
                     <Button
                       name="Buscar Reserva"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </NavLink>
+                  </RouterLink>
                 </li>
               </ul>
             </div>

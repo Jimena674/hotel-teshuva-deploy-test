@@ -1,4 +1,5 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 export default function Footer() {
   return (
     <>
@@ -19,19 +20,19 @@ export default function Footer() {
               </div>
               <div className="d-flex row justify-content-start">
                 <div className="col-auto">
-                  <Link to="/" className="text-decoration-none text-dark">
+                  <RouterLink to="/" className="text-decoration-none text-dark">
                     <i className="bi bi-facebook fs-3" />
-                  </Link>
+                  </RouterLink>
                 </div>
                 <div className="col-auto">
-                  <Link to="/" className="text-decoration-none text-dark">
+                  <RouterLink to="/" className="text-decoration-none text-dark">
                     <i className="bi bi-instagram fs-3" />
-                  </Link>
+                  </RouterLink>
                 </div>
                 <div className="col-auto">
-                  <Link to="/" className="text-decoration-none text-dark">
+                  <RouterLink to="/" className="text-decoration-none text-dark">
                     <i className="bi bi-twitter fs-3" />
-                  </Link>
+                  </RouterLink>
                 </div>
               </div>
               <div className="row">
@@ -43,27 +44,45 @@ export default function Footer() {
               className="d-flex flex-column justify-content-start text-end"
               style={{ height: "200px" }}
             >
-              <NavLink to="/" className="title-small">
+              <RouterLink to="/" className="title-small">
                 Inicio
-              </NavLink>
-              <NavLink to="/" className="title-small">
+              </RouterLink>
+              <ScrollLink
+                to="habitaciones"
+                smooth={true}
+                duration={500}
+                className="title-small"
+                style={{ cursor: "pointer" }}
+              >
                 Habitaciones
-              </NavLink>
-              <NavLink to="/" className="title-small">
+              </ScrollLink>
+              <ScrollLink
+                to="ofertas"
+                smooth={true}
+                duration={500}
+                className="title-small"
+                style={{ cursor: "pointer" }}
+              >
                 Ofertas
-              </NavLink>
-              <NavLink to="/" className="title-small">
+              </ScrollLink>
+              <ScrollLink
+                to="ubicacion"
+                smooth={true}
+                duration={500}
+                className="title-small"
+                style={{ cursor: "pointer" }}
+              >
                 Ubicación
-              </NavLink>
-              <NavLink to="/" className="title-small">
+              </ScrollLink>
+              <RouterLink to="/" className="title-small">
                 Buscar reserva
-              </NavLink>
-              <NavLink to="/signin" className="title-small">
+              </RouterLink>
+              <RouterLink to="/signin" className="title-small">
                 Iniciar Sesión
-              </NavLink>
-              <NavLink to="/signup" className="title-small">
+              </RouterLink>
+              <RouterLink to="/signup" className="title-small">
                 Registrarse
-              </NavLink>
+              </RouterLink>
             </div>
           </div>
         </div>
