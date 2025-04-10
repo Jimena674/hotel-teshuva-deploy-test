@@ -1,15 +1,26 @@
 import { Link as RouterLink } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import ButtonIcon from "./ButtonIcon";
 
 export default function NavbarWebpage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const scrollToSection = (section) => {
+    if (location.pathname !== "/") {
+      navigate("/#" + section);
+    } else {
+      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
-      <header>
+      <header className="">
         {/* Primera Franja: Logo + Login/Register */}
         <nav className="container navbar navbar-expand-md py-2 w-100 pb-0 d-flex flex-column">
-          <div className="container-fluid d-flex justify-content-between align-items-center ">
+          <div className="container-fluid d-flex justify-content-between align-items-center p-0">
             {/* Logo */}
             <img
               src="../../../public/images/logo-h-teshuva.png"
@@ -45,7 +56,7 @@ export default function NavbarWebpage() {
             </div>
           </div>
           {/* Segunda Franja: Menú de navegación */}
-          <div className="container my-2 mt-md-0">
+          <div className="container my-2 mt-md-0 p-0">
             {/* Botón para móviles */}
             <button
               className="navbar-toggler fs-6"
@@ -71,31 +82,43 @@ export default function NavbarWebpage() {
                   </RouterLink>
                 </li>
                 <li className="nav-item">
-                  <ScrollLink to="habitaciones" smooth={true} duration={500}>
+                  <a
+                    onClick={() => scrollToSection("habitaciones")}
+                    smooth={true}
+                    duration={500}
+                  >
                     <Button
                       name="Habitaciones"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </ScrollLink>
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <ScrollLink to="ofertas" smooth={true} duration={500}>
+                  <a
+                    onClick={() => scrollToSection("ofertas")}
+                    smooth={true}
+                    duration={500}
+                  >
                     <Button
                       name="Ofertas"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </ScrollLink>
+                  </a>
                 </li>
                 <li className="nav-item">
-                  <ScrollLink to="ubicacion" smooth={true} duration={500}>
+                  <a
+                    onClick={() => scrollToSection("ubicacion")}
+                    smooth={true}
+                    duration={500}
+                  >
                     <Button
                       name="Ubicación"
                       btnCustom="navbar-btn"
                       btnText="body-medium"
                     />
-                  </ScrollLink>
+                  </a>
                 </li>
                 <li className="nav-item">
                   <RouterLink to="/">

@@ -7,7 +7,7 @@ export default function BookingForm() {
       {/*Contenedor principal que centra todo*/}
       <div className="d-flex ">
         {/*Formulario de reserva*/}
-        <div className="container d-flex flex-column ">
+        <div className="container d-flex flex-column p-0">
           {/*Título*/}
           <div className="flex-row w-100 mb-1">
             <span

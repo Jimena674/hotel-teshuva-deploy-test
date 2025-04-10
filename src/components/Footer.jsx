@@ -1,6 +1,17 @@
 import { Link as RouterLink } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
+import { useLocation, useNavigate } from "react-router-dom";
 export default function Footer() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const scrollToSection = (section) => {
+    if (location.pathname !== "/") {
+      navigate("/#" + section);
+    } else {
+      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <>
       <hr className="mt-0" />
@@ -44,36 +55,42 @@ export default function Footer() {
               className="d-flex flex-column justify-content-start text-end"
               style={{ height: "200px" }}
             >
-              <RouterLink to="/" className="title-small">
+              <a
+                onClick={() => scrollToSection("inicio")}
+                smooth={true}
+                duration={500}
+                className="title-small"
+                style={{ cursor: "pointer" }}
+              >
                 Inicio
-              </RouterLink>
-              <ScrollLink
-                to="habitaciones"
+              </a>
+              <a
+                onClick={() => scrollToSection("habitaciones")}
                 smooth={true}
                 duration={500}
                 className="title-small"
                 style={{ cursor: "pointer" }}
               >
                 Habitaciones
-              </ScrollLink>
-              <ScrollLink
-                to="ofertas"
+              </a>
+              <a
+                onClick={() => scrollToSection("ofertas")}
                 smooth={true}
                 duration={500}
                 className="title-small"
                 style={{ cursor: "pointer" }}
               >
                 Ofertas
-              </ScrollLink>
-              <ScrollLink
-                to="ubicacion"
+              </a>
+              <a
+                onClick={() => scrollToSection("ubicacion")}
                 smooth={true}
                 duration={500}
                 className="title-small"
                 style={{ cursor: "pointer" }}
               >
                 Ubicación
-              </ScrollLink>
+              </a>
               <RouterLink to="/" className="title-small">
                 Buscar reserva
               </RouterLink>
