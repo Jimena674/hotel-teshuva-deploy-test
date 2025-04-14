@@ -1,6 +1,6 @@
 import { Link as RouterLink } from "react-router-dom";
-import { Link as ScrollLink } from "react-scroll";
 import { useLocation, useNavigate } from "react-router-dom";
+
 export default function Footer() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -91,9 +91,6 @@ export default function Footer() {
               >
                 Ubicación
               </a>
-              <RouterLink to="/" className="title-small">
-                Buscar reserva
-              </RouterLink>
               <RouterLink to="/signin" className="title-small">
                 Iniciar Sesión
               </RouterLink>

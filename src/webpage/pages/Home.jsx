@@ -6,7 +6,6 @@ import CardITD from "../../components/CardITD";
 import TitleWebpage from "../../components/TitleWebpage";
 import CardHorITDB from "../../components/CardHorITDB";
 import IconText from "../../components/IconText";
-import { Element } from "react-scroll";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -26,7 +25,7 @@ export default function Home() {
   }, [location]);
   return (
     <>
-      <div className="container mt-3 p-0">
+      <div className="container p-0">
         <section id="inicio">
           <NavbarWebpage />
           <BookingForm />

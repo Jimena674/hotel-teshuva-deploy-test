@@ -2,6 +2,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import ButtonIcon from "./ButtonIcon";
+import ConsultarReserva from "./ConsultarReserva";
 
 export default function NavbarWebpage() {
   const location = useLocation();
@@ -121,13 +122,7 @@ export default function NavbarWebpage() {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <RouterLink to="/">
-                    <Button
-                      name="Buscar Reserva"
-                      btnCustom="navbar-btn"
-                      btnText="body-medium"
-                    />
-                  </RouterLink>
+                  <ConsultarReserva />
                 </li>
               </ul>
             </div>

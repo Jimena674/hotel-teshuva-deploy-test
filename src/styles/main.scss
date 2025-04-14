@@ -1,6 +1,36 @@
 // Importar variables personalizadas
 @import "_custom.scss";
 
+.reserva-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(8px); // 💫 El efecto mágico
+  background-color: rgba(0, 0, 0, 0.4); // sombra suave
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; // por encima del contenido
+}
+
+.reserva-modal {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+}
+
 .signup-container {
   width: 100%;
 
@@ -36,7 +66,6 @@
   border-radius: 0.25rem;
   background-color: $primary;
   color: $on-primary;
-  text-decoration: none;
   &.solid-btn:hover {
     background-color: $primary-container;
     color: $on-primary-container;
@@ -47,7 +76,6 @@
   border-radius: 0.25rem;
   background-color: $tertiary-container;
   color: $on-primary-container;
-  text-decoration: none;
   &.solid-btn-tertiary:hover {
     background-color: $surface-container;
     color: $on-background;

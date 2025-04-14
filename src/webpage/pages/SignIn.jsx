@@ -74,7 +74,6 @@ export default function SingIn() {
                     name="Iniciar Sesión"
                     btnCustom="solid-btn-tertiary"
                     btnText="label-medium"
-                    sizeBtn=""
                     btnType="submit"
                   />
                 </Link>
