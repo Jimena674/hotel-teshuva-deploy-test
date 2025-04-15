@@ -1,5 +1,5 @@
 import NavbarWebpage from "../../components/NavbarWebpage";
-import Footer from "../../components/Footer";
+import FooterWebpage from "../../components/FooterWebpage";
 import BookingForm from "../../components/BookingForm";
 import CardITDB from "../../components/CardITDB";
 import CardITD from "../../components/CardITD";
@@ -31,10 +31,12 @@ export default function Home() {
           <BookingForm />
           <img
             src="/images/hotel-standret.jpg"
-            className="img-fluid rounded my-4"
+            className="img-fluid rounded mt-4 mb-5"
             alt="Foto del hotel Teshuva"
           />
-          {/*Información general del hotel.*/}
+        </section>
+        {/*Información general del hotel.*/}
+        <section id="teshuva" className="container p-0 mb-5">
           <div className="container p-0 mb-4">
             <TitleWebpage
               title="Hotel Teshuvá"
@@ -88,7 +90,7 @@ export default function Home() {
         </section>
         {/*Información de las habitaciones.*/}
 
-        <section id="habitaciones" className="container p-0 mb-4">
+        <section id="habitaciones" className="container p-0 mb-5">
           <TitleWebpage
             title="Habitaciones"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
@@ -141,7 +143,7 @@ export default function Home() {
 
         {/*Información de las ofertas.*/}
 
-        <section id="ofertas" className="container p-0 mb-4">
+        <section id="ofertas" className="container p-0 mb-5">
           <TitleWebpage
             title="Ofertas Especiales"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
@@ -194,7 +196,7 @@ export default function Home() {
 
         {/*Información de contacto y ubicación*/}
 
-        <section id="ubicacion" className="container p-0 mb-4">
+        <section id="ubicacion" className="container p-0 mb-5">
           <TitleWebpage
             title="Ubicación"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
@@ -253,7 +255,7 @@ export default function Home() {
           </div>
         </section>
       </div>
-      <Footer />
+      <FooterWebpage />
     </>
   );
 }

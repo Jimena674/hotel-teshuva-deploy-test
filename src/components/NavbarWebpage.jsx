@@ -84,6 +84,19 @@ export default function NavbarWebpage() {
                 </li>
                 <li className="nav-item">
                   <a
+                    onClick={() => scrollToSection("teshuva")}
+                    smooth={true}
+                    duration={500}
+                  >
+                    <Button
+                      name="Teshuvá"
+                      btnCustom="navbar-btn"
+                      btnText="body-medium"
+                    />
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a
                     onClick={() => scrollToSection("habitaciones")}
                     smooth={true}
                     duration={500}

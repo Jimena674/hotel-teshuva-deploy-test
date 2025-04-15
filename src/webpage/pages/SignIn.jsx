@@ -1,5 +1,5 @@
 import Navbar from "../../components/NavbarWebpage";
-import Footer from "../../components/Footer";
+import FooterWebpage from "../../components/FooterWebpage";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import ButtonIcon from "../../components/ButtonIcon";
@@ -93,7 +93,7 @@ export default function SingIn() {
         </div>
       </main>
 
-      <Footer />
+      <FooterWebpage />
     </>
   );
 }

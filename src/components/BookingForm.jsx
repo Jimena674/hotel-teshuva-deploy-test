@@ -20,62 +20,52 @@ export default function BookingForm() {
           {/*Franja de botones*/}
           <div className="d-flex flex-column flex-md-row justify-content-center">
             {/*Botón de check-in y check-out*/}
-            <div className="p-0 d-flex justify-content-center">
-              <Link
-                to=""
-                className="btn booking-form-btn px-2 py-0"
-                role="button"
-              >
+
+            <div className="d-flex flex-row booking-form-btn px-2 py-0">
+              {/*Check-in*/}
+              <div className="d-flex flex-column me-3">
                 <div className="d-flex flex-row">
-                  {/*Check-in*/}
-                  <div className="d-flex flex-column me-3">
-                    <div className="d-flex flex-row">
-                      <div className="d-flex flex-column me-3 justify-content-center">
-                        <i
-                          className="bi bi-calendar"
-                          style={{ fontSize: "1.5rem" }}
-                        />
-                      </div>
-                      <div className="d-flex flex-column text-start">
-                        <div className="row mb-0">
-                          <span className="label-small">Check-in</span>
-                        </div>
-                        <div className="row mb-0">
-                          <span className="body-small">Añadir fecha</span>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="d-flex flex-column me-3 justify-content-center">
+                    <i
+                      className="bi bi-calendar"
+                      style={{ fontSize: "1.5rem" }}
+                    />
                   </div>
-                  {/*Check-out*/}
-                  <div className="d-flex flex-column border-start ps-3">
-                    <div className="d-flex flex-row">
-                      <div className="d-flex flex-column me-3 justify-content-center">
-                        <i
-                          className="bi bi-calendar"
-                          style={{ fontSize: "1.5rem" }}
-                        />
-                      </div>
-                      <div className="d-flex flex-column text-start">
-                        <div className="row fw-bold">
-                          <span className="label-small">Check-out</span>
-                        </div>
-                        <div className="row">
-                          <span className="body-small">Añadir fecha</span>
-                        </div>
-                      </div>
+                  <div className="d-flex flex-column text-start">
+                    <div className="row mb-0">
+                      <span className="label-small">Check-in</span>
+                    </div>
+                    <div className="row mb-0">
+                      <span className="body-small">Añadir fecha</span>
                     </div>
                   </div>
                 </div>
-              </Link>
+              </div>
+              {/*Check-out*/}
+              <div className="d-flex flex-column border-start ps-3">
+                <div className="d-flex flex-row">
+                  <div className="d-flex flex-column me-3 justify-content-center">
+                    <i
+                      className="bi bi-calendar"
+                      style={{ fontSize: "1.5rem" }}
+                    />
+                  </div>
+                  <div className="d-flex flex-column text-start">
+                    <div className="row fw-bold">
+                      <span className="label-small">Check-out</span>
+                    </div>
+                    <div className="row">
+                      <span className="body-small">Añadir fecha</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div className="d-flex justify-content-center p-0 mx-md-2 mt-2 mt-md-0">
-              {/*Habitaciones*/}
+              {/*Botón de Habitaciones*/}
               <div className="border flex-grow-1">
-                <Link
-                  to=""
-                  className="btn booking-form-btn px-2 py-0 d-flex justify-content-center"
-                  role="button"
-                >
+                <Link className="btn booking-form-btn px-2 py-0 d-flex justify-content-center">
                   <div className="d-flex flex-row">
                     <div className="d-flex flex-column me-3 justify-content-center">
                       <i
@@ -96,11 +86,7 @@ export default function BookingForm() {
               </div>
               {/*Huespedes*/}
               <div className="flex-grow-1 border ms-2">
-                <Link
-                  to=""
-                  className="btn booking-form-btn px-2 py-0 d-flex justify-content-center"
-                  role="button"
-                >
+                <Link className="btn booking-form-btn px-2 py-0 d-flex justify-content-center">
                   <div className="d-flex flex-row">
                     <div className="d-flex flex-column me-3 justify-content-center">
                       <i
