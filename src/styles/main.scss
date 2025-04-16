@@ -1,6 +1,16 @@
 // Importar variables personalizadas
 @import "_custom.scss";
 
+//Estilo de los Input en el formulario para realizar una reserva
+.input-custom {
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  margin: 0;
+  height: fit-content;
+  width: fit-content;
+  cursor: pointer;
+}
+
+//Estilos para el efecto blur de fondo al buscar una reserva
 .reserva-overlay {
   position: fixed;
   top: 0;
@@ -31,6 +41,7 @@
   font-size: 1.5rem;
 }
 
+//Estilos para el tamaño del contenedor en el contenido dinámico del Sign Up
 .signup-container {
   width: 100%;
 
