@@ -43,7 +43,7 @@ export default function BookingForm() {
             style={{ width: "fit-content" }}
           >
             {/*Botón de check-in y check-out*/}
-            <div className="d-flex justify-content-center mt-2 mt-md-0">
+            <div className="d-flex justify-content-center mt-2 mt-md-0 border">
               <div className="position-relative">
                 <div
                   className="d-flex justify-content-center booking-form-btn input-group input-custom"
