@@ -1,8 +1,8 @@
-import Navbar from "../../components/NavbarWebpage";
-import FooterWebpage from "../../components/FooterWebpage";
-import Button from "../../components/Button";
+import Navbar from "../components/NavbarWebpage";
+import FooterWebpage from "../components/FooterWebpage";
+import Button from "../components/Button";
 import { Link } from "react-router-dom";
-import ButtonIcon from "../../components/ButtonIcon";
+import ButtonIcon from "../components/ButtonIcon";
 
 export default function SingIn() {
   return (

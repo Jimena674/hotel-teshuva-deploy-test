@@ -1,11 +1,11 @@
-import NavbarWebpage from "../../components/NavbarWebpage";
-import FooterWebpage from "../../components/FooterWebpage";
-import BookingForm from "../../components/BookingForm";
-import CardITDB from "../../components/CardITDB";
-import CardITD from "../../components/CardITD";
-import TitleWebpage from "../../components/TitleWebpage";
-import CardHorITDB from "../../components/CardHorITDB";
-import IconText from "../../components/IconText";
+import NavbarWebpage from "../components/NavbarWebpage";
+import FooterWebpage from "../components/FooterWebpage";
+import BookingForm from "../components/BookingForm";
+import CardITDB from "../components/CardITDB";
+import CardITD from "../components/CardITD";
+import TitleWebpage from "../components/TitleWebpage";
+import CardHorITDB from "../components/CardHorITDB";
+import IconText from "../components/IconText";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
