@@ -1,7 +1,7 @@
-import Navbar from "../../components/NavbarWebpage";
-import FooterWebpage from "../../components/FooterWebpage";
-import ButtonIcon from "../../components/ButtonIcon";
-import Button from "../../components/Button";
+import Navbar from "../components/NavbarWebpage";
+import FooterWebpage from "../components/FooterWebpage";
+import ButtonIcon from "../components/ButtonIcon";
+import Button from "../components/Button";
 import { Link } from "react-router-dom";
 
 export default function SingUp() {
