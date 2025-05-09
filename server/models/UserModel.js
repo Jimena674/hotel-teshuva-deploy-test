@@ -15,7 +15,7 @@ const createUser = async (
   last_name,
   id_type_id,
   id_number,
-  phone_prefixes_id,
+
   phone,
   birth_date,
   email,
@@ -23,13 +23,13 @@ const createUser = async (
   hashedPassword
 ) => {
   await db.promise.query(
-    "INSERT INTO users (name, last_name, id_type_id, id_number, phone_prefixes_id, phone, birth_date, email, user_type_id, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO users (name, last_name, id_type_id, id_number, phone, birth_date, email, user_type_id, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
       name,
       last_name,
       id_type_id,
       id_number,
-      phone_prefixes_id,
+
       phone,
       birth_date,
       email,

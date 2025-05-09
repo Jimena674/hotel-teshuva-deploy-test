@@ -11,7 +11,7 @@ const register = async function (req, res) {
       last_name,
       id_type_id,
       id_number,
-      phone_prefixes_id,
+
       phone,
       birth_date,
       email,
@@ -24,7 +24,6 @@ const register = async function (req, res) {
       !last_name ||
       !id_type_id ||
       !id_number ||
-      !phone_prefixes_id ||
       !phone ||
       !birth_date ||
       !email ||
@@ -50,7 +49,7 @@ const register = async function (req, res) {
       last_name,
       id_type_id,
       id_number,
-      phone_prefixes_id,
+
       phone,
       birth_date,
       email,
