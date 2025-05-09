@@ -10,19 +10,19 @@ export default function SingUp() {
   const [name, setName] = useState("");
   const [last_name, setLastName] = useState("");
   const [id_type_id, setIdTypeId] = useState("");
-  const [id_number, setIdNumber] = useSate("");
+  const [id_number, setIdNumber] = useState("");
 
   const [phone, setPhone] = useState("");
   const [birth_date, setBirthDate] = useState("");
   const [email, setEmail] = useState("");
   const [user_type_id, setUserTypeId] = useState("");
   const [password, setPassword] = useState("");
-  const [mensaje, setMensaje] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/user/register", {
+      const res = await fetch("http://localhost:4000/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,12 +54,12 @@ export default function SingUp() {
         setEmail("");
         setUserTypeId("");
         setPassword("");
-        setMensaje("✅ Registro exitoso");
+        setMessage("✅ Registro exitoso");
       } else {
-        setMensaje(`❌ ${data.message || "Error al registrar"}`);
+        setMessage(`❌ ${data.message || "Error al registrar"}`);
       }
     } catch (err) {
-      setMensaje("❌ Error de conexión con el servidor");
+      setMessage("❌ Error de conexión con el servidor");
       console.error(err);
     }
   };
@@ -183,8 +183,8 @@ export default function SingUp() {
                 onChange={(e) => setUserTypeId(e.target.value)}
               >
                 <option value="" selected="" />
-                <option value="administrativo">Huésped</option>
-                <option value="huesped">Administrativo</option>
+                <option value={1}>Huésped</option>
+                <option value={2}>Administrativo</option>
               </select>
             </div>
             {/*Correo electrónico*/}
@@ -267,17 +267,17 @@ export default function SingUp() {
               cambiar las preferencias en mi perfil.
             </div>
             <div className="my-4">
-              <Link to="/" className="p-0 d-grid text-decoration-none">
+              <div className="p-0 d-grid text-decoration-none">
                 <Button
                   btnCustom="solid-btn-primary"
                   btnText="label-small"
                   name="Registrarse"
-                  btnType="submit"
                   paddingBtn="px-4"
+                  type="submit"
                 />
-              </Link>
+              </div>
             </div>
-            {mensaje && <p>{mensaje}</p>}
+            {message && <p>{message}</p>}
           </form>
         </div>
       </main>

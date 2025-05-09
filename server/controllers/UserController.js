@@ -32,12 +32,12 @@ const register = async function (req, res) {
     ) {
       return res
         .status(400)
-        .json({ error: "Todos los campos son requeridos." });
+        .json({ message: "Todos los campos son necesarios." });
     }
     // Verificar si el usuario ya existe
     const user = await userModel.findUserByEmail(email);
     if (user) {
-      return res.status(409).json({ error: "El usuario ya existe." });
+      return res.status(409).json({ message: "El usuario ya existe." });
     }
     // Encriptar la contraseña
     const clearPassword = String(password).trim();
