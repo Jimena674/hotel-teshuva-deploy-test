@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ButtonIcon from "../components/ButtonIcon";
 import AlertMessage from "../components/AlertMessage";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SingIn() {
   // Enviar los datos del frontend al backend
@@ -12,6 +13,8 @@ export default function SingIn() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +31,11 @@ export default function SingIn() {
       if (res.ok) {
         setMessageType("success");
         setMessage("✅ " + data.message);
+
+        // Redireccionar según el tipo de usuario
+        if (data.type === 2) {
+          navigate("/admin/dashboard");
+        }
       } else {
         setMessageType("error");
         setMessage("❌ " + (data.message || "Error al iniciar sesión."));

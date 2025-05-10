@@ -89,11 +89,15 @@ const login = async function (req, res) {
     );
 
     // Comparar contraseñas
-    if (await bcrypt.compare(password, user.password)) {
-      return res.json({ message: "Inicio de sesión exitoso." });
-    } else {
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
       return res.status(401).json({ message: "Contraseña incorrecta." });
     }
+
+    // Inicio de sesión exitoso
+    res
+      .status(200)
+      .json({ message: "Inicio de sesión exitoso.", type: user.user_type_id }); // Se devuelve un mensaje y el tipo de usuario que ingresa
   } catch (error) {
     console.error("Error al iniciar sesión.", error);
     res.status(500).json({ error: "Error en el servidor." });
