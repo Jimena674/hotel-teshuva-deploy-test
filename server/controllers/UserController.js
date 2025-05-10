@@ -82,7 +82,7 @@ const login = async function (req, res) {
     // Verificar si el usuario existe
     const user = await userModel.findUserByEmail(email);
     if (!user) {
-      return res.status(400).json({ message: "El usuario no existe." });
+      return res.status(404).json({ message: "El usuario no existe." });
     }
     console.log(
       "En la base de datos está la siguiente información: " + user.email
@@ -92,7 +92,7 @@ const login = async function (req, res) {
     if (await bcrypt.compare(password, user.password)) {
       return res.json({ message: "Inicio de sesión exitoso." });
     } else {
-      return res.json({ message: "Error al ingresar la contraseña." });
+      return res.status(401).json({ message: "Contraseña incorrecta." });
     }
   } catch (error) {
     console.error("Error al iniciar sesión.", error);

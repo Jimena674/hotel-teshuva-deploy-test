@@ -4,8 +4,41 @@ import Button from "../components/Button";
 import { Link } from "react-router-dom";
 import ButtonIcon from "../components/ButtonIcon";
 import AlertMessage from "../components/AlertMessage";
+import { useState } from "react";
 
 export default function SingIn() {
+  // Enviar los datos del frontend al backend
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:4000/api/users/login", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessageType("success");
+        setMessage("✅ " + data.message);
+      } else {
+        setMessageType("error");
+        setMessage("❌ " + (data.message || "Error al iniciar sesión."));
+      }
+    } catch (error) {
+      setMessageType("error");
+      setMessage("❌ Error de conexión con el servidor.");
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -20,7 +53,11 @@ export default function SingIn() {
           </div>
           <div className="col-12 col-md-6 d-flex justify-content-center align-items-center mt-4 mt-md-0">
             {/*Card que contiene el formulario para iniciar sesión.*/}
-            <div style={{ width: "400px" }} className="card signin-card">
+            <form
+              style={{ width: "400px" }}
+              className="card signin-card"
+              onSubmit={handleSubmit}
+            >
               <h2 className="text-center p-0 my-2 display-small">
                 Iniciar Sesión
               </h2>
@@ -40,6 +77,8 @@ export default function SingIn() {
                   className="form-control"
                   id=""
                   required=""
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="row mt-4 mx-4">
@@ -62,6 +101,8 @@ export default function SingIn() {
                   className="form-control"
                   id=""
                   required=""
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="row mx-4 mt-2">
@@ -70,14 +111,14 @@ export default function SingIn() {
                 </Link>
               </div>
               <div className="row mx-4 mt-4 ">
-                <Link to="/" className="p-0 d-grid text-decoration-none">
+                <div to="" className="p-0 d-grid text-decoration-none">
                   <Button
                     name="Iniciar Sesión"
                     btnCustom="solid-btn-tertiary"
                     btnText="label-medium"
-                    btnType="submit"
+                    type="submit"
                   />
-                </Link>
+                </div>
               </div>
               <div className="row mx-4 my-4">
                 <div className="col-auto p-0">
@@ -89,7 +130,8 @@ export default function SingIn() {
                   </Link>
                 </div>
               </div>
-            </div>
+              <AlertMessage message={message} type={messageType} />
+            </form>
           </div>
         </div>
       </main>

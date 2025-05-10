@@ -6,7 +6,6 @@ import { useState } from "react";
 import AlertMessage from "../components/AlertMessage";
 
 export default function SingUp() {
-  // Exportar la función de signup
   const [name, setName] = useState("");
   const [last_name, setLastName] = useState("");
   const [id_type_id, setIdTypeId] = useState("");
