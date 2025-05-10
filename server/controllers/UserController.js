@@ -64,4 +64,40 @@ const register = async function (req, res) {
   }
 };
 
-module.exports = { register };
+// Función para iniciar sesión
+const login = async function (req, res) {
+  try {
+    // Información que envía el usuario
+    const { email, password } = req.body;
+    console.log("El email es: " + email);
+    console.log("El password es: " + password);
+
+    // Validar la entrada de datos
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Todos los campos son necesarios." });
+    }
+
+    // Verificar si el usuario existe
+    const user = await userModel.findUserByEmail(email);
+    if (!user) {
+      return res.status(400).json({ message: "El usuario no existe." });
+    }
+    console.log(
+      "En la base de datos está la siguiente información: " + user.email
+    );
+
+    // Comparar contraseñas
+    if (await bcrypt.compare(password, user.password)) {
+      return res.json({ message: "Inicio de sesión exitoso." });
+    } else {
+      return res.json({ message: "Error al ingresar la contraseña." });
+    }
+  } catch (error) {
+    console.error("Error al iniciar sesión.", error);
+    res.status(500).json({ error: "Error en el servidor." });
+  }
+};
+
+module.exports = { register, login };
