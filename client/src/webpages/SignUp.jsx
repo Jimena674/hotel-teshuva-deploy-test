@@ -2,8 +2,8 @@ import Navbar from "../components/NavbarWebpage";
 import FooterWebpage from "../components/FooterWebpage";
 import ButtonIcon from "../components/ButtonIcon";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import AlertMessage from "../components/AlertMessage";
 
 export default function SingUp() {
   // Exportar la función de signup
@@ -18,6 +18,7 @@ export default function SingUp() {
   const [user_type_id, setUserTypeId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,11 +56,14 @@ export default function SingUp() {
         setUserTypeId("");
         setPassword("");
         setMessage("✅ Registro exitoso");
+        setMessageType("success");
       } else {
         setMessage(`❌ ${data.message || "Error al registrar"}`);
+        setMessageType("error");
       }
     } catch (err) {
       setMessage("❌ Error de conexión con el servidor");
+      setMessageType("error");
       console.error(err);
     }
   };
@@ -277,7 +281,7 @@ export default function SingUp() {
                 />
               </div>
             </div>
-            {message && <p>{message}</p>}
+            <AlertMessage message={message} type={messageType} />
           </form>
         </div>
       </main>
