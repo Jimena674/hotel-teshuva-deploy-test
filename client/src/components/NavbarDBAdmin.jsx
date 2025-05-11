@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
+import { useState, useEffect } from "react";
 
 export default function NavbarDashboard() {
+  // Traer la información del backend
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const data = localStorage.getItem("user");
+    if (data) {
+      setUser(JSON.parse(data));
+    }
+  }, []);
+
   return (
     <>
       <header>
@@ -46,10 +57,12 @@ export default function NavbarDashboard() {
               />
 
               <div className="d-flex flex-column ps-3">
-                <div className="d-flex headline-small">
-                  Jenny Carolina Van Doorne
-                </div>
-                <div className="d-flex body-medium">Administradora</div>
+                {user && (
+                  <div className="d-flex headline-small">
+                    {user.name} {user.lastName}
+                  </div>
+                )}
+                <span className="d-flex body-medium">Administradora</span>
               </div>
             </div>
           </div>

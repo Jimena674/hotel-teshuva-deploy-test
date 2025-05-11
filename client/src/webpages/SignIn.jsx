@@ -32,6 +32,16 @@ export default function SingIn() {
         setMessageType("success");
         setMessage("✅ " + data.message);
 
+        // Guardar en localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: data.name,
+            lastName: data.lastName,
+            type: data.type,
+          })
+        );
+
         // Redireccionar según el tipo de usuario
         if (data.type === 2) {
           navigate("/admin/dashboard");
