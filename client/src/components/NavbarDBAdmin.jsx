@@ -16,7 +16,7 @@ export default function NavbarDashboard() {
   return (
     <>
       <header>
-        <nav className=" navbar fixed-top d-flex p-0">
+        <nav className=" navbar d-flex p-0">
           <div className="container-fluid">
             <div className="d-flex">
               <span className="navbar-brand display-medium">Hotel Teshuvá</span>

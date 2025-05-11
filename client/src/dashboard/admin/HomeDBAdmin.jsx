@@ -5,7 +5,16 @@ export default function HomoDBAdmin() {
   return (
     <>
       <NavbarDashboardAdmin />
-      <SidebarDBAdmin />
+
+      <main>
+        <div className="row">
+          {" "}
+          <div className="col-2">
+            <SidebarDBAdmin />
+          </div>
+          <div className="col-10"></div>
+        </div>
+      </main>
     </>
   );
 }
