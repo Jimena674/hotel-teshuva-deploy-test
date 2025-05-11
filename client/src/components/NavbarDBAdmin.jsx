@@ -16,7 +16,7 @@ export default function NavbarDashboard() {
   return (
     <>
       <header>
-        <nav className=" navbar d-flex p-0">
+        <nav className=" navbar fixed-top d-flex p-0">
           <div className="container-fluid">
             <div className="d-flex">
               <span className="navbar-brand display-medium">Hotel Teshuvá</span>
@@ -59,10 +59,12 @@ export default function NavbarDashboard() {
               <div className="d-flex flex-column ps-3">
                 {user && (
                   <div className="d-flex headline-small">
-                    {user.name} {user.lastName}
+                    {user.name} {user.last_name}
                   </div>
                 )}
-                <span className="d-flex body-medium">Administradora</span>
+                {user && (
+                  <span className="d-flex body-medium">{user.type}</span>
+                )}
               </div>
             </div>
           </div>

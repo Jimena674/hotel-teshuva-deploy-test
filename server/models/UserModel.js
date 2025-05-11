@@ -5,7 +5,10 @@ const db = require("../config/db");
 const findUserByEmail = async (email) => {
   const [rows] = await db
     .promise()
-    .query("SELECT * FROM users WHERE email = ?", [email]);
+    .query(
+      "SELECT users.*, user_types.user_type AS user_type FROM users JOIN user_types ON users.user_type_id = user_types.user_type_id WHERE users.email= ?",
+      [email]
+    );
   return rows[0];
 };
 

@@ -97,9 +97,9 @@ const login = async function (req, res) {
     // Inicio de sesión exitoso
     res.status(200).json({
       message: "Inicio de sesión exitoso.",
-      type: user.user_type_id,
+      type: user.user_type,
       name: user.name,
-      lastName: user.last_name,
+      last_name: user.last_name,
     }); // Se devuelve un mensaje y algunos datos del usuario
   } catch (error) {
     console.error("Error al iniciar sesión.", error);

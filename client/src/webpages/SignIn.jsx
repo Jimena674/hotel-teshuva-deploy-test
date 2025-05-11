@@ -37,13 +37,13 @@ export default function SingIn() {
           "user",
           JSON.stringify({
             name: data.name,
-            lastName: data.lastName,
+            last_name: data.last_name,
             type: data.type,
           })
         );
 
         // Redireccionar según el tipo de usuario
-        if (data.type === 2) {
+        if (data.type === "Administrativo") {
           navigate("/admin/dashboard");
         }
       } else {
