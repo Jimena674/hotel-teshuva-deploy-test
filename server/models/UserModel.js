@@ -52,4 +52,14 @@ const countUsers = async () => {
   return rows[0].total;
 };
 
-module.exports = { findUserByEmail, createUser, countUsers };
+// Mostrar todos los usuarios
+const getAllUsers = async () => {
+  const [rows] = await db
+    .promise()
+    .query(
+      `SELECT users.id, users.name, users.last_name, users.id_number, users.phone, users.email, user_types.user_type AS user_type FROM users JOIN user_types ON users.user_type_id = user_types.user_type_id`
+    );
+  return rows;
+};
+
+module.exports = { findUserByEmail, createUser, countUsers, getAllUsers };
