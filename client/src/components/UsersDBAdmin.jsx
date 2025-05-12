@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"; //Hooks de react
 import Button from "./Button";
 
 export default function UsersDBAdmin() {
-  // Traer el total de usuarios registrados
+  // Definir un estado para el total de usuarios registrados
   const [totalUsers, setTotalUsers] = useState(null); //Variable de estado que inicializa como null
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function UsersDBAdmin() {
     fetchTotal();
   }, [totalUsers]); // Array de dependencias: se ejecuta cuando camabia totalUsers
 
-  // Traer la información de los usuarios para la tabla
+  // Definir un estado para traer la información de los usuarios
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,14 +39,25 @@ export default function UsersDBAdmin() {
     fetchUsers();
   }, []);
 
-  // Habilitar la barra de búsqueda de usuarios
+  // Definir un estado para la barra de búsqueda de usuarios
   const [search, setSearch] = useState("");
 
-  // Filtrar usuarios
-  const filterUsers = users.filter((users) =>
-    `${users.name} ${users.last_name} ${users.id_number} ${users.email}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
+  // Filtrar usuarios por nombre, número de identificación y correo
+  const filterUsers = users.filter((users) => {
+    const searchBar =
+      `${users.name} ${users.last_name} ${users.id_number} ${users.email}`
+        .toLowerCase()
+        .includes(search.toLowerCase());
+    const searchType =
+      userTypeFilter === "todos" ||
+      users.user_type.toLowerCase() === userTypeFilter.toLowerCase();
+  });
+
+  // Definir un estado para filtrar por el tipo de usuario
+  const [userTypeFilter, setUserTypeFilter] = useState(
+    "todos",
+    "clientes",
+    "administrativos"
   );
 
   return (
@@ -67,11 +78,6 @@ export default function UsersDBAdmin() {
               setSearch(e.target.value);
             }}
           />
-          <Button
-            name="Buscar"
-            btnCustom="booking-form-btn"
-            btnText="label-small"
-          />
         </form>
         {/*Tabla de usuarios*/}
         {loading ? (
@@ -85,7 +91,59 @@ export default function UsersDBAdmin() {
                 <th scope="col"># ID</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Email</th>
-                <th scope="col">Tipo de usuario</th>
+                <th scope="col">
+                  <div className="dropdown">
+                    <button
+                      className="dropdown-toggle booking-form-btn"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Tipo de usuario
+                    </button>
+                    <ul className="dropdown-menu ">
+                      <li>
+                        <div className="dropdown-item">
+                          <input
+                            className=" form-check-input me-1"
+                            type="checkbox"
+                            id="cliente"
+                          />
+                          <label className="form-check-label" for="cliente">
+                            Todos
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="dropdown-item">
+                          <input
+                            className=" form-check-input me-1"
+                            type="checkbox"
+                            id="cliente"
+                          />
+                          <label className="form-check-label" for="cliente">
+                            Clientes
+                          </label>
+                        </div>
+                      </li>
+                      <li>
+                        <div className="dropdown-item">
+                          <input
+                            className=" form-check-input me-1"
+                            type="checkbox"
+                            id="administrativo"
+                          />
+                          <label
+                            className="form-check-label"
+                            for="administrativo"
+                          >
+                            Administrativos
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -98,6 +156,35 @@ export default function UsersDBAdmin() {
                   <td>{users.phone}</td>
                   <td>{users.email}</td>
                   <td>{users.user_type}</td>
+                  <td>
+                    <div className="dropdown">
+                      <button
+                        className="dropdown-toggle booking-form-btn"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul className="dropdown-menu ">
+                        <li>
+                          <button className="dropdown-item" type="button">
+                            Consultar
+                          </button>
+                        </li>
+                        <li>
+                          <button className="dropdown-item" type="button">
+                            Modificar
+                          </button>
+                        </li>
+                        <li>
+                          <button className="dropdown-item" type="button">
+                            Eliminar
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
