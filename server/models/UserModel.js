@@ -44,4 +44,12 @@ const createUser = async (
     );
 };
 
-module.exports = { findUserByEmail, createUser };
+// Total de usuarios
+const countUsers = async () => {
+  const [rows] = await db
+    .promise()
+    .query("SELECT COUNT(*) AS total FROM users");
+  return rows[0].total;
+};
+
+module.exports = { findUserByEmail, createUser, countUsers };

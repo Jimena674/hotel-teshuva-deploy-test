@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export default function SidebarDBAdmin() {
   return (
     <>
@@ -5,13 +7,15 @@ export default function SidebarDBAdmin() {
         id="sidebar"
         className="list-group list-group-flush border-end h-100"
       >
-        <a
-          href="#"
-          className="list-group-item list-group-item-action active label-medium"
-          aria-current="true"
+        <NavLink
+          to="/admin/dashboard"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium" +
+            (isActive ? "active label-medium" : "")
+          }
         >
           Inicio
-        </a>
+        </NavLink>
         <a
           href="#"
           className="list-group-item list-group-item-action label-medium disabled"
@@ -30,24 +34,33 @@ export default function SidebarDBAdmin() {
         >
           Habitaciones
         </a>
-        <a
-          href="#"
-          className="list-group-item list-group-item-action label-medium disabled"
+        <NavLink
+          to="/admin/dashboard/payments"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium disabled" +
+            (isActive ? "active label-medium" : "")
+          }
         >
           Pagos
-        </a>
-        <a
-          href="#"
-          className="list-group-item list-group-item-action label-medium"
+        </NavLink>
+        <NavLink
+          to="/admin/dashboard/users"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium" +
+            (isActive ? "active label-medium" : "")
+          }
         >
           Usuarios
-        </a>
-        <a
-          href="#"
-          className="list-group-item list-group-item-action label-medium disabled"
+        </NavLink>
+        <NavLink
+          to="/admin/dashboard/reports"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium disabled" +
+            (isActive ? "active label-medium" : "")
+          }
         >
           Estadísticas
-        </a>
+        </NavLink>
       </div>
     </>
   );

@@ -107,4 +107,15 @@ const login = async function (req, res) {
   }
 };
 
-module.exports = { register, login };
+// Total de usuarios registrados
+const countUsers = async (req, res) => {
+  try {
+    const total = await userModel.countUsers();
+    res.status(200).json({ total });
+  } catch (error) {
+    console.error("Error al contar los usuarios: ", error);
+    res.status(500).json({ message: "Error del servidor." });
+  }
+};
+
+module.exports = { register, login, countUsers };
