@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"; //Hooks de react
 import Button from "./Button";
 
 export default function UsersDBAdmin() {
+  // Traer el total de usuarios registrados
   const [totalUsers, setTotalUsers] = useState(null); //Variable de estado que inicializa como null
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export default function UsersDBAdmin() {
     fetchTotal();
   }, [totalUsers]); // Array de dependencias: se ejecuta cuando camabia totalUsers
 
-  // Traer la información de todos los usuarios
+  // Traer la información de los usuarios para la tabla
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +39,16 @@ export default function UsersDBAdmin() {
     fetchUsers();
   }, []);
 
+  // Habilitar la barra de búsqueda de usuarios
+  const [search, setSearch] = useState("");
+
+  // Filtrar usuarios
+  const filterUsers = users.filter((users) =>
+    `${users.name} ${users.last_name} ${users.id_number} ${users.email}`
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
   return (
     <>
       <div className="container-fluid">
@@ -49,9 +60,12 @@ export default function UsersDBAdmin() {
         <form className="d-flex col-6 mt-4" role="search">
           <input
             class="form-control me-2"
-            type="search"
-            placeholder="Buscar usuario por email o documento de identidad"
-            aria-label="Search"
+            type="text"
+            placeholder="Buscar usuario por nombre, correo o documento de identidad"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
           />
           <Button
             name="Buscar"
@@ -76,7 +90,7 @@ export default function UsersDBAdmin() {
               </tr>
             </thead>
             <tbody>
-              {users.map((users, index) => (
+              {filterUsers.map((users, index) => (
                 <tr key={users.id}>
                   <td>{index + 1}</td>
                   <td>{users.name + " " + users.last_name}</td>
