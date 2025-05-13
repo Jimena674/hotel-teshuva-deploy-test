@@ -129,4 +129,25 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { register, login, countUsers, getAllUsers };
+// Función para eliminar un usuario
+const deteleUser = async (req, res) => {
+  try {
+    // Datos ingrasados
+    const idNumber = req.params.id_number;
+
+    // Enviar el valor a el modelo que se comunica con la BD
+    const result = await userModel.deleteUser(idNumber);
+
+    // Verificar si el usuario existe
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    res.json({ message: "Usuario eliminado exitosamente." });
+  } catch (error) {
+    console.error("Error al eliminar el usuario: ", error);
+    res.status(500).json({ message: "Error del servidor." });
+  }
+};
+
+module.exports = { register, login, countUsers, getAllUsers, deteleUser };

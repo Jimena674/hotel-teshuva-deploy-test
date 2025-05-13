@@ -62,4 +62,18 @@ const getAllUsers = async () => {
   return rows;
 };
 
-module.exports = { findUserByEmail, createUser, countUsers, getAllUsers };
+// Eliminar un usuario por el número de identificación
+const deleteUser = async (id_number) => {
+  const [result] = await db
+    .promise()
+    .query(`DELETE FROM users WHERE id_number = ?`, [id_number]);
+  return result;
+};
+
+module.exports = {
+  findUserByEmail,
+  createUser,
+  countUsers,
+  getAllUsers,
+  deleteUser,
+};
