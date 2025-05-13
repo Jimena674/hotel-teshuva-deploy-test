@@ -150,4 +150,30 @@ const deteleUser = async (req, res) => {
   }
 };
 
-module.exports = { register, login, countUsers, getAllUsers, deteleUser };
+// Función para leer todos los datos de un usuario
+const readUser = async (req, res) => {
+  try {
+    // Datos de la soliditud
+    const idNumber = req.params.id_number;
+    // Datos que se traen de la BD
+    const user = await userModel.readUser(idNumber);
+    // Si el usurio no existe:
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontraro." });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error al obtener los datos del usuario : ", error);
+    res.status(500).json({ message: "Error del servidor." });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  countUsers,
+  getAllUsers,
+  deteleUser,
+  readUser,
+};

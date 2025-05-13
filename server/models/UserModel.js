@@ -70,10 +70,40 @@ const deleteUser = async (id_number) => {
   return result;
 };
 
+// Consultar la información de un usuario
+const readUser = async (id_number) => {
+  const [rows] = await db
+    .promise()
+    .query(`SELECT * FROM users WHERE id_number = ?`, [id_number]);
+  return rows[0]; // Devuelve el primer usuario encontrado
+};
+
+// Actualizar la información de un usuario
+const updateUser = async (id_number, updatedData) => {
+  const fields = [];
+  const values = [];
+
+  // Se recorren los datos del objeto y se arma el SQL dinámicamente
+  for (let key in updatedData) {
+    fields.push(`${key} = ?`);
+    values.push(updatedData[key]);
+  }
+
+  // Petición SQL
+  const sql = `UPDATE users SET ${fields.join(", ")} WHERE id_number = ?`;
+  values.push(id_number);
+
+  //
+  const [result] = await db.promise().query(sql, values);
+  return result;
+};
+
 module.exports = {
   findUserByEmail,
   createUser,
   countUsers,
   getAllUsers,
   deleteUser,
+  readUser,
+  updateUser,
 };
