@@ -62,6 +62,32 @@ export default function UsersDBAdmin() {
     return searchBar && searchType;
   });
 
+  // Estado para eliminar un usuario por el id_number
+  const deleteUser = async (id_number) => {
+    try {
+      // Llamar a la función del backend usando fetch
+      const res = await fetch(`http://localhost:4000/api/users/${id_number}`, {
+        method: "DELETE",
+      });
+
+      // Parsear la respuesta del servidor en formato json
+      const data = await res.json();
+
+      // Validar el resultado de la operación
+      if (res.ok) {
+        alert("Usuario eliminado con éxito");
+
+        // Actualizar la lista de usuarios
+        setUsers((prev) => prev.filter((user) => user.id_number !== id_number));
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("", error);
+      alert(" Ocurrió un error al eliminar el usuario.");
+    }
+  };
+
   return (
     <>
       <div className="container-fluid">
@@ -142,7 +168,11 @@ export default function UsersDBAdmin() {
                           </button>
                         </li>
                         <li>
-                          <button className="dropdown-item" type="button">
+                          <button
+                            className="dropdown-item text-danger"
+                            onClick={() => deleteUser(users.id_number)}
+                            type="button"
+                          >
                             Eliminar
                           </button>
                         </li>

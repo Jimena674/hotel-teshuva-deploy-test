@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SingIn() {
-  // Enviar los datos del frontend al backend
+  // Definir estados para enviar los datos del frontend al backend
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");

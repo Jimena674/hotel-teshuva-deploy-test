@@ -9,7 +9,11 @@ require("./config/db");
 const app = express(); // Crear una instancia de express
 dotenv.config(); // Traer las variebles de entorno de env
 
-app.use(cors()); // Permitir peticiones desde otro origen
+app.use(
+  cors({
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+); // Permitir peticiones desde otro origen
 app.use(express.json()); // Parsear las request en formato JSON
 app.use("/api/users", userRoutes);
 
