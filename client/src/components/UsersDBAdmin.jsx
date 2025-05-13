@@ -42,6 +42,13 @@ export default function UsersDBAdmin() {
   // Definir un estado para la barra de búsqueda de usuarios
   const [search, setSearch] = useState("");
 
+  // Definir un estado para filtrar por el tipo de usuario
+  const [userTypeFilter, setUserTypeFilter] = useState(
+    "todos",
+    "cliente",
+    "administrativo"
+  );
+
   // Filtrar usuarios por nombre, número de identificación y correo
   const filterUsers = users.filter((users) => {
     const searchBar =
@@ -51,14 +58,9 @@ export default function UsersDBAdmin() {
     const searchType =
       userTypeFilter === "todos" ||
       users.user_type.toLowerCase() === userTypeFilter.toLowerCase();
-  });
 
-  // Definir un estado para filtrar por el tipo de usuario
-  const [userTypeFilter, setUserTypeFilter] = useState(
-    "todos",
-    "clientes",
-    "administrativos"
-  );
+    return searchBar && searchType;
+  });
 
   return (
     <>
@@ -92,57 +94,19 @@ export default function UsersDBAdmin() {
                 <th scope="col">Teléfono</th>
                 <th scope="col">Email</th>
                 <th scope="col">
-                  <div className="dropdown">
-                    <button
-                      className="dropdown-toggle booking-form-btn"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
+                  <select
+                    id="hr-select"
+                    className="form-select"
+                    value={userTypeFilter}
+                    onChange={(e) => setUserTypeFilter(e.target.value)}
+                  >
+                    <option value="todos" disabled hidden>
                       Tipo de usuario
-                    </button>
-                    <ul className="dropdown-menu ">
-                      <li>
-                        <div className="dropdown-item">
-                          <input
-                            className=" form-check-input me-1"
-                            type="checkbox"
-                            id="cliente"
-                          />
-                          <label className="form-check-label" for="cliente">
-                            Todos
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="dropdown-item">
-                          <input
-                            className=" form-check-input me-1"
-                            type="checkbox"
-                            id="cliente"
-                          />
-                          <label className="form-check-label" for="cliente">
-                            Clientes
-                          </label>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="dropdown-item">
-                          <input
-                            className=" form-check-input me-1"
-                            type="checkbox"
-                            id="administrativo"
-                          />
-                          <label
-                            className="form-check-label"
-                            for="administrativo"
-                          >
-                            Administrativos
-                          </label>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                    </option>
+                    <option value="todos">Todos</option>
+                    <option value="cliente">Clientes</option>
+                    <option value="administrativo">Administrativos</option>
+                  </select>
                 </th>
                 <th scope="col"></th>
               </tr>
