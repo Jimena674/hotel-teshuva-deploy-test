@@ -16,24 +16,33 @@ export default function SidebarDBAdmin() {
         >
           Inicio
         </NavLink>
-        <a
-          href="#"
-          className="list-group-item list-group-item-action label-medium disabled"
+        <NavLink
+          to="/admin/dashboard/reservations"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium disabled" +
+            (isActive ? "active label-medium" : "")
+          }
         >
           Reservas
-        </a>
-        <a
-          href="#"
-          className="list-group-item list-group-item-action label-medium disabled"
+        </NavLink>
+        <NavLink
+          to="/admin/dashboard/bookings"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium disabled" +
+            (isActive ? "active label-medium" : "")
+          }
         >
           Alojamientos
-        </a>
-        <a
-          href="#"
-          className="list-group-item list-group-item-action label-medium disabled"
+        </NavLink>
+        <NavLink
+          to="/admin/dashboard/rooms"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium" +
+            (isActive ? "active label-medium" : "")
+          }
         >
           Habitaciones
-        </a>
+        </NavLink>
         <NavLink
           to="/admin/dashboard/payments"
           className={({ isActive }) =>

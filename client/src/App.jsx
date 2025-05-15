@@ -3,7 +3,8 @@ import Home from "./webpages/Home";
 import SignIn from "./webpages/SignIn";
 import SignUp from "./webpages/SignUp";
 import LayoutDBAdmin from "./dashboard/admin/LayoutDBAdmin";
-import UsersDBAdmin from "./components/UsersDBAdmin";
+import UsersDBAdmin from "./components/admin/UsersDBAdmin";
+import RoomsDBAdmin from "./components/admin/RoomsDBAdmin";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/admin/dashboard" element={<LayoutDBAdmin />}>
           <Route path="users" element={<UsersDBAdmin />} />
+          <Route path="rooms" element={<RoomsDBAdmin />} />
         </Route>
       </Routes>
     </Router>

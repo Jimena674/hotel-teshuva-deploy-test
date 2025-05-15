@@ -1,7 +1,8 @@
 import { Outlet } from "react-router-dom";
-import NavbarDashboardAdmin from "../../components/NavbarDBAdmin";
-import SidebarDBAdmin from "../../components/SidebarDBAdmin";
-import UsersDBAdmin from "../../components/UsersDBAdmin";
+import NavbarDashboardAdmin from "../../components/admin/NavbarDBAdmin";
+import SidebarDBAdmin from "../../components/admin/SidebarDBAdmin";
+import UsersDBAdmin from "../../components/admin/UsersDBAdmin";
+import RoomsDBAdmin from "../../components/admin/RoomsDBAdmin";
 
 export default function LayoutDBAdmin() {
   return (
@@ -16,6 +17,7 @@ export default function LayoutDBAdmin() {
           <main className="col-10">
             <Outlet>
               <UsersDBAdmin />
+              <RoomsDBAdmin />
             </Outlet>
           </main>
         </div>

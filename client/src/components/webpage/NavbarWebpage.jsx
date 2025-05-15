@@ -1,7 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "./Button";
-import ButtonIcon from "./ButtonIcon";
+import Button from "../Button";
+import ButtonIcon from "../ButtonIcon";
 import ConsultarReserva from "./ConsultarReserva";
 
 export default function NavbarWebpage() {

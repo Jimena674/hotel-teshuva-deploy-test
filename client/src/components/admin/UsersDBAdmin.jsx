@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"; //Hooks de react
-import Button from "./Button";
 
 export default function UsersDBAdmin() {
   // Definir un estado para el total de usuarios registrados
@@ -17,9 +16,9 @@ export default function UsersDBAdmin() {
     };
 
     fetchTotal();
-  }, [totalUsers]); // Array de dependencias: se ejecuta cuando camabia totalUsers
+  }, []); // Array de dependencias: se ejecuta cuando camabia totalUsers
 
-  // Definir un estado para traer la información de los usuarios
+  // Estado para mostrar la información de los usuarios
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -88,6 +87,26 @@ export default function UsersDBAdmin() {
     }
   };
 
+  //Estado para consular todos los datos de un usuarios
+
+  const [selectUser, setSelectUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  //Función para abrir el modal y consultar los datos de un usuario
+  const readUser = async (id_number) => {
+    try {
+      // Llamar a la función del backend
+      const res = await fetch(`http://localhost:4000/api/users/${id_number}`);
+      const data = await res.json();
+
+      setSelectUser(data); //Información que aparece en el modal
+      setShowModal(true);
+    } catch (error) {
+      console.error("Error al consultar usuario", error);
+      alert("No se pudo obtener la información del usuario.");
+    }
+  };
+
   return (
     <>
       <div className="container-fluid">
@@ -98,7 +117,7 @@ export default function UsersDBAdmin() {
         {/*Barra de búsqueda*/}
         <form className="d-flex col-6 mt-4" role="search">
           <input
-            class="form-control me-2"
+            className="form-control me-2"
             type="text"
             placeholder="Buscar usuario por nombre, correo o documento de identidad"
             value={search}
@@ -119,6 +138,7 @@ export default function UsersDBAdmin() {
                 <th scope="col"># ID</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Email</th>
+                {/* Seleccionar el tipo de usuario */}
                 <th scope="col">
                   <select
                     id="hr-select"
@@ -137,6 +157,7 @@ export default function UsersDBAdmin() {
                 <th scope="col"></th>
               </tr>
             </thead>
+            {/* Cuerpo de la tabla */}
             <tbody>
               {filterUsers.map((users, index) => (
                 <tr key={users.id}>
@@ -146,6 +167,7 @@ export default function UsersDBAdmin() {
                   <td>{users.phone}</td>
                   <td>{users.email}</td>
                   <td>{users.user_type}</td>
+                  {/* Funciones GET, DELETE, PUT */}
                   <td>
                     <div className="dropdown">
                       <button
@@ -157,16 +179,23 @@ export default function UsersDBAdmin() {
                         <i class="bi bi-three-dots-vertical"></i>
                       </button>
                       <ul className="dropdown-menu ">
+                        {/* GET */}
                         <li>
-                          <button className="dropdown-item" type="button">
+                          <button
+                            className="dropdown-item"
+                            type="button"
+                            onClick={() => readUser(users.id_number)}
+                          >
                             Consultar
                           </button>
                         </li>
+                        {/* PUT */}
                         <li>
                           <button className="dropdown-item" type="button">
                             Modificar
                           </button>
                         </li>
+                        {/* DELETE */}
                         <li>
                           <button
                             className="dropdown-item text-danger"
@@ -183,6 +212,33 @@ export default function UsersDBAdmin() {
               ))}
             </tbody>
           </table>
+        )}
+        {/* Modal */}
+        {showModal && selectUser && (
+          <div className="modal show d-block" tabIndex="-1">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title title-medium">
+                    Información del usuarios
+                  </h1>
+                  <button
+                    className="btn-close"
+                    type="button"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => setShowModal(false)}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <p>
+                    <strong>Nombres: </strong>
+                    {selectUser.name}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </>
