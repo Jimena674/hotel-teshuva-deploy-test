@@ -90,11 +90,9 @@ const updateUser = async (id_number, updatedData) => {
     values.push(updatedData[key]);
   }
 
-  // Petición SQL
   const sql = `UPDATE user SET ${fields.join(", ")} WHERE id_number = ?`;
   values.push(id_number);
 
-  //
   const [result] = await db.promise().query(sql, values);
   return result;
 };

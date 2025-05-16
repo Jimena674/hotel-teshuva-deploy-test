@@ -164,6 +164,65 @@ const readUser = async (req, res) => {
   }
 };
 
+// Función para actualizar los datos de un usuario
+const updateUser = async (req, res) => {
+  try {
+    // Datos de la solicitud
+    const idNumber = req.params.id_number;
+    const {
+      name,
+      last_name,
+      id_type,
+      id_number,
+      phone,
+      birth_date,
+      email,
+      user_type,
+      password,
+    } = req.body;
+    const updatedData = {};
+
+    if (name) {
+      updatedData.name = name.trim();
+    }
+    if (last_name) {
+      updatedData.last_name = last_name.trim();
+    }
+    if (id_type) {
+      updatedData.id_type = id_type.trim();
+    }
+    if (id_number) {
+      updatedData.id_number = id_number.trim();
+    }
+    if (phone) {
+      updatedData.phone = phone.trim();
+    }
+    if (birth_date) {
+      updatedData.birth_date = birth_date.trim();
+    }
+    if (email) {
+      updatedData.email = email.trim();
+    }
+    if (user_type) {
+      updatedData.user_type = user_type.trim();
+    }
+    if (password) {
+      const clearPassword = String(password).trim();
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(clearPassword, salt);
+      updatedData.password = hashedPassword;
+    }
+
+    // Modelo que interactúa con la base de datos
+    await userModel.updateUser(idNumber, updatedData);
+
+    res.json({ message: "Usuario actualizado correctamente." });
+  } catch (error) {
+    console.error("Error al actualizar los datos del usuario :", error);
+    res.status(500).json({ message: "Error en el sevidor." });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -171,4 +230,5 @@ module.exports = {
   getAllUsers,
   deteleUser,
   readUser,
+  updateUser,
 };
