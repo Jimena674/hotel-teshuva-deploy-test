@@ -1,6 +1,11 @@
 // Importar variables personalizadas
 @import "_custom.scss";
 
+//Advertensia
+.bg-warning {
+  background-color: #ea8a6f;
+}
+
 //Estilo de los Input en el formulario para realizar una reserva
 .input-custom {
   padding: 0.25rem 0.5rem 0.25rem 0.5rem;

@@ -96,8 +96,8 @@ export default function UsersDBAdmin() {
     /* Estado para consular todos los datos de un usuarios */
   }
 
-  const [selectUser, setSelectUser] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [selectUserRead, setSelectUserRead] = useState(null);
+  const [showModalRead, setShowModalRead] = useState(false);
 
   //Función para abrir el modal y consultar los datos de un usuario
   const readUser = async (id_number) => {
@@ -106,13 +106,69 @@ export default function UsersDBAdmin() {
       const res = await fetch(`http://localhost:4000/api/user/${id_number}`);
       const data = await res.json();
 
-      setSelectUser(data); //Información que aparece en el modal
-      setShowModal(true);
+      setSelectUserRead(data); //Información que aparece en el modal
+      setShowModalRead(true);
     } catch (error) {
-      console.error("Error al consultar usuario", error);
+      console.error("Error al consultar la información del usuario", error);
       alert("No se pudo obtener la información del usuario.");
     }
   };
+
+  {
+    /* Estado para modificar los datos de un usuario */
+  }
+
+  const [actualUserUpdate, setActualUserUpdate] = useState(null);
+  const [updatedUser, setUpdatedUser] = useState(null);
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
+
+  // Función para abrir el modal y modificar los datos de un usuario
+  const updateUser = async (id_number) => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/user/${id_number}`);
+      const data = await res.json();
+      setActualUserUpdate(data);
+      setUpdatedUser(data);
+      setShowModalUpdate(true);
+    } catch (error) {
+      console.error("Error al modificar los datos del usuario :", error);
+      alert("No se pudo modificar los datos del usuario.");
+    }
+  };
+
+  {
+    /* Enviar los datos de la actualización al backend */
+  }
+  const saveUpdate = async (user) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/user/${user.id_number}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Usuario actualizado correctamente.");
+        setShowModalUpdate(false);
+      } else {
+        alert("Error al actualizar el usuario: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error al enviar los cambios: ", error);
+    }
+  };
+
+  const idType = [
+    { id: 1, name: "Cédula" },
+    { id: 2, name: "Tarjeta de identidad" },
+    { id: 3, name: "Pasaporte" },
+    { id: 4, name: "Cédula de extranjería" },
+  ];
 
   return (
     <>
@@ -201,7 +257,11 @@ export default function UsersDBAdmin() {
                         </li>
                         {/* PUT */}
                         <li>
-                          <button className="dropdown-item" type="button">
+                          <button
+                            className="dropdown-item"
+                            type="button"
+                            onClick={() => updateUser(user.id_number)}
+                          >
                             Modificar
                           </button>
                         </li>
@@ -223,21 +283,21 @@ export default function UsersDBAdmin() {
             </tbody>
           </table>
         )}
-        {/* Modal para realizar solicitudes HTTP*/}
-        {showModal && selectUser && (
-          <div className="modal fade show d-block" tabIndex="-1">
+        {/* Modal para consultar la información del usuario*/}
+        {showModalRead && selectUserRead && (
+          <div className="modal show d-block">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
                   <h1 className="modal-title title-medium">
-                    Información del usuarios
+                    Consultar la información del usuarios
                   </h1>
                   <button
                     className="btn-close"
                     type="button"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => setShowModalRead(false)}
                   ></button>
                 </div>
                 <div className="modal-body">
@@ -265,6 +325,219 @@ export default function UsersDBAdmin() {
                     <strong>Tipo de usuario: </strong>
                     {selectUser.user_type}
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* Modal para modificar la información del usuario*/}
+        {showModalUpdate && actualUserUpdate && (
+          <div className="modal show d-block">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h1 className="modal-title title-medium">
+                    Modificar la información del usuarios
+                  </h1>
+                  <button
+                    className="btn-close"
+                    type="button"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => setShowModalUpdate(false)}
+                  ></button>
+                </div>
+                <div className="modal-body table-responsive">
+                  <table className="table table-striped-columns table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th scope="col">Dato</th>
+                        <th scope="col">Valor actual</th>
+                        <th scope="col">Nuevo valor</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                      <tr>
+                        <th scope="row">Nombres</th>
+                        <td>{actualUserUpdate.name}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className={
+                              "form-control" +
+                              (updatedUser.name !== actualUserUpdate.name
+                                ? "bg-warning"
+                                : "")
+                            }
+                            value={updatedUser.name}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                name: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Apellidos</th>
+                        <td>{actualUserUpdate.last_name}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={updatedUser.last_name}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                last_name: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Documento de identidad</th>
+                        <td>{actualUserUpdate.id_type_id}</td>
+                        <td>
+                          <select
+                            className="form-select"
+                            value={updatedUser.id_type_id}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                id_type_id: parseInt(e.target.value),
+                              })
+                            }
+                          >
+                            {idType.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Número de identificación</th>
+                        <td>{actualUserUpdate.id_number}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={updatedUser.id_number}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                id_number: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Número de celular</th>
+                        <td>{actualUserUpdate.phone}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={updatedUser.phone}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                phone: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Fecha de nacimiento</th>
+                        <td>{actualUserUpdate.birth_date}</td>
+                        <td>
+                          <input
+                            type="date"
+                            className="form-control"
+                            value={updatedUser.birth_date}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                birth_date: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Correo electrónico</th>
+                        <td>{actualUserUpdate.email}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={updatedUser.email}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                email: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de usuario</th>
+                        <td>{actualUserUpdate.id_user_type}</td>
+                        <td>
+                          <select
+                            className="form-select"
+                            value={updatedUser.id_user_type}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updateUser,
+                                id_user_type: e.target.value,
+                              })
+                            }
+                          >
+                            <option value="1">Cliente</option>
+                            <option value="2">Administrativo</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Contraseña</th>
+                        <td>{actualUserUpdate.password}</td>
+                        <td>
+                          <input
+                            type="password"
+                            className="form-control"
+                            value={updatedUser.password}
+                            onChange={(e) =>
+                              setUpdatedUser({
+                                ...updatedUser,
+                                password: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div className="modal-footer">
+                    <button
+                      className="booking-form-btn"
+                      onClick={() => saveUpdate(updatedUser)}
+                    >
+                      Guardar
+                    </button>
+                    <button
+                      className="booking-form-btn"
+                      onClick={() => setShowModalUpdate(false)}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
