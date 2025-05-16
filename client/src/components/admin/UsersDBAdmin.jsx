@@ -7,7 +7,7 @@ export default function UsersDBAdmin() {
   useEffect(() => {
     const fetchTotal = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/users/count"); // Se almacena la respuesta del backend
+        const res = await fetch("http://localhost:4000/api/user/count"); // Se almacena la respuesta del backend
         const data = await res.json(); // Se parsea la respuesta del servidor en formato JSON
         setTotalUsers(data.total);
       } catch (error) {
@@ -16,18 +16,20 @@ export default function UsersDBAdmin() {
     };
 
     fetchTotal();
-  }, []); // Array de dependencias: se ejecuta cuando camabia totalUsers
+  }, []);
 
-  // Estado para mostrar la información de los usuarios
-  const [users, setUsers] = useState([]);
+  {
+    /* Estado para mostrar la información de los usuarios */
+  }
+  const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/users/");
+        const res = await fetch("http://localhost:4000/api/user/");
         const data = await res.json();
-        setUsers(data);
+        setUser(data);
       } catch (error) {
         console.error("Error al traer la información de los usuarios: ", error);
       } finally {
@@ -49,23 +51,26 @@ export default function UsersDBAdmin() {
   );
 
   // Filtrar usuarios por nombre, número de identificación y correo
-  const filterUsers = users.filter((users) => {
+  const filterUsers = user.filter((user) => {
     const searchBar =
-      `${users.name} ${users.last_name} ${users.id_number} ${users.email}`
+      `${user.name} ${user.last_name} ${user.id_number} ${user.email}`
         .toLowerCase()
         .includes(search.toLowerCase());
     const searchType =
       userTypeFilter === "todos" ||
-      users.user_type.toLowerCase() === userTypeFilter.toLowerCase();
+      user.user_type.toLowerCase() === userTypeFilter.toLowerCase();
 
     return searchBar && searchType;
   });
 
-  // Estado para eliminar un usuario por el id_number
+  {
+    /* Estado para eliminar un usuario por el id_number */
+  }
+
   const deleteUser = async (id_number) => {
     try {
       // Llamar a la función del backend usando fetch
-      const res = await fetch(`http://localhost:4000/api/users/${id_number}`, {
+      const res = await fetch(`http://localhost:4000/api/user/${id_number}`, {
         method: "DELETE",
       });
 
@@ -77,17 +82,19 @@ export default function UsersDBAdmin() {
         alert("Usuario eliminado con éxito");
 
         // Actualizar la lista de usuarios
-        setUsers((prev) => prev.filter((user) => user.id_number !== id_number));
+        setUser((prev) => prev.filter((user) => user.id_number !== id_number));
       } else {
         alert(`Error: ${data.message}`);
       }
     } catch (error) {
       console.error("", error);
-      alert(" Ocurrió un error al eliminar el usuario.");
+      alert("Ocurrió un error al eliminar el usuario.");
     }
   };
 
-  //Estado para consular todos los datos de un usuarios
+  {
+    /* Estado para consular todos los datos de un usuarios */
+  }
 
   const [selectUser, setSelectUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -96,7 +103,7 @@ export default function UsersDBAdmin() {
   const readUser = async (id_number) => {
     try {
       // Llamar a la función del backend
-      const res = await fetch(`http://localhost:4000/api/users/${id_number}`);
+      const res = await fetch(`http://localhost:4000/api/user/${id_number}`);
       const data = await res.json();
 
       setSelectUser(data); //Información que aparece en el modal
@@ -126,6 +133,9 @@ export default function UsersDBAdmin() {
             }}
           />
         </form>
+        <button type="button" className="mt-4">
+          Crear un usuario
+        </button>
         {/*Tabla de usuarios*/}
         {loading ? (
           <p>Cargando usuarios...</p>
@@ -159,14 +169,14 @@ export default function UsersDBAdmin() {
             </thead>
             {/* Cuerpo de la tabla */}
             <tbody>
-              {filterUsers.map((users, index) => (
-                <tr key={users.id}>
+              {filterUsers.map((user, index) => (
+                <tr key={user.id}>
                   <td>{index + 1}</td>
-                  <td>{users.name + " " + users.last_name}</td>
-                  <td>{users.id_number}</td>
-                  <td>{users.phone}</td>
-                  <td>{users.email}</td>
-                  <td>{users.user_type}</td>
+                  <td>{user.name + " " + user.last_name}</td>
+                  <td>{user.id_number}</td>
+                  <td>{user.phone}</td>
+                  <td>{user.email}</td>
+                  <td>{user.user_type}</td>
                   {/* Funciones GET, DELETE, PUT */}
                   <td>
                     <div className="dropdown">
@@ -184,7 +194,7 @@ export default function UsersDBAdmin() {
                           <button
                             className="dropdown-item"
                             type="button"
-                            onClick={() => readUser(users.id_number)}
+                            onClick={() => readUser(user.id_number)}
                           >
                             Consultar
                           </button>
@@ -199,7 +209,7 @@ export default function UsersDBAdmin() {
                         <li>
                           <button
                             className="dropdown-item text-danger"
-                            onClick={() => deleteUser(users.id_number)}
+                            onClick={() => deleteUser(user.id_number)}
                             type="button"
                           >
                             Eliminar
@@ -213,9 +223,9 @@ export default function UsersDBAdmin() {
             </tbody>
           </table>
         )}
-        {/* Modal */}
+        {/* Modal para realizar solicitudes HTTP*/}
         {showModal && selectUser && (
-          <div className="modal show d-block" tabIndex="-1">
+          <div className="modal fade show d-block" tabIndex="-1">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -232,8 +242,28 @@ export default function UsersDBAdmin() {
                 </div>
                 <div className="modal-body">
                   <p>
-                    <strong>Nombres: </strong>
-                    {selectUser.name}
+                    <strong>Nombre: </strong>
+                    {selectUser.name + " " + selectUser.last_name}
+                  </p>
+                  <p>
+                    <strong>Documento de identidad: </strong>
+                    {selectUser.id_type + " : " + selectUser.id_number}
+                  </p>
+                  <p>
+                    <strong>Celular: </strong>
+                    {selectUser.phone}
+                  </p>
+                  <p>
+                    <strong>Fecha de nacimiento: </strong>
+                    {selectUser.birth_date}
+                  </p>
+                  <p>
+                    <strong>Correo electrónico: </strong>
+                    {selectUser.email}
+                  </p>
+                  <p>
+                    <strong>Tipo de usuario: </strong>
+                    {selectUser.user_type}
                   </p>
                 </div>
               </div>

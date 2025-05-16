@@ -15,7 +15,7 @@ app.use(
   })
 ); // Permitir peticiones desde otro origen
 app.use(express.json()); // Parsear las request en formato JSON
-app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes);
 
 // Definir el puerto en el que se ejecutará el servidor
 const PORT = process.env.PORT || 4000;

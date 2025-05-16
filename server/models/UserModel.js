@@ -6,7 +6,7 @@ const findUserByEmail = async (email) => {
   const [rows] = await db
     .promise()
     .query(
-      "SELECT users.*, user_types.user_type AS user_type FROM users JOIN user_types ON users.user_type_id = user_types.user_type_id WHERE users.email= ?",
+      "SELECT user.*, user_type.name AS user_type FROM user JOIN user_type ON user.id_user_type = user_type.id_user_type WHERE user.email= ?",
       [email]
     );
   return rows[0];
@@ -22,13 +22,13 @@ const createUser = async (
   phone,
   birth_date,
   email,
-  user_type_id,
+  id_user_type,
   hashedPassword
 ) => {
   await db
     .promise()
     .query(
-      "INSERT INTO users (name, last_name, id_type_id, id_number, phone, birth_date, email, user_type_id, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO user (name, last_name, id_type_id, id_number, phone, birth_date, email, id_user_type, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         name,
         last_name,
@@ -38,7 +38,7 @@ const createUser = async (
         phone,
         birth_date,
         email,
-        user_type_id,
+        id_user_type,
         hashedPassword,
       ]
     );
@@ -46,9 +46,7 @@ const createUser = async (
 
 // Total de usuarios
 const countUsers = async () => {
-  const [rows] = await db
-    .promise()
-    .query("SELECT COUNT(*) AS total FROM users");
+  const [rows] = await db.promise().query("SELECT COUNT(*) AS total FROM user");
   return rows[0].total;
 };
 
@@ -57,7 +55,7 @@ const getAllUsers = async () => {
   const [rows] = await db
     .promise()
     .query(
-      `SELECT users.id, users.name, users.last_name, users.id_number, users.phone, users.email, user_types.user_type AS user_type FROM users JOIN user_types ON users.user_type_id = user_types.user_type_id`
+      `SELECT user.id, user.name, user.last_name ,user.id_number, user.phone, user.email, user_type.name AS user_type FROM user JOIN user_type ON user.id_user_type = user_type.id_user_type`
     );
   return rows;
 };
@@ -66,7 +64,7 @@ const getAllUsers = async () => {
 const deleteUser = async (id_number) => {
   const [result] = await db
     .promise()
-    .query(`DELETE FROM users WHERE id_number = ?`, [id_number]);
+    .query(`DELETE FROM user WHERE id_number = ?`, [id_number]);
   return result;
 };
 
@@ -74,7 +72,10 @@ const deleteUser = async (id_number) => {
 const readUser = async (id_number) => {
   const [rows] = await db
     .promise()
-    .query(`SELECT * FROM users WHERE id_number = ?`, [id_number]);
+    .query(
+      `SELECT user.*, user_type.name AS user_type, id_type.name AS id_type FROM user JOIN user_type ON user.id_user_type = user_type.id_user_type JOIN id_type ON user.id_type_id = id_type.id_type_id WHERE user.id_number = ?`,
+      [id_number]
+    );
   return rows[0]; // Devuelve el primer usuario encontrado
 };
 
@@ -90,7 +91,7 @@ const updateUser = async (id_number, updatedData) => {
   }
 
   // Petición SQL
-  const sql = `UPDATE users SET ${fields.join(", ")} WHERE id_number = ?`;
+  const sql = `UPDATE user SET ${fields.join(", ")} WHERE id_number = ?`;
   values.push(id_number);
 
   //

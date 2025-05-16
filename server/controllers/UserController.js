@@ -15,7 +15,7 @@ const register = async function (req, res) {
       phone,
       birth_date,
       email,
-      user_type_id,
+      id_user_type,
       password,
     } = req.body;
     // Validar la entrada de datos
@@ -27,7 +27,7 @@ const register = async function (req, res) {
       !phone ||
       !birth_date ||
       !email ||
-      !user_type_id ||
+      !id_user_type ||
       !password
     ) {
       return res
@@ -53,7 +53,7 @@ const register = async function (req, res) {
       phone,
       birth_date,
       email,
-      user_type_id,
+      id_user_type,
       hashedPassword
     );
 
@@ -69,8 +69,6 @@ const login = async function (req, res) {
   try {
     // Información que envía el usuario
     const { email, password } = req.body;
-    console.log("El email es: " + email);
-    console.log("El password es: " + password);
 
     // Validar la entrada de datos
     if (!email || !password) {
@@ -84,9 +82,6 @@ const login = async function (req, res) {
     if (!user) {
       return res.status(404).json({ message: "El usuario no existe." });
     }
-    console.log(
-      "En la base de datos está la siguiente información: " + user.email
-    );
 
     // Comparar contraseñas
     const validPassword = await bcrypt.compare(password, user.password);
@@ -135,7 +130,7 @@ const deteleUser = async (req, res) => {
     // Datos ingrasados
     const idNumber = req.params.id_number;
 
-    // Enviar el valor a el modelo que se comunica con la BD
+    // Enviar el valor al modelo que se comunica con la BD
     const result = await userModel.deleteUser(idNumber);
 
     // Verificar si el usuario existe
