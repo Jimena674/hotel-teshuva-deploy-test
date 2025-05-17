@@ -10,11 +10,10 @@ export default function SingUp() {
   const [last_name, setLastName] = useState("");
   const [id_type_id, setIdTypeId] = useState("");
   const [id_number, setIdNumber] = useState("");
-
   const [phone, setPhone] = useState("");
   const [birth_date, setBirthDate] = useState("");
   const [email, setEmail] = useState("");
-  const [user_type_id, setUserTypeId] = useState("");
+  const [id_user_type, setIdUserType] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
@@ -22,7 +21,7 @@ export default function SingUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:4000/api/users/register", {
+      const res = await fetch("http://localhost:4000/api/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,11 +31,10 @@ export default function SingUp() {
           last_name,
           id_type_id,
           id_number,
-
           phone,
           birth_date,
           email,
-          user_type_id,
+          id_user_type,
           password,
         }),
       });
@@ -48,11 +46,10 @@ export default function SingUp() {
         setLastName("");
         setIdTypeId("");
         setIdNumber("");
-
         setPhone("");
         setBirthDate("");
         setEmail("");
-        setUserTypeId("");
+        setIdUserType("");
         setPassword("");
         setMessage("✅ Registro exitoso");
         setMessageType("success");
@@ -182,8 +179,8 @@ export default function SingUp() {
                 id="tipoUsuario"
                 className="form-select"
                 required=""
-                value={user_type_id}
-                onChange={(e) => setUserTypeId(e.target.value)}
+                value={id_user_type}
+                onChange={(e) => setIdUserType(e.target.value)}
               >
                 <option value="" selected="" />
                 <option value={1}>Huésped</option>

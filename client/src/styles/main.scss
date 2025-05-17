@@ -1,6 +1,13 @@
 // Importar variables personalizadas
 @import "_custom.scss";
 
+// Formato de columnas en las tablas en los modal del adshboard administrativo
+.cell-medium {
+  max-width: 200px;
+  word-break: break-word;
+  white-space: normal;
+}
+
 //Advertensia
 .bg-warning {
   background-color: #ea8a6f;

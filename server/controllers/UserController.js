@@ -166,21 +166,29 @@ const readUser = async (req, res) => {
 
 // Función para actualizar los datos de un usuario
 const updateUser = async (req, res) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+
+  if (!id) {
+    return res.status(400).json({ message: "id no proporcionado." });
+  }
+
+  if (!updatedData) {
+    return res.status(400).json({ message: "Datos de usuario vacios." });
+  }
+
   try {
-    // Datos de la solicitud
-    const idNumber = req.params.id_number;
     const {
       name,
       last_name,
-      id_type,
+      id_type_id,
       id_number,
       phone,
       birth_date,
       email,
-      user_type,
+      id_user_type,
       password,
     } = req.body;
-    const updatedData = {};
 
     if (name) {
       updatedData.name = name.trim();
@@ -188,8 +196,8 @@ const updateUser = async (req, res) => {
     if (last_name) {
       updatedData.last_name = last_name.trim();
     }
-    if (id_type) {
-      updatedData.id_type = id_type.trim();
+    if (id_type_id) {
+      updatedData.id_type_id = parseInt(id_type_id);
     }
     if (id_number) {
       updatedData.id_number = id_number.trim();
@@ -203,8 +211,8 @@ const updateUser = async (req, res) => {
     if (email) {
       updatedData.email = email.trim();
     }
-    if (user_type) {
-      updatedData.user_type = user_type.trim();
+    if (id_user_type) {
+      updatedData.id_user_type = parseInt(id_user_type);
     }
     if (password) {
       const clearPassword = String(password).trim();
@@ -213,8 +221,11 @@ const updateUser = async (req, res) => {
       updatedData.password = hashedPassword;
     }
 
+    delete updatedData.user_type;
+    delete updatedData.id_type;
+
     // Modelo que interactúa con la base de datos
-    await userModel.updateUser(idNumber, updatedData);
+    const result = await userModel.updateUser(id, updatedData);
 
     res.json({ message: "Usuario actualizado correctamente." });
   } catch (error) {

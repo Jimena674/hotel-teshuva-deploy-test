@@ -123,9 +123,9 @@ export default function UsersDBAdmin() {
   const [showModalUpdate, setShowModalUpdate] = useState(false);
 
   // Función para abrir el modal y modificar los datos de un usuario
-  const updateUser = async (id_number) => {
+  const updateUser = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/user/${id_number}`);
+      const res = await fetch(`http://localhost:4000/api/user/${id}`);
       const data = await res.json();
       setActualUserUpdate(data);
       setUpdatedUser(data);
@@ -136,23 +136,27 @@ export default function UsersDBAdmin() {
     }
   };
 
+  const updateUserInState = (updatedUser) => {
+    setUser((prevUser) =>
+      prevUser.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+    );
+  };
+
   {
     /* Enviar los datos de la actualización al backend */
   }
   const saveUpdate = async (user) => {
     try {
-      const res = await fetch(
-        `http://localhost:4000/api/user/${user.id_number}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user),
-        }
-      );
+      const res = await fetch(`http://localhost:4000/api/user/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(user),
+      });
 
       const data = await res.json();
 
       if (res.ok) {
+        updateUserInState(user);
         alert("Usuario actualizado correctamente.");
         setShowModalUpdate(false);
       } else {
@@ -168,6 +172,11 @@ export default function UsersDBAdmin() {
     { id: 2, name: "Tarjeta de identidad" },
     { id: 3, name: "Pasaporte" },
     { id: 4, name: "Cédula de extranjería" },
+  ];
+
+  const idUserType = [
+    { id: 1, name: "Cliente" },
+    { id: 2, name: "Administrativo" },
   ];
 
   return (
@@ -303,27 +312,27 @@ export default function UsersDBAdmin() {
                 <div className="modal-body">
                   <p>
                     <strong>Nombre: </strong>
-                    {selectUser.name + " " + selectUser.last_name}
+                    {selectUserRead.name + " " + selectUserRead.last_name}
                   </p>
                   <p>
                     <strong>Documento de identidad: </strong>
-                    {selectUser.id_type + " : " + selectUser.id_number}
+                    {selectUserRead.id_type + " : " + selectUserRead.id_number}
                   </p>
                   <p>
                     <strong>Celular: </strong>
-                    {selectUser.phone}
+                    {selectUserRead.phone}
                   </p>
                   <p>
                     <strong>Fecha de nacimiento: </strong>
-                    {selectUser.birth_date}
+                    {selectUserRead.birth_date}
                   </p>
                   <p>
                     <strong>Correo electrónico: </strong>
-                    {selectUser.email}
+                    {selectUserRead.email}
                   </p>
                   <p>
                     <strong>Tipo de usuario: </strong>
-                    {selectUser.user_type}
+                    {selectUserRead.user_type}
                   </p>
                 </div>
               </div>
@@ -398,9 +407,11 @@ export default function UsersDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Documento de identidad</th>
-                        <td>{actualUserUpdate.id_type_id}</td>
+                        <td>{actualUserUpdate.id_type}</td>
                         <td>
+                          <label htmlFor="idType">Tipo de documento</label>
                           <select
+                            id="idType"
                             className="form-select"
                             value={updatedUser.id_type_id}
                             onChange={(e) =>
@@ -488,9 +499,11 @@ export default function UsersDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Tipo de usuario</th>
-                        <td>{actualUserUpdate.id_user_type}</td>
+                        <td>{actualUserUpdate.user_type}</td>
                         <td>
+                          <label htmlFor="userType">Tipo de usuario</label>
                           <select
+                            id="userType"
                             className="form-select"
                             value={updatedUser.id_user_type}
                             onChange={(e) =>
@@ -500,14 +513,19 @@ export default function UsersDBAdmin() {
                               })
                             }
                           >
-                            <option value="1">Cliente</option>
-                            <option value="2">Administrativo</option>
+                            {idUserType.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
                           </select>
                         </td>
                       </tr>
                       <tr>
                         <th scope="row">Contraseña</th>
-                        <td>{actualUserUpdate.password}</td>
+                        <td className="cell-medium">
+                          {actualUserUpdate.password}
+                        </td>
                         <td>
                           <input
                             type="password"

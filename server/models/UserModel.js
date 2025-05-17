@@ -80,7 +80,7 @@ const readUser = async (id_number) => {
 };
 
 // Actualizar la información de un usuario
-const updateUser = async (id_number, updatedData) => {
+const updateUser = async (id, updatedData) => {
   const fields = [];
   const values = [];
 
@@ -90,8 +90,8 @@ const updateUser = async (id_number, updatedData) => {
     values.push(updatedData[key]);
   }
 
-  const sql = `UPDATE user SET ${fields.join(", ")} WHERE id_number = ?`;
-  values.push(id_number);
+  const sql = `UPDATE user SET ${fields.join(", ")} WHERE id = ?`;
+  values.push(id);
 
   const [result] = await db.promise().query(sql, values);
   return result;

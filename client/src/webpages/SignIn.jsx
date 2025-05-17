@@ -20,7 +20,7 @@ export default function SingIn() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:4000/api/users/login", {
+      const res = await fetch("http://localhost:4000/api/user/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email, password }),
