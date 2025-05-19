@@ -1,4 +1,19 @@
+import { useEffect, useState } from "react";
+
 export default function RoomsDBAdmin() {
+  {
+    /* Estado para traer las habitaciones de la base de datos */
+  }
+  const [room, setRoom] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+      } catch (error) {}
+    };
+  });
+
   return (
     <>
       <div className="container-fluid">

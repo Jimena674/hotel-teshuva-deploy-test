@@ -18,7 +18,6 @@ const createUser = async (
   last_name,
   id_type_id,
   id_number,
-
   phone,
   birth_date,
   email,
@@ -34,7 +33,6 @@ const createUser = async (
         last_name,
         id_type_id,
         id_number,
-
         phone,
         birth_date,
         email,

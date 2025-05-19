@@ -2,6 +2,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/UserRoutes");
+const roomRoutes = require("./routes/RoomRoutes");
 const cors = require("cors");
 require("./config/db");
 
@@ -16,6 +17,7 @@ app.use(
 ); // Permitir peticiones desde otro origen
 app.use(express.json()); // Parsear las request en formato JSON
 app.use("/api/user", userRoutes);
+app.use("/api/room", roomRoutes);
 
 // Definir el puerto en el que se ejecutará el servidor
 const PORT = process.env.PORT || 4000;

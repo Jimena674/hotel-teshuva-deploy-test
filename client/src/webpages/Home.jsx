@@ -100,7 +100,7 @@ export default function Home() {
           <div className="row gx-2">
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-freepik-3.jpg"
+                image="/images/room-1.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
                 heightImg="200px"
@@ -110,7 +110,7 @@ export default function Home() {
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-dit26978.jpg"
+                image="/images/room-2.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
                 heightImg="200px"
@@ -120,7 +120,7 @@ export default function Home() {
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-katemangostar.jpg"
+                image="/images/room-3.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
                 heightImg="200px"
@@ -130,7 +130,7 @@ export default function Home() {
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
               <CardITDB
-                image="/images/hotel-jcomp-1.jpg"
+                image="/images/room-4.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
                 heightImg="200px"

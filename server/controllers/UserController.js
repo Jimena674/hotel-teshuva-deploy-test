@@ -11,7 +11,6 @@ const register = async function (req, res) {
       last_name,
       id_type_id,
       id_number,
-
       phone,
       birth_date,
       email,
