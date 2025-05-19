@@ -36,6 +36,13 @@ const findRoom = async (room_number) => {
 
 /* Modelo para eliminar una habitación por el room_number */
 
+const deleteRoom = async (room_number) => {
+  const [result] = await db
+    .promise()
+    .query(`DELETE FROM room WHERE room_number = ?`, [room_number]);
+  return result;
+};
+
 /* Modelo para actualizar una habitación */
 
-module.exports = { createRoom, findRoom };
+module.exports = { createRoom, findRoom, deleteRoom };

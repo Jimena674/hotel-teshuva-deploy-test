@@ -53,4 +53,25 @@ const createRoom = async function (req, res) {
   }
 };
 
-module.exports = { createRoom };
+/* Controlador para eliminar una habitación. */
+const deleteRoom = async (req, res) => {
+  try {
+    // Datos de la solicitud
+    const roomNumber = req.params.room_number;
+
+    // Enviar el valor al modelo
+    const result = await roomModel.deleteRoom(roomNumber);
+
+    // Verificar si la habitación existe
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ message: "La habitación no existe." });
+    }
+
+    res.json({ message: "Habitación eliminada exitosamente." });
+  } catch (error) {
+    console.error("Error al eliminar la habitación: ", error);
+    res.status(500).json({ error: "Error en el servidor." });
+  }
+};
+
+module.exports = { createRoom, deleteRoom };
