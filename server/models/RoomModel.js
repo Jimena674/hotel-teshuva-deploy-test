@@ -61,4 +61,15 @@ const updateRoom = async (id_room, updatedData) => {
   return result;
 };
 
-module.exports = { createRoom, findRoom, deleteRoom, updateRoom };
+/* Modelo para obtener todos los datos de las habitaciones */
+
+const getAllRooms = async () => {
+  const [rows] = await db
+    .promise()
+    .query(
+      `SELECT room.id_room, room.room_number, room.rate, room.photo_path, room_type.name AS room_type, room_status.name AS room_status, floor.name AS floor FROM room JOIN room_type ON room.id_room_type = room_type.id_room_type JOIN room_status ON room.id_room_status = room_status.id_room_status JOIN floor ON room.id_floor = floor.id_floor`
+    );
+  return rows;
+};
+
+module.exports = { createRoom, findRoom, deleteRoom, updateRoom, getAllRooms };

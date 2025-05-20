@@ -132,8 +132,20 @@ const updateRoom = async (req, res) => {
     res.json({ message: "Habitación actualizada con éxito." });
   } catch (error) {
     console.error("Error al actualizar los datos de la habitación: ", error);
-    res.status(500).json({ message: "Error en el servidor." });
+    res.status(500).json({ error: "Error en el servidor." });
   }
 };
 
-module.exports = { createRoom, deleteRoom, updateRoom };
+/* Controlador para obtener todos los datos de las habitaciones */
+
+const getAllRooms = async (req, res) => {
+  try {
+    const rooms = await roomModel.getAllRooms();
+    res.status(200).json(rooms);
+  } catch (error) {
+    console.error("Error al obtener los datos de las habitaciones: ", error);
+    res.status(500).json({ error: "Error en el servidor." });
+  }
+};
+
+module.exports = { createRoom, deleteRoom, updateRoom, getAllRooms };
