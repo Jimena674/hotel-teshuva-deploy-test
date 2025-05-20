@@ -28,7 +28,7 @@ const findRoom = async (room_number) => {
   const [rows] = await db
     .promise()
     .query(
-      "SELECT room .*, room_type.name AS room_type, room_status.name AS room_status FROM room JOIN room_type ON room.id_room_type = room_type.id_room_type JOIN room_status ON room.id_room_status = room_status.id_room_status WHERE room.room_number = ?",
+      "SELECT room .*, room_type.name AS room_type, room_status.name AS room_status, floor.name AS floor FROM room JOIN room_type ON room.id_room_type = room_type.id_room_type JOIN room_status ON room.id_room_status = room_status.id_room_status JOIN floor ON room.id_floor = floor.id_floor WHERE room.room_number = ?",
       [room_number]
     );
   return rows[0];
@@ -43,6 +43,22 @@ const deleteRoom = async (room_number) => {
   return result;
 };
 
-/* Modelo para actualizar una habitación */
+/* Modelo para actualizar una habitación por el id */
 
-module.exports = { createRoom, findRoom, deleteRoom };
+const updateRoom = async (id_room, updatedData) => {
+  const fields = [];
+  const values = [];
+
+  for (let key in updatedData) {
+    fields.push(`${key} = ?`);
+    values.push(updatedData[key]);
+  }
+
+  const sql = `UPDATE room SET ${fields.join(", ")} WHERE id_room = ?`;
+  values.push(id_room);
+
+  const [result] = await db.promise().query(sql, values);
+  return result;
+};
+
+module.exports = { createRoom, findRoom, deleteRoom, updateRoom };

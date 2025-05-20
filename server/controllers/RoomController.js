@@ -54,6 +54,7 @@ const createRoom = async function (req, res) {
 };
 
 /* Controlador para eliminar una habitación. */
+
 const deleteRoom = async (req, res) => {
   try {
     // Datos de la solicitud
@@ -74,4 +75,65 @@ const deleteRoom = async (req, res) => {
   }
 };
 
-module.exports = { createRoom, deleteRoom };
+/* Controlador para modificar una habitación */
+
+const updateRoom = async (req, res) => {
+  // Datos de la solicitud
+  const idRoom = req.params.id;
+  const updatedData = req.body;
+
+  // Validar que se hayan ingresado datos para actualizar la habitación
+  if (!idRoom) {
+    return res.status(400).json({ message: "El id no fue proporcionado." });
+  }
+  if (!updatedData) {
+    return res.status(400).json({ message: "No hay datos para actualizar." });
+  }
+
+  try {
+    // Datos que se pueden modificar
+    const {
+      room_number,
+      rate,
+      id_room_type,
+      id_room_status,
+      id_floor,
+      photo_path,
+    } = req.body;
+
+    if (room_number) {
+      updatedData.room_number = room_number.trim();
+    }
+    if (rate) {
+      updatedData.rate = parseFloat(rate);
+    }
+    if (id_room_type) {
+      updatedData.id_room_type = parseInt(id_room_type);
+    }
+    if (id_room_status) {
+      updatedData.id_room_status = parseInt(id_room_status);
+    }
+    if (id_floor) {
+      updatedData.id_floor = parseInt(id_floor);
+    }
+    if (photo_path) {
+      updatedData.photo_path = photo_path.trim();
+    }
+
+    // Eliminar los valores que no son una columna en la tabla
+    /*delete updatedData.room_type;
+    delete updatedData.room_status;
+    delete updatedData.floor;
+    */
+
+    // Comunicación con el modelo que interactúa con la base de datos
+    const result = await roomModel.updateRoom(idRoom, updatedData);
+
+    res.json({ message: "Habitación actualizada con éxito." });
+  } catch (error) {
+    console.error("Error al actualizar los datos de la habitación: ", error);
+    res.status(500).json({ message: "Error en el servidor." });
+  }
+};
+
+module.exports = { createRoom, deleteRoom, updateRoom };
