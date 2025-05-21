@@ -25,6 +25,16 @@ export default function RoomsDBAdmin() {
   }, []);
 
   {
+    /* Estado para leer todos los datos de un usuario */
+  }
+
+  const [selectRoomRead, setSelectRoomRead] = useState(null);
+
+  // Función para mostrar los datos de una habitación
+
+  const readRoom = async () => {};
+
+  {
     /* Estado para modificar los datos de una habitación */
   }
 
@@ -32,7 +42,7 @@ export default function RoomsDBAdmin() {
   const [updatedRoom, setUpdatedRoom] = useState(null);
   const [actualRoomUpdate, setActualRoomUpdate] = useState(null);
 
-  // Función para abrir el modal y mostrar los datos de la habitación
+  // Función para abrir el modal para modificar una habitación
 
   const updateRoom = async (id_room) => {
     try {
@@ -122,7 +132,7 @@ export default function RoomsDBAdmin() {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Foto</th>
-                <th scope="col">Nombre</th>
+                <th scope="col">Número</th>
                 <th scope="col">Tarifa</th>
 
                 <th scope="col">
@@ -165,8 +175,9 @@ export default function RoomsDBAdmin() {
                     <td>{room.room_number}</td>
                     <td>{room.rate}</td>
                     <td>{room.room_type}</td>
-                    <td>{room.room_status}</td>
                     <td>{room.floor}</td>
+                    <td>{room.room_status}</td>
+
                     <td>
                       <div className="dropdown">
                         <button
@@ -222,40 +233,139 @@ export default function RoomsDBAdmin() {
                     aria-label="Close"
                     onClick={() => setShowModalUpdate(false)}
                   ></button>
-                  <div className="modal-body table-responsive">
-                    <table className="table table-striped-columns table-bordered align-middle">
-                      <thead>
-                        <tr>
-                          <th scope="col">Dato</th>
-                          <th scope="col">Valor actual</th>
-                          <th scope="col">Nuevo valor</th>
-                        </tr>
-                      </thead>
-                      <tbody class="table-group-divider">
-                        <th scope="row">Nombre</th>
-                        <tr>{actualRoomUpdate.room_number}</tr>
+                </div>
+                <div className="modal-body table-responsive">
+                  <table className="table table-striped-columns table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th scope="col">Dato</th>
+                        <th scope="col">Valor actual</th>
+                        <th scope="col">Nuevo valor</th>
+                      </tr>
+                    </thead>
+                    <tbody className="table-group-divider">
+                      <tr>
+                        <th scope="row">Número</th>
+                        <td>{actualRoomUpdate.room_number}</td>
                         <td>
                           <input
                             type="text"
-                            className={
-                              "form-control" +
-                              (updatedRoom.room_number !==
-                              actualRoomUpdate.room_number
-                                ? "bg-warning"
-                                : "")
-                            }
+                            className="form-control"
                             value={updatedRoom.room_number}
                             onChange={(e) =>
                               setUpdatedRoom({
                                 ...updatedRoom,
-                                room_name: e.target.value,
+                                room_number: e.target.value,
                               })
                             }
                           />
                         </td>
-                      </tbody>
-                    </table>
-                  </div>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tarifa</th>
+                        <td>{actualRoomUpdate.rate}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={updatedRoom.rate}
+                            onChange={(e) =>
+                              setUpdatedRoom({
+                                ...updatedRoom,
+                                rate: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de habitación</th>
+                        <td>{actualRoomUpdate.room_type}</td>
+                        <td>
+                          <label htmlFor="idRoomType">Tipo de habitación</label>
+                          <select
+                            id="idRoomType"
+                            className="form-select"
+                            value={updatedRoom.id_room_type}
+                            onChange={(e) =>
+                              setUpdatedRoom({
+                                ...updatedRoom,
+                                id_room_type: parseInt(e.target.value),
+                              })
+                            }
+                          >
+                            {idRoomType.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Piso</th>
+                        <td>{actualRoomUpdate.floor}</td>
+                        <td>
+                          <label htmlFor="idFloor">Piso</label>
+                          <select
+                            id="idFloor"
+                            className="form-select"
+                            value={updatedRoom.id_floor}
+                            onChange={(e) =>
+                              setUpdatedRoom({
+                                ...updatedRoom,
+                                id_floor: parseInt(e.target.value),
+                              })
+                            }
+                          >
+                            {idFloor.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Estado</th>
+                        <td>{actualRoomUpdate.floor}</td>
+                        <td>
+                          <label htmlFor="idRoomStatus">Estado</label>
+                          <select
+                            id="idRoomStatus"
+                            className="form-select"
+                            value={updatedRoom.id_room_status}
+                            onChange={(e) =>
+                              setUpdatedRoom({
+                                ...updatedRoom,
+                                id_room_status: parseInt(e.target.value),
+                              })
+                            }
+                          >
+                            {idRoomStatus.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.name}
+                              </option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    className="booking-form-btn"
+                    onClick={() => saveUpdate(updatedRoom)}
+                  >
+                    Guardar
+                  </button>
+                  <button
+                    className="booking-form-btn"
+                    onClick={() => setShowModalUpdate(false)}
+                  >
+                    Cancelar
+                  </button>
                 </div>
               </div>
             </div>

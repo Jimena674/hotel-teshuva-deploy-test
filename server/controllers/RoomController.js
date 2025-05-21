@@ -79,7 +79,7 @@ const deleteRoom = async (req, res) => {
 
 const updateRoom = async (req, res) => {
   // Datos de la solicitud
-  const idRoom = req.params.id;
+  const idRoom = req.params.id_room;
   const updatedData = req.body;
 
   // Validar que se hayan ingresado datos para actualizar la habitación
@@ -121,10 +121,9 @@ const updateRoom = async (req, res) => {
     }
 
     // Eliminar los valores que no son una columna en la tabla
-    /*delete updatedData.room_type;
+    delete updatedData.room_type;
     delete updatedData.room_status;
     delete updatedData.floor;
-    */
 
     // Comunicación con el modelo que interactúa con la base de datos
     const result = await roomModel.updateRoom(idRoom, updatedData);
@@ -148,4 +147,25 @@ const getAllRooms = async (req, res) => {
   }
 };
 
-module.exports = { createRoom, deleteRoom, updateRoom, getAllRooms };
+/* Controlador para leer los datos de una habitación */
+
+const readRoom = async (req, res) => {
+  try {
+    // Dato de la solicitud
+    const idRoom = req.params.id_room;
+    // Datos que se reciben de la base de datos
+    const room = await roomModel.readRoom(idRoom);
+    // Validar que existe esa habitación
+    console.log("los datos que se reciben del backend son: " + room);
+    if (!room) {
+      return res.status(400).json({ error: "La habitación no existe." });
+    }
+    // Si la consulta es exitosa
+    res.json(room);
+  } catch (error) {
+    console.error("Error al leer los datos de la habitación: ", error);
+    res.status(500).json({ error: "Error en el servidor" });
+  }
+};
+
+module.exports = { createRoom, deleteRoom, updateRoom, getAllRooms, readRoom };
