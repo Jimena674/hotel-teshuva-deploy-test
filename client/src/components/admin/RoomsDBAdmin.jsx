@@ -32,7 +32,17 @@ export default function RoomsDBAdmin() {
 
   // Función para mostrar los datos de una habitación
 
-  const readRoom = async () => {};
+  const readRoom = async (id_room) => {
+    try {
+      // Recibir los datos del backend
+      const res = await fetch(`http://localhost:4000/api/room/${id_room}`);
+      // Parseo de los datos a json
+      const data = res.json();
+      setSelectRoomRead(data);
+    } catch (error) {
+      console.error("Error al leer los datos de la habitación: ", error);
+    }
+  };
 
   {
     /* Estado para modificar los datos de una habitación */
@@ -41,6 +51,7 @@ export default function RoomsDBAdmin() {
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [updatedRoom, setUpdatedRoom] = useState(null);
   const [actualRoomUpdate, setActualRoomUpdate] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
 
   // Función para abrir el modal para modificar una habitación
 
@@ -71,14 +82,24 @@ export default function RoomsDBAdmin() {
     /* Enviar los datos de la actualización al backend */
   }
 
-  const saveUpdate = async (rooms) => {
+  const saveUpdate = async () => {
     try {
+      const formData = new FormData();
+      formData.append("room_number", updatedRoom.room_number);
+      formData.append("rate", updatedRoom.rate);
+      formData.append("id_room_type", updatedRoom.id_room_type);
+      formData.append("id_room_status", updatedRoom.id_room_status);
+      formData.append("id_floor", updatedRoom.id_floor);
+
+      if (updatedRoom.newPhoto) {
+        formData.append("photo_path", updatedRoom.newPhoto);
+      }
+
       const res = await fetch(
-        `http://localhost:4000/api/room/${rooms.id_room}`,
+        `http://localhost:4000/api/room/${updatedRoom.id_room}`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(rooms),
+          body: formData,
         }
       );
 
@@ -245,6 +266,33 @@ export default function RoomsDBAdmin() {
                     </thead>
                     <tbody className="table-group-divider">
                       <tr>
+                        <th scope="row">Foto</th>
+                        <td>
+                          <img
+                            src={URL.createObjectURL(
+                              photoPreview || rooms.photo_path
+                            )}
+                            alt=""
+                            width="80"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="file"
+                            accept=""
+                            className="form-control"
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              setPhotoPreview(file);
+                              setUpdatedRoom({
+                                ...updatedRoom,
+                                newPhoto: file,
+                              });
+                            }}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
                         <th scope="row">Número</th>
                         <td>{actualRoomUpdate.room_number}</td>
                         <td>
@@ -328,7 +376,7 @@ export default function RoomsDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Estado</th>
-                        <td>{actualRoomUpdate.floor}</td>
+                        <td>{actualRoomUpdate.room_status}</td>
                         <td>
                           <label htmlFor="idRoomStatus">Estado</label>
                           <select

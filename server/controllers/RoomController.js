@@ -156,7 +156,6 @@ const readRoom = async (req, res) => {
     // Datos que se reciben de la base de datos
     const room = await roomModel.readRoom(idRoom);
     // Validar que existe esa habitación
-    console.log("los datos que se reciben del backend son: " + room);
     if (!room) {
       return res.status(400).json({ error: "La habitación no existe." });
     }
