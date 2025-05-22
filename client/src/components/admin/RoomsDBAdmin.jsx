@@ -136,6 +136,37 @@ export default function RoomsDBAdmin() {
     { id: 2, name: "Piso 2" },
   ];
 
+  {
+    /* Función para eliminar una habitación */
+  }
+
+  const deleteRoom = async (room_number) => {
+    try {
+      // Llamar a la función del backend
+      const res = await fetch(`http://localhost:4000/api/room/${room_number}`, {
+        method: "DELETE",
+      });
+
+      // Parsear la respuesta
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Habitación eliminada con éxito.");
+        // Actualizar la tabla de habitaciones
+        setRooms((prev) => {
+          prev.filter((room) => {
+            room.room_number !== room_number;
+          });
+        });
+      } else {
+        alert(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Error al eliminar la habitación: ", error);
+      alert("Ocurrió un error al eliminar la habitación.");
+    }
+  };
+
   return (
     <>
       <div className="container-fluid">

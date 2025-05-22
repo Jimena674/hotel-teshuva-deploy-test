@@ -64,7 +64,7 @@ export default function UsersDBAdmin() {
   });
 
   {
-    /* Estado para eliminar un usuario por el id_number */
+    /* Función para eliminar un usuario por el id_number */
   }
 
   const deleteUser = async (id_number) => {
@@ -87,7 +87,7 @@ export default function UsersDBAdmin() {
         alert(`Error: ${data.message}`);
       }
     } catch (error) {
-      console.error("", error);
+      console.error("Error al eliminar la habitación", error);
       alert("Ocurrió un error al eliminar el usuario.");
     }
   };
