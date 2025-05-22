@@ -106,9 +106,10 @@ export default function RoomsDBAdmin() {
       const data = await res.json();
 
       if (res.ok) {
-        updateRoomInState(rooms);
+        updateRoomInState(updatedRoom);
         alert("Usuario actualizado correctamente");
         setShowModalUpdate(false);
+        setPhotoPreview(null);
       } else {
         alert("Error al actualizar el usuario.");
       }
@@ -252,7 +253,10 @@ export default function RoomsDBAdmin() {
                     type="button"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                    onClick={() => setShowModalUpdate(false)}
+                    onClick={() => {
+                      setShowModalUpdate(false);
+                      setPhotoPreview(null);
+                    }}
                   ></button>
                 </div>
                 <div className="modal-body table-responsive">
@@ -269,25 +273,29 @@ export default function RoomsDBAdmin() {
                         <th scope="row">Foto</th>
                         <td>
                           <img
-                            src={URL.createObjectURL(
-                              photoPreview || rooms.photo_path
-                            )}
-                            alt=""
+                            src={
+                              photoPreview
+                                ? URL.createObjectURL(photoPreview)
+                                : actualRoomUpdate.photo_path
+                            }
+                            alt="Foto actual"
                             width="80"
                           />
                         </td>
                         <td>
                           <input
                             type="file"
-                            accept=""
+                            accept="image/*"
                             className="form-control"
                             onChange={(e) => {
                               const file = e.target.files[0];
-                              setPhotoPreview(file);
-                              setUpdatedRoom({
-                                ...updatedRoom,
-                                newPhoto: file,
-                              });
+                              if (file) {
+                                setPhotoPreview(file);
+                                setUpdatedRoom({
+                                  ...updatedRoom,
+                                  newPhoto: file,
+                                });
+                              }
                             }}
                           />
                         </td>
@@ -404,13 +412,18 @@ export default function RoomsDBAdmin() {
                 <div className="modal-footer">
                   <button
                     className="booking-form-btn"
-                    onClick={() => saveUpdate(updatedRoom)}
+                    onClick={() => {
+                      saveUpdate(updatedRoom);
+                    }}
                   >
                     Guardar
                   </button>
                   <button
                     className="booking-form-btn"
-                    onClick={() => setShowModalUpdate(false)}
+                    onClick={() => {
+                      setShowModalUpdate(false);
+                      setPhotoPreview(null);
+                    }}
                   >
                     Cancelar
                   </button>
@@ -419,6 +432,18 @@ export default function RoomsDBAdmin() {
             </div>
           </div>
         )}
+
+        {/* Mostrar la imagen de la habitación temporalmente */}
+        {/* 
+        {photoPreview && (
+          <img
+            src={URL.createObjectURL(photoPreview)}
+            alt="Vista previa"
+            width="100"
+            className="mt-2 rounded"
+          ></img>
+        )}
+          */}
       </div>
     </>
   );

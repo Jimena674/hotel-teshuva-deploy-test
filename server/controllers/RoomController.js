@@ -116,14 +116,24 @@ const updateRoom = async (req, res) => {
     if (id_floor) {
       updatedData.id_floor = parseInt(id_floor);
     }
-    if (photo_path) {
-      updatedData.photo_path = photo_path.trim();
+    // Guardar la ruta de la imagen
+    if (req.file) {
+      updatedData.photo_path = `/images/${req.file.filename}`;
+    } else if (photo_path) {
+      updatedData.photo_path = photo_path;
     }
 
     // Eliminar los valores que no son una columna en la tabla
     delete updatedData.room_type;
     delete updatedData.room_status;
     delete updatedData.floor;
+
+    // Tiene al menos una propiedad válida para actualizar
+    if (Object.keys(updatedData).length === 0) {
+      return res
+        .status(400)
+        .json({ message: "No hay campos válidos para actualizar." });
+    }
 
     // Comunicación con el modelo que interactúa con la base de datos
     const result = await roomModel.updateRoom(idRoom, updatedData);
