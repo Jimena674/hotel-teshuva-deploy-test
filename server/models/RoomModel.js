@@ -3,7 +3,6 @@ const db = require("../config/db");
 /* Modelo para crear una habitación */
 
 const createRoom = async (
-  // Promesa createRoom
   room_number,
   rate,
   id_room_type,

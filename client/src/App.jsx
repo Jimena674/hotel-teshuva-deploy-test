@@ -5,6 +5,7 @@ import SignUp from "./webpages/SignUp";
 import LayoutDBAdmin from "./dashboard/admin/LayoutDBAdmin";
 import UsersDBAdmin from "./components/admin/UsersDBAdmin";
 import RoomsDBAdmin from "./components/admin/RoomsDBAdmin";
+import BookingDBAdmin from "./components/admin/BookingDBAdmin";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/admin/dashboard" element={<LayoutDBAdmin />}>
           <Route path="users" element={<UsersDBAdmin />} />
           <Route path="rooms" element={<RoomsDBAdmin />} />
+          <Route path="bookings" element={<BookingDBAdmin />} />
         </Route>
       </Routes>
     </Router>

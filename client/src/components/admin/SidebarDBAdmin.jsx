@@ -17,22 +17,13 @@ export default function SidebarDBAdmin() {
           Inicio
         </NavLink>
         <NavLink
-          to="/admin/dashboard/reservations"
+          to="/admin/dashboard/bookings"
           className={({ isActive }) =>
-            "list-group-item list-group-item-action label-medium disabled" +
+            "list-group-item list-group-item-action label-medium" +
             (isActive ? "active label-medium" : "")
           }
         >
           Reservas
-        </NavLink>
-        <NavLink
-          to="/admin/dashboard/bookings"
-          className={({ isActive }) =>
-            "list-group-item list-group-item-action label-medium disabled" +
-            (isActive ? "active label-medium" : "")
-          }
-        >
-          Alojamientos
         </NavLink>
         <NavLink
           to="/admin/dashboard/rooms"
