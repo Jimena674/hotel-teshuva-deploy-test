@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 export default function BookingDBAdmin() {
   // Estado para obtener todas las reservas
-
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,6 +23,75 @@ export default function BookingDBAdmin() {
     };
     fetchTotal();
   }, []);
+
+  // Estado para leer los datos de una habitación
+  const [readRoom, setReadRoom] = useState(null);
+
+  {
+    /* Función para mostrar las datos de una reserva */
+  }
+
+  const readBooking = async (id_booking) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/booking/${id_booking}`
+      );
+      const data = await res.json();
+      setReadRoom(data);
+    } catch (error) {
+      console.error("Error al leer los datos de la reserva: ", error);
+    }
+  };
+
+  // Estado para abrir y cerrar el modal para actualizar una reserva
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
+  // Estado para modificar una reserva
+  const [updatedBooking, setUpdatedBooking] = useState(null);
+  const [actualBooking, setActualBooking] = useState(null);
+
+  {
+    /* Función para modificar una reserva */
+  }
+
+  const updateBooking = async (id_booking) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/booking/${id_booking}`
+      );
+      const data = await res.json();
+      setShowModalUpdate(true);
+      setActualBooking(data);
+      setUpdatedBooking(data);
+    } catch (error) {
+      console.error("Error al actualizar los datos de la reserva: ", error);
+      alert("Error al actualizar los datos de la reserva.");
+    }
+  };
+
+  {
+    /* Función para guardar los datos modificados */
+  }
+
+  const saveUpdate = async (booking) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/booking/${booking.id_booking}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(booking),
+        }
+      );
+    } catch (error) {
+      console.error("Error al guardar los datos modificados: ", error);
+    }
+  };
+
+  {
+    /* Función para actualizar los datos en la tabla */
+  }
+
+  const updateBookingInTable = (updatedBooking) => {};
 
   return (
     <>
