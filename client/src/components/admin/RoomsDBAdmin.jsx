@@ -214,7 +214,7 @@ export default function RoomsDBAdmin() {
                     <option value="out-of-order">Fuera de servicio</option>
                   </select>
                 </th>
-                <th scope="col"></th>
+                <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -276,7 +276,7 @@ export default function RoomsDBAdmin() {
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h1 className="modal-title title-medium">
+                  <h1 className="modal-title title-large">
                     Modificar la información de la Habitación
                   </h1>
                   <button

@@ -229,7 +229,7 @@ export default function UsersDBAdmin() {
                     <option value="administrativo">Administrativos</option>
                   </select>
                 </th>
-                <th scope="col"></th>
+                <th scope="col">Acciones</th>
               </tr>
             </thead>
             {/* Cuerpo de la tabla */}
@@ -298,7 +298,7 @@ export default function UsersDBAdmin() {
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h1 className="modal-title title-medium">
+                  <h1 className="modal-title title-large">
                     Consultar la información del usuarios
                   </h1>
                   <button
@@ -345,7 +345,7 @@ export default function UsersDBAdmin() {
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h1 className="modal-title title-medium">
+                  <h1 className="modal-title title-large">
                     Modificar la información del usuarios
                   </h1>
                   <button
