@@ -70,9 +70,9 @@ const readAllBookings = async (req, res) => {
 
 const readBooking = async (req, res) => {
   try {
-    const idBooking = req.params.id_booking;
-    const booking = await bookingModel.readBooking(idBooking);
-    res.status(200).json(booking);
+    const code = req.params.code;
+    const booking = await bookingModel.readBooking(code);
+    res.json(booking);
   } catch (error) {
     console.error("Error al leer los datos de la reserva: ", error);
     res.status(500).json({ error: "Error en el servidor" });

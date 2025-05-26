@@ -346,7 +346,7 @@ export default function UsersDBAdmin() {
               <div className="modal-content">
                 <div className="modal-header">
                   <h1 className="modal-title title-large">
-                    Modificar la información del usuarios
+                    Modificar el usuarios
                   </h1>
                   <button
                     className="btn-close"

@@ -37,7 +37,7 @@ export default function RoomsDBAdmin() {
       // Recibir los datos del backend
       const res = await fetch(`http://localhost:4000/api/room/${id_room}`);
       // Parseo de los datos a json
-      const data = res.json();
+      const data = await res.json();
       setSelectRoomRead(data);
     } catch (error) {
       console.error("Error al leer los datos de la habitación: ", error);

@@ -25,12 +25,12 @@ const readAllBookings = async () => {
 
 /* Modelo para leer una reserva a partir del id_booking*/
 
-const readBooking = async (id_booking) => {
+const readBooking = async (code) => {
   const [rows] = await db
     .promise()
     .query(
-      `SELECT booking .*, user.name AS user_name FROM booking JOIN user ON booking.id_user = user.id WHERE id_booking = ?`,
-      [id_booking]
+      `SELECT booking.*, user.name AS user_name FROM booking JOIN user ON booking.id_user = user.id WHERE code = ?`,
+      [code]
     );
   return rows[0];
 };

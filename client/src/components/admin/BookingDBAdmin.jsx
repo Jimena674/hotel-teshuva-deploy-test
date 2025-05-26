@@ -24,74 +24,26 @@ export default function BookingDBAdmin() {
     fetchTotal();
   }, []);
 
-  // Estado para leer los datos de una habitación
-  const [readRoom, setReadRoom] = useState(null);
+  // Estado para abrir el modal y consultar los datos de una reserva
+
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showModalRead, setShowModalRead] = useState(false);
 
   {
-    /* Función para mostrar las datos de una reserva */
+    /* Función para abrir el modal */
   }
 
-  const readBooking = async (id_booking) => {
+  const readBooking = async (code) => {
     try {
-      const res = await fetch(
-        `http://localhost:4000/api/booking/${id_booking}`
-      );
+      const res = await fetch(`http://localhost:4000/api/booking/${code}`);
       const data = await res.json();
-      setReadRoom(data);
+      setSelectedBooking(data);
+      setShowModalRead(true);
     } catch (error) {
-      console.error("Error al leer los datos de la reserva: ", error);
+      console.error("Error al consultar los datos del usuario.");
+      alert("Error al consultar los datos de la reserva");
     }
   };
-
-  // Estado para abrir y cerrar el modal para actualizar una reserva
-  const [showModalUpdate, setShowModalUpdate] = useState(false);
-  // Estado para modificar una reserva
-  const [updatedBooking, setUpdatedBooking] = useState(null);
-  const [actualBooking, setActualBooking] = useState(null);
-
-  {
-    /* Función para modificar una reserva */
-  }
-
-  const updateBooking = async (id_booking) => {
-    try {
-      const res = await fetch(
-        `http://localhost:4000/api/booking/${id_booking}`
-      );
-      const data = await res.json();
-      setShowModalUpdate(true);
-      setActualBooking(data);
-      setUpdatedBooking(data);
-    } catch (error) {
-      console.error("Error al actualizar los datos de la reserva: ", error);
-      alert("Error al actualizar los datos de la reserva.");
-    }
-  };
-
-  {
-    /* Función para guardar los datos modificados */
-  }
-
-  const saveUpdate = async (booking) => {
-    try {
-      const res = await fetch(
-        `http://localhost:4000/api/booking/${booking.id_booking}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(booking),
-        }
-      );
-    } catch (error) {
-      console.error("Error al guardar los datos modificados: ", error);
-    }
-  };
-
-  {
-    /* Función para actualizar los datos en la tabla */
-  }
-
-  const updateBookingInTable = (updatedBooking) => {};
 
   return (
     <>
@@ -100,7 +52,6 @@ export default function BookingDBAdmin() {
         <button type="button" className="mt-4">
           Crear reserva
         </button>
-
         {/* Tabla de reservas */}
         {loading ? (
           <p>Cargando reservas...</p>
@@ -113,7 +64,7 @@ export default function BookingDBAdmin() {
                 <th scope="col">Usuario</th>
                 <th scope="col">Ingreso</th>
                 <th scope="col">Salida</th>
-                <th scope="col">Habitación</th>
+
                 <th scope="col">Total</th>
                 <th scope="col">Acciones</th>
               </tr>
@@ -124,10 +75,10 @@ export default function BookingDBAdmin() {
                   <tr key={booking.id_booking}>
                     <td>{index + 1}</td>
                     <td>{booking.code}</td>
-                    <td>{booking.user_name}</td>
+                    <td>{booking.id_user}</td>
                     <td>{booking.check_in}</td>
                     <td>{booking.check_out}</td>
-                    <td></td>
+
                     <td>{booking.total}</td>
                     <td>
                       <div className="dropdown">
@@ -140,24 +91,14 @@ export default function BookingDBAdmin() {
                           <i className="bi bi-three-dots-vertical"></i>
                         </button>
                         <ul className="dropdown-menu">
-                          {/* PUT */}
+                          {/* GET */}
                           <li>
                             <button
                               className="dropdown-item"
                               type="button"
-                              onClick={() => updateBooking(bookings.id_booking)}
+                              onClick={() => readBooking(booking.code)}
                             >
-                              Modificar
-                            </button>
-                          </li>
-                          {/* DELETE */}
-                          <li>
-                            <button
-                              className="dropdown-item text-danger"
-                              onClick={() => deleteBooking(bookings.id_booking)}
-                              type="button"
-                            >
-                              Eliminar
+                              Consultar
                             </button>
                           </li>
                         </ul>
@@ -168,85 +109,35 @@ export default function BookingDBAdmin() {
             </tbody>
           </table>
         )}
-
-        {/* Modal para actualizar los datos de las reservas */}
-
-        <div className="modal show d-block">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title title-large">
-                  Modificar la reserva
-                </h1>
-                <button
-                  className="btn-close"
-                  type="button"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                  onClick={() => {
-                    setShowModalUpdate(false);
-                  }}
-                ></button>
-              </div>
-              <div className="modal-body table-responsive">
-                <table className="table table-striped-columns table-bordered align-middle">
-                  <thead>
-                    <tr>
-                      <th scope="col">Dato</th>
-                      <th scope="col">Dato actual</th>
-                      <th scope="col">Nuevo dato</th>
-                    </tr>
-                  </thead>
-                  <tbody className="table-group-divider">
-                    <tr>
-                      <th scope="row">Usuario</th>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Ingreso</th>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Salida</th>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Habitación</th>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Total</th>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="modal-footer">
-                <button
-                  className="booking-form-btn"
-                  onClick={() => {
-                    saveUpdate(updatedBooking);
-                  }}
-                >
-                  Guardar
-                </button>
-                <button
-                  className="booking-form-btn"
-                  onClick={() => {
-                    setShowModalUpdate(false);
-                  }}
-                >
-                  Cancelar
-                </button>
+        {/* Modal para consultar los datos de una reserva */}
+        {showModalRead && selectedBooking && (
+          <div className="modal show d-block">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span className="modal-title">Información de la reserva</span>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModalRead(false)}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <table>
+                    <thead></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div className="modal-footer">
+                  <button className="" onClick={() => setShowModalRead(false)}>
+                    {" "}
+                    Cerrar
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );
