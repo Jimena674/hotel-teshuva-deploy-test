@@ -18,7 +18,7 @@ const readAllBookings = async () => {
   const [rows] = await db
     .promise()
     .query(
-      `SELECT booking.id_user, booking.check_in, booking.check_out, booking.total, booking.code, user.name AS user_name FROM booking JOIN user ON booking.id_user = user.id `
+      `SELECT booking.id_booking, booking.id_user, booking.check_in, booking.check_out, booking.total, booking.code, user.name AS user_name, room.room_number AS room FROM booking JOIN user ON booking.id_user = user.id JOIN booking_room ON booking.id_booking = booking_room.id_booking JOIN room ON booking_room.id_room = room.id_room`
     );
   return rows;
 };
@@ -29,7 +29,7 @@ const readBooking = async (code) => {
   const [rows] = await db
     .promise()
     .query(
-      `SELECT booking.*, user.name AS user_name FROM booking JOIN user ON booking.id_user = user.id WHERE code = ?`,
+      `SELECT booking.*, user.name AS user_name, room.room_number AS room FROM booking JOIN user ON booking.id_user = user.id JOIN booking_room ON booking.id_booking = booking_room.id_booking JOIN room ON booking_room.id_room = room.id_room WHERE code = ?`,
       [code]
     );
   return rows[0];

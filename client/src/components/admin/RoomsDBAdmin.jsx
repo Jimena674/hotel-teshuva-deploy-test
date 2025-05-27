@@ -72,8 +72,8 @@ export default function RoomsDBAdmin() {
 
   const updateRoomInState = (updatedRoom) => {
     setRooms((prevRooms) =>
-      prevRooms.map((rooms) =>
-        rooms.id_room === updatedRoom.id_room ? updatedRoom : rooms
+      prevRooms.map((room) =>
+        room.id_room === updatedRoom.id_room ? updatedRoom : room
       )
     );
   };
@@ -107,11 +107,11 @@ export default function RoomsDBAdmin() {
 
       if (res.ok) {
         updateRoomInState(updatedRoom);
-        alert("Usuario actualizado correctamente");
+        alert("Habitación actualizada correctamente.");
         setShowModalUpdate(false);
         setPhotoPreview(null);
       } else {
-        alert("Error al actualizar el usuario.");
+        alert("Error al actualizar la habitación.");
       }
     } catch (error) {
       console.error(
@@ -153,11 +153,10 @@ export default function RoomsDBAdmin() {
       if (res.ok) {
         alert("Habitación eliminada con éxito.");
         // Actualizar la tabla de habitaciones
-        setRooms((prev) => {
-          prev.filter((room) => {
-            room.room_number !== room_number;
-          });
-        });
+
+        setRooms((prev) =>
+          prev.filter((room) => room.room_number !== room_number)
+        );
       } else {
         alert(`Error: ${data.message}`);
       }

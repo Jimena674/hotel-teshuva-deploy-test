@@ -47,6 +47,7 @@ export default function BookingDBAdmin() {
 
   // Estado para abrir el modal y modificar una reserva
 
+  const [actualBooking, setActualBooking] = useState(null);
   const [updatedBooking, setUpdatedBooking] = useState(null);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
 
@@ -58,6 +59,7 @@ export default function BookingDBAdmin() {
     try {
       const res = await fetch(`http://localhost:4000/api/booking/${code}`);
       const data = await res.json();
+      setActualBooking(data);
       setShowModalUpdate(true);
       setUpdatedBooking(data);
     } catch (error) {
@@ -105,6 +107,19 @@ export default function BookingDBAdmin() {
     }
   };
 
+  {
+    /* Función para hacer compatible los formatos de fecha */
+  }
+
+  const formatDateForInput = (isoString) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    const localDate = new Date(
+      date.getTime() - date.getTimezoneOffset() * 60000
+    );
+    return localDate.toISOString().split("T")[0]; // Solo yyyy-MM-dd
+  };
+
   return (
     <>
       <div className="container-fluid">
@@ -124,7 +139,7 @@ export default function BookingDBAdmin() {
                 <th scope="col">Usuario</th>
                 <th scope="col">Ingreso</th>
                 <th scope="col">Salida</th>
-
+                <th scope="col">Habitación</th>
                 <th scope="col">Total</th>
                 <th scope="col">Acciones</th>
               </tr>
@@ -138,7 +153,7 @@ export default function BookingDBAdmin() {
                     <td>{booking.user_name}</td>
                     <td>{booking.check_in}</td>
                     <td>{booking.check_out}</td>
-
+                    <td>{booking.room}</td>
                     <td>{booking.total}</td>
                     <td>
                       <div className="dropdown">
@@ -220,6 +235,10 @@ export default function BookingDBAdmin() {
                         <td>{selectedBooking.check_out}</td>
                       </tr>
                       <tr>
+                        <th scope="row">Habitación</th>
+                        <td>{selectedBooking.room}</td>
+                      </tr>
+                      <tr>
                         <th scope="row">Total</th>
                         <td>{selectedBooking.total}</td>
                       </tr>
@@ -236,7 +255,7 @@ export default function BookingDBAdmin() {
           </div>
         )}
         {/* Modal para modificar una reserva */}
-        {showModalUpdate && selectedBooking && (
+        {showModalUpdate && actualBooking && (
           <div className="modal show d-block">
             <div className="modal-dialog">
               <div className="modal-content">
@@ -262,7 +281,7 @@ export default function BookingDBAdmin() {
                     <tbody>
                       <tr>
                         <th scope="row">Código</th>
-                        <td>{selectedBooking.code}</td>
+                        <td>{actualBooking.code}</td>
                         <td>
                           <input
                             type="text"
@@ -279,16 +298,16 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Usuario</th>
-                        <td>{selectedBooking.user_name}</td>
+                        <td>{actualBooking.user_name}</td>
                       </tr>
                       <tr>
                         <th scope="row">Ingreso</th>
-                        <td>{selectedBooking.check_in}</td>
+                        <td>{actualBooking.check_in}</td>
                         <td>
                           <input
-                            type="datetime-local"
+                            type="date"
                             className="form-control"
-                            value={updatedBooking.check_in}
+                            value={formatDateForInput(updatedBooking.check_in)}
                             onChange={(e) =>
                               setUpdatedBooking({
                                 ...updatedBooking,
@@ -300,12 +319,12 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Salida</th>
-                        <td>{selectedBooking.check_out}</td>
+                        <td>{actualBooking.check_out}</td>
                         <td>
                           <input
-                            type="datetime-local"
+                            type="date"
                             className="form-control"
-                            value={updatedBooking.check_out}
+                            value={formatDateForInput(updatedBooking.check_out)}
                             onChange={(e) =>
                               setUpdatedBooking({
                                 ...updatedBooking,
@@ -316,8 +335,25 @@ export default function BookingDBAdmin() {
                         </td>
                       </tr>
                       <tr>
+                        <th scope="row">Habitación</th>
+                        <td>{actualBooking.room}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={updatedBooking.room}
+                            onChange={(e) =>
+                              setUpdatedBooking({
+                                ...updatedBooking,
+                                room: e.target.value,
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                      <tr>
                         <th scope="row">Total</th>
-                        <td>{selectedBooking.total}</td>
+                        <td>{actualBooking.total}</td>
                         <td>
                           <input
                             type="number"
