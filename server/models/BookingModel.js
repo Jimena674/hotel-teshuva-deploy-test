@@ -18,7 +18,7 @@ const readAllBookings = async () => {
   const [rows] = await db
     .promise()
     .query(
-      `SELECT booking.check_in, booking.check_out, booking.total, booking.code, user.name AS user_name FROM booking JOIN user ON booking.id_user = user.id `
+      `SELECT booking.id_user, booking.check_in, booking.check_out, booking.total, booking.code, user.name AS user_name FROM booking JOIN user ON booking.id_user = user.id `
     );
   return rows;
 };
@@ -46,7 +46,7 @@ const deleteBooking = async (id_booking) => {
 
 /* Modelo para modificar una reserva */
 
-const updateBooking = async (id_booking, data) => {
+const updateBooking = async (code, data) => {
   const fields = [];
   const values = [];
 
@@ -55,8 +55,8 @@ const updateBooking = async (id_booking, data) => {
     values.push(data[key]);
   }
 
-  const sql = `UPDATE booking SET ${fields.join(", ")} WHERE id_booking = ?`;
-  values.push(id_booking);
+  const sql = `UPDATE booking SET ${fields.join(", ")} WHERE code = ?`;
+  values.push(code);
 
   const [result] = await db.promise().query(sql, values);
   return result;

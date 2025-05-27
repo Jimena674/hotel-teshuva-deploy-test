@@ -95,7 +95,7 @@ const deleteBooking = async (req, res) => {
 /* Controlador para modificar una reserva */
 
 const updateBooking = async (req, res) => {
-  const idBooking = req.params.id_booking;
+  const code = req.params.code;
   const data = req.body;
   if (!data) {
     res
@@ -127,7 +127,7 @@ const updateBooking = async (req, res) => {
         .json({ message: "No se proporcionaron datos válidos." });
     }
 
-    const result = await bookingModel.updateBooking(idBooking, data);
+    const result = await bookingModel.updateBooking(code, data);
     res.status(200).json({ message: "Reserva actualizada con éxito." });
   } catch (error) {
     console.error("Error al modificar la reserva: ", error);
