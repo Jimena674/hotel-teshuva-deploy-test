@@ -58,6 +58,15 @@ const getAllUsers = async () => {
   return rows;
 };
 
+// Función para verificar si un usuario tiene reservas antes de ser eliminado
+
+const hasBooking = async (userId) => {
+  const [rows] = await db
+    .promise()
+    .query(`SELECT id_booking FROM booking WHERE id_user = ?`, [userId]);
+  return rows.length > 0;
+};
+
 // Eliminar un usuario por el número de identificación
 const deleteUser = async (id_number) => {
   const [result] = await db
@@ -100,6 +109,7 @@ module.exports = {
   createUser,
   countUsers,
   getAllUsers,
+  hasBooking,
   deleteUser,
   readUser,
   updateUser,

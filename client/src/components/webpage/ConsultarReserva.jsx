@@ -26,7 +26,7 @@ const ConsultarReserva = () => {
                 className="col-auto d-flex flex-column justify-content-center close"
                 onClick={() => setMostrarModal(false)}
               >
-                <i class="bi bi-x-square"></i>
+                <i className="bi bi-x-square"></i>
               </button>
             </div>
             <hr />

@@ -25,7 +25,7 @@ export default function NavbarDashboard() {
             {/*Barra de búsqueda*/}
             <form className="d-flex col-4" role="search">
               <input
-                class="form-control me-2"
+                className="form-control me-2"
                 type="search"
                 placeholder="Reserva, habitación, usuario, etc."
                 aria-label="Search"
@@ -43,10 +43,10 @@ export default function NavbarDashboard() {
                 <i className="bi bi-box-arrow-left fs-4"></i>
               </Link>
               <Link to={"/"} className="text-decoration-none text-dark">
-                <i class="bi bi-gear fs-4 ps-4"></i>
+                <i className="bi bi-gear fs-4 ps-4"></i>
               </Link>
               <Link to={"/"} className="text-decoration-none text-dark">
-                <i class="bi bi-bell fs-4 ps-4"></i>
+                <i className="bi bi-bell fs-4 ps-4"></i>
               </Link>
 
               <img

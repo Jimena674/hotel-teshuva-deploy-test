@@ -137,6 +137,14 @@ const deteleUser = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
+    // Verificar que es usuario no esté en una reserva
+    if (await userModel.hasBooking(id)) {
+      return res.status(409).json({
+        message:
+          "No se puede eliminar el usuario porque tiene reservas asociadas.",
+      });
+    }
+
     res.json({ message: "Usuario eliminado exitosamente." });
   } catch (error) {
     console.error("Error al eliminar el usuario: ", error);

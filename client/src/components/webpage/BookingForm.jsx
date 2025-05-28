@@ -115,7 +115,7 @@ export default function BookingForm() {
                 <div className="d-flex flex-row">
                   <div className="d-flex flex-column me-3 justify-content-center">
                     <i
-                      class="bi bi-file-person"
+                      className="bi bi-file-person"
                       style={{ fontSize: "1.5rem" }}
                     ></i>
                   </div>
@@ -134,7 +134,10 @@ export default function BookingForm() {
               <div className="d-flex justify-content-center booking-form-btn input-group input-custom border ms-3">
                 <div className="d-flex flex-row">
                   <div className="d-flex flex-column me-3 justify-content-center">
-                    <i class="bi bi-people" style={{ fontSize: "1.5rem" }}></i>
+                    <i
+                      className="bi bi-people"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
                   </div>
                   <div className="d-flex flex-column text-start">
                     <div className="row fw-bold">

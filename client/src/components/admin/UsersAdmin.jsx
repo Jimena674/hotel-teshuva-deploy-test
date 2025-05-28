@@ -63,43 +63,104 @@ export default function UsersDBAdmin() {
     return searchBar && searchType;
   });
 
+  // Estado para abrir el modal y crear un usuario
+
+  const [showModalNew, setShowModalNew] = useState(false);
+  const [name, setName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [id_type_id, setIdTypeId] = useState("");
+  const [id_number, setIdNumber] = useState("");
+  const [phone, setPhone] = useState("");
+  const [birth_date, setBirthDate] = useState("");
+  const [email, setEmail] = useState("");
+  const [id_user_type, setIdUserType] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
   {
-    /* Función para eliminar un usuario por el id_number */
+    /* Función para abrir el modal para crear un usuario */
   }
 
-  const deleteUser = async (id_number) => {
+  const newUser = async () => {
+    try {
+      const data = await fetch(`http://localhost:4000/api/user/register`);
+      const res = await data.json();
+      setShowModalNew(true);
+    } catch (error) {
+      alert("Error al crear el usuario.");
+    }
+  };
+
+  {
+    /* Función para guardar el usuario en la base de datos */
+  }
+
+  // Estado para abrir el modal y eliminar un usuario
+
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [selectedUserDelete, setSelectedUserDelete] = useState(null);
+
+  {
+    /* Función para abrir el modal para eliminar un usuario */
+  }
+
+  const deleteUser = async (user) => {
+    setSelectedUserDelete(user);
+    setShowModalDelete(true);
+  };
+
+  {
+    /* Función para actualizar los campos en la tabla */
+  }
+
+  const updateUserInTable = async (selectedUserDelete) => {
+    setUser((prevUser) =>
+      prevUser.map((user) =>
+        user.id === selectedUserDelete.id ? selectedUserDelete : user
+      )
+    );
+  };
+
+  const saveDelete = async (user) => {
     try {
       // Llamar a la función del backend usando fetch
-      const res = await fetch(`http://localhost:4000/api/user/${id_number}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `http://localhost:4000/api/user/${user.id_number}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       // Parsear la respuesta del servidor en formato json
       const data = await res.json();
 
       // Validar el resultado de la operación
       if (res.ok) {
-        alert("Usuario eliminado con éxito");
-
         // Actualizar la lista de usuarios
-        setUser((prev) => prev.filter((user) => user.id_number !== id_number));
+        setUser((prev) =>
+          prev.filter((user) => user.id_number !== user.id_number)
+        );
+        setShowModalDelete(false);
+        updateUserInTable(user);
       } else {
         alert(`Error: ${data.message}`);
       }
     } catch (error) {
-      console.error("Error al eliminar la habitación", error);
+      console.error("Error al eliminar el usuario", error);
       alert("Ocurrió un error al eliminar el usuario.");
     }
   };
 
-  {
-    /* Estado para consular todos los datos de un usuarios */
-  }
+  // Estado para abrir modal y consular un usuarios
 
   const [selectUserRead, setSelectUserRead] = useState(null);
   const [showModalRead, setShowModalRead] = useState(false);
 
-  //Función para abrir el modal y consultar los datos de un usuario
+  {
+    /* Función para abrir el modal y consultar un usuario */
+  }
+
   const readUser = async (id_number) => {
     try {
       // Llamar a la función del backend
@@ -114,15 +175,16 @@ export default function UsersDBAdmin() {
     }
   };
 
-  {
-    /* Estado para modificar los datos de un usuario */
-  }
+  // Estado para abrir modal y modificar un usuario
 
   const [actualUserUpdate, setActualUserUpdate] = useState(null);
   const [updatedUser, setUpdatedUser] = useState(null);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
 
-  // Función para abrir el modal y modificar los datos de un usuario
+  {
+    /* Función para abrir el modal y modificar un usuario */
+  }
+
   const updateUser = async (id) => {
     try {
       const res = await fetch(`http://localhost:4000/api/user/${id}`);
@@ -143,7 +205,7 @@ export default function UsersDBAdmin() {
   };
 
   {
-    /* Enviar los datos de la actualización al backend */
+    /* Función para guardar la actualización en el backend */
   }
   const saveUpdate = async (user) => {
     try {
@@ -178,6 +240,14 @@ export default function UsersDBAdmin() {
     { id: 1, name: "Cliente" },
     { id: 2, name: "Administrativo" },
   ];
+
+  {
+    /* Función para formatear las fechas */
+  }
+
+  const formatToLocalDate = (date) => {
+    return new Intl.DateTimeFormat("es-CO").format(new Date(date));
+  };
 
   return (
     <>
@@ -251,7 +321,7 @@ export default function UsersDBAdmin() {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        <i class="bi bi-three-dots-vertical"></i>
+                        <i className="bi bi-three-dots-vertical"></i>
                       </button>
                       <ul className="dropdown-menu ">
                         {/* GET */}
@@ -278,7 +348,7 @@ export default function UsersDBAdmin() {
                         <li>
                           <button
                             className="dropdown-item text-danger"
-                            onClick={() => deleteUser(user.id_number)}
+                            onClick={() => deleteUser(user)}
                             type="button"
                           >
                             Eliminar
@@ -295,7 +365,7 @@ export default function UsersDBAdmin() {
         {/* Modal para consultar la información del usuario*/}
         {showModalRead && selectUserRead && (
           <div className="modal show d-block">
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
                   <h1 className="modal-title title-large">
@@ -309,31 +379,47 @@ export default function UsersDBAdmin() {
                     onClick={() => setShowModalRead(false)}
                   ></button>
                 </div>
-                <div className="modal-body">
-                  <p>
-                    <strong>Nombre: </strong>
-                    {selectUserRead.name + " " + selectUserRead.last_name}
-                  </p>
-                  <p>
-                    <strong>Documento de identidad: </strong>
-                    {selectUserRead.id_type + " : " + selectUserRead.id_number}
-                  </p>
-                  <p>
-                    <strong>Celular: </strong>
-                    {selectUserRead.phone}
-                  </p>
-                  <p>
-                    <strong>Fecha de nacimiento: </strong>
-                    {selectUserRead.birth_date}
-                  </p>
-                  <p>
-                    <strong>Correo electrónico: </strong>
-                    {selectUserRead.email}
-                  </p>
-                  <p>
-                    <strong>Tipo de usuario: </strong>
-                    {selectUserRead.user_type}
-                  </p>
+                <div className="modal-body table-responsive">
+                  <table className="table table-striped table-striped-columns border-primary table-hover  table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th scope="col">Dato</th>
+                        <th scope="col">Valor Actual</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Nombre</th>
+                        <td>
+                          {selectUserRead.name + " " + selectUserRead.last_name}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de documento</th>
+                        <td>{selectUserRead.id_type}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Documento de identidad</th>
+                        <td>{selectUserRead.id_number}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Celular</th>
+                        <td>{selectUserRead.phone}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Fecha de nacimiento</th>
+                        <td>{formatToLocalDate(selectUserRead.birth_date)}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Correo</th>
+                        <td>{selectUserRead.email}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de usuario</th>
+                        <td>{selectUserRead.user_type}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -342,7 +428,7 @@ export default function UsersDBAdmin() {
         {/* Modal para modificar la información del usuario*/}
         {showModalUpdate && actualUserUpdate && (
           <div className="modal show d-block">
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-fullscreen-md-down">
               <div className="modal-content">
                 <div className="modal-header">
                   <h1 className="modal-title title-large">
@@ -357,7 +443,7 @@ export default function UsersDBAdmin() {
                   ></button>
                 </div>
                 <div className="modal-body table-responsive">
-                  <table className="table table-striped-columns table-bordered align-middle">
+                  <table className="table table-striped table-striped-columns border-primary table-hover  table-bordered align-middle">
                     <thead>
                       <tr>
                         <th scope="col">Dato</th>
@@ -365,7 +451,7 @@ export default function UsersDBAdmin() {
                         <th scope="col">Nuevo valor</th>
                       </tr>
                     </thead>
-                    <tbody class="table-group-divider">
+                    <tbody className="table-group-divider">
                       <tr>
                         <th scope="row">Nombres</th>
                         <td>{actualUserUpdate.name}</td>
@@ -465,7 +551,9 @@ export default function UsersDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Fecha de nacimiento</th>
-                        <td>{actualUserUpdate.birth_date}</td>
+                        <td>
+                          {formatToLocalDate(actualUserUpdate.birth_date)}
+                        </td>
                         <td>
                           <input
                             type="date"
@@ -556,6 +644,61 @@ export default function UsersDBAdmin() {
                       Cancelar
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* Modal para eliminar usuario */}
+        {showModalDelete && selectedUserDelete && (
+          <div className="modal show d-block">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span className="modal-title title-large">
+                    Eliminar usuario
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModalDelete(false)}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <p>¿Está seguro de eliminar a {selectedUserDelete.name}?</p>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    className="booking-form-btn"
+                    onClick={() => setShowModalDelete(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    className="booking-form-btn"
+                    onClick={() => saveDelete(selectedUserDelete)}
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {/* Modal para crear un usuario */}
+        {showModalNew && (
+          <div className="modal show d-block">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span className="modal-title title-large">
+                    Crear un usuario
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModalNew(false)}
+                  ></button>
                 </div>
               </div>
             </div>

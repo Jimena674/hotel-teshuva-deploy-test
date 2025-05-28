@@ -18,7 +18,7 @@ export default function NavbarWebpage() {
 
   return (
     <>
-      <header className="">
+      <header>
         {/* Primera Franja: Logo + Login/Register */}
         <nav className="container navbar navbar-expand-md py-2 w-100 pb-0 d-flex flex-column">
           <div className="container-fluid d-flex justify-content-between align-items-center p-0">
