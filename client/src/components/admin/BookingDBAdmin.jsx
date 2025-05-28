@@ -113,11 +113,11 @@ export default function BookingDBAdmin() {
 
   const formatDateForInput = (isoString) => {
     if (!isoString) return "";
-    const date = new Date(isoString);
-    const localDate = new Date(
-      date.getTime() - date.getTimezoneOffset() * 60000
-    );
-    return localDate.toISOString().split("T")[0]; // Solo yyyy-MM-dd
+    return new Date(isoString).toISOString().split("T")[0]; // Solo yyyy-MM-dd
+  };
+
+  const formatToLocalDate = (dateStr) => {
+    return new Intl.DateTimeFormat("es-CO").format(new Date(dateStr));
   };
 
   return (
@@ -151,8 +151,8 @@ export default function BookingDBAdmin() {
                     <td>{index + 1}</td>
                     <td>{booking.code}</td>
                     <td>{booking.user_name}</td>
-                    <td>{booking.check_in}</td>
-                    <td>{booking.check_out}</td>
+                    <td>{formatToLocalDate(booking.check_in)}</td>
+                    <td>{formatToLocalDate(booking.check_out)}</td>
                     <td>{booking.room}</td>
                     <td>{booking.total}</td>
                     <td>
@@ -226,13 +226,15 @@ export default function BookingDBAdmin() {
                         <th scope="row">Usuario</th>
                         <td>{selectedBooking.user_name}</td>
                       </tr>
+
                       <tr>
                         <th scope="row">Ingreso</th>
-                        <td>{selectedBooking.check_in}</td>
+                        <td>{formatToLocalDate(selectedBooking.check_in)}</td>
                       </tr>
+
                       <tr>
                         <th scope="row">Salida</th>
-                        <td>{selectedBooking.check_out}</td>
+                        <td>{formatToLocalDate(selectedBooking.check_out)}</td>
                       </tr>
                       <tr>
                         <th scope="row">Habitación</th>
@@ -302,7 +304,7 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Ingreso</th>
-                        <td>{actualBooking.check_in}</td>
+                        <td>{formatToLocalDate(actualBooking.check_in)}</td>
                         <td>
                           <input
                             type="date"
@@ -319,7 +321,7 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Salida</th>
-                        <td>{actualBooking.check_out}</td>
+                        <td>{formatToLocalDate(actualBooking.check_out)}</td>
                         <td>
                           <input
                             type="date"

@@ -120,6 +120,7 @@ const updateBooking = async (req, res) => {
     }
 
     delete data.user_name;
+    delete data.room;
 
     if (Object.keys(data).length === 0) {
       return res
