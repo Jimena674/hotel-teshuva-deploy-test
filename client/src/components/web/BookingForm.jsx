@@ -1,4 +1,4 @@
-import Button from "../Button";
+import Button from "../common/Button";
 import { DateRange } from "react-date-range";
 //Importar los estilos y esqueleto para DateRange
 import "react-date-range/dist/styles.css"; // main style file

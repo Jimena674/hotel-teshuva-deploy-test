@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Button from "../Button";
+import { useState } from "react";
+import Button from "../common/Button";
 import { Link } from "react-router-dom";
 
 const ConsultarReserva = () => {

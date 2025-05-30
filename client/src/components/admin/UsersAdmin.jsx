@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"; //Hooks de react
+import AlertMessage from "../common/AlertMessage";
 
 export default function UsersDBAdmin() {
   // Definir un estado para el total de usuarios registrados
@@ -65,7 +66,7 @@ export default function UsersDBAdmin() {
 
   // Estado para abrir el modal y crear un usuario
 
-  const [showModalNew, setShowModalNew] = useState(false);
+  const [showModalRegister, setShowModalRegister] = useState(false);
   const [name, setName] = useState("");
   const [last_name, setLastName] = useState("");
   const [id_type_id, setIdTypeId] = useState("");
@@ -82,13 +83,46 @@ export default function UsersDBAdmin() {
     /* Función para abrir el modal para crear un usuario */
   }
 
-  const newUser = async () => {
+  const registerUser = async () => {
+    setShowModalRegister(true);
     try {
-      const data = await fetch(`http://localhost:4000/api/user/register`);
-      const res = await data.json();
-      setShowModalNew(true);
+      const res = await fetch(`http://localhost:4000/api/user/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          last_name,
+          id_type_id,
+          id_number,
+          phone,
+          birth_date,
+          email,
+          id_user_type,
+          password,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setName("");
+        setLastName("");
+        setIdTypeId("");
+        setIdNumber("");
+        setPhone("");
+        setBirthDate("");
+        setEmail("");
+        setIdUserType("");
+        setPassword("");
+        setMessage("✅ Registro exitoso");
+        setMessageType("success");
+        setShowModalRegister(false);
+      } else {
+        setMessage(`❌ ${data.message || "Error al registrar el usuario."}`);
+        setMessageType("error");
+      }
     } catch (error) {
-      alert("Error al crear el usuario.");
+      setMessage("❌ Error de conexión con el servidor.");
+      setMessageType("error");
+      console.error(error);
     }
   };
 
@@ -253,10 +287,13 @@ export default function UsersDBAdmin() {
     <>
       <div className="container-fluid">
         {/*Total de usuarios*/}
+
         <h1 className="title-large">
           Usuarios Registrados: {totalUsers !== null && `(${totalUsers})`}
         </h1>
+
         {/*Barra de búsqueda*/}
+
         <form className="d-flex col-6 mt-4" role="search">
           <input
             className="form-control me-2"
@@ -268,10 +305,15 @@ export default function UsersDBAdmin() {
             }}
           />
         </form>
-        <button type="button" className="mt-4">
+
+        {/** Botón para crear un usuario */}
+
+        <button type="button" className="mt-4" onClick={() => registerUser()}>
           Crear un usuario
         </button>
+
         {/*Tabla de usuarios*/}
+
         {loading ? (
           <p>Cargando usuarios...</p>
         ) : (
@@ -283,7 +325,9 @@ export default function UsersDBAdmin() {
                 <th scope="col"># ID</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Email</th>
+
                 {/* Seleccionar el tipo de usuario */}
+
                 <th scope="col">
                   <select
                     id="hr-select"
@@ -302,7 +346,7 @@ export default function UsersDBAdmin() {
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
-            {/* Cuerpo de la tabla */}
+
             <tbody>
               {filterUsers.map((user, index) => (
                 <tr key={user.id}>
@@ -312,7 +356,9 @@ export default function UsersDBAdmin() {
                   <td>{user.phone}</td>
                   <td>{user.email}</td>
                   <td>{user.user_type}</td>
+
                   {/* Funciones GET, DELETE, PUT */}
+
                   <td>
                     <div className="dropdown">
                       <button
@@ -325,6 +371,7 @@ export default function UsersDBAdmin() {
                       </button>
                       <ul className="dropdown-menu ">
                         {/* GET */}
+
                         <li>
                           <button
                             className="dropdown-item"
@@ -334,7 +381,9 @@ export default function UsersDBAdmin() {
                             Consultar
                           </button>
                         </li>
+
                         {/* PUT */}
+
                         <li>
                           <button
                             className="dropdown-item"
@@ -344,7 +393,9 @@ export default function UsersDBAdmin() {
                             Modificar
                           </button>
                         </li>
+
                         {/* DELETE */}
+
                         <li>
                           <button
                             className="dropdown-item text-danger"
@@ -362,7 +413,9 @@ export default function UsersDBAdmin() {
             </tbody>
           </table>
         )}
+
         {/* Modal para consultar la información del usuario*/}
+
         {showModalRead && selectUserRead && (
           <div className="modal show d-block">
             <div className="modal-dialog modal-dialog-centered">
@@ -425,7 +478,9 @@ export default function UsersDBAdmin() {
             </div>
           </div>
         )}
+
         {/* Modal para modificar la información del usuario*/}
+
         {showModalUpdate && actualUserUpdate && (
           <div className="modal show d-block">
             <div className="modal-dialog modal-fullscreen-md-down">
@@ -458,12 +513,7 @@ export default function UsersDBAdmin() {
                         <td>
                           <input
                             type="text"
-                            className={
-                              "form-control" +
-                              (updatedUser.name !== actualUserUpdate.name
-                                ? "bg-warning"
-                                : "")
-                            }
+                            className="form-control"
                             value={updatedUser.name}
                             onChange={(e) =>
                               setUpdatedUser({
@@ -649,7 +699,9 @@ export default function UsersDBAdmin() {
             </div>
           </div>
         )}
+
         {/* Modal para eliminar usuario */}
+
         {showModalDelete && selectedUserDelete && (
           <div className="modal show d-block">
             <div className="modal-dialog modal-dialog-centered">
@@ -685,8 +737,10 @@ export default function UsersDBAdmin() {
             </div>
           </div>
         )}
+
         {/* Modal para crear un usuario */}
-        {showModalNew && (
+
+        {showModalRegister && (
           <div className="modal show d-block">
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
@@ -697,8 +751,141 @@ export default function UsersDBAdmin() {
                   <button
                     type="button"
                     className="btn-close"
-                    onClick={() => setShowModalNew(false)}
+                    onClick={() => setShowModalRegister(false)}
                   ></button>
+                </div>
+                <div className="modal-body table-responsive">
+                  <table className="table table-striped table-striped-columns border-primary table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th scope="col">Dato</th>
+                        <th scope="col">Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Nombres</th>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Apellidos</th>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={last_name}
+                            onChange={(e) => setLastName(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de identificación</th>
+                        <td>
+                          <select
+                            className="form-select"
+                            required
+                            value={id_type_id}
+                            onChange={(e) => setIdTypeId(e.target.value)}
+                          >
+                            <option></option>
+                            <option value={1}>Cédula de ciudadanía</option>
+                            <option value={2}>Tarjeta de identidad</option>
+                            <option value={3}>Pasaporte</option>
+                            <option value={4}>Cédula de extranjería</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Número de identificación</th>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={id_number}
+                            onChange={(e) => setIdNumber(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Celular</th>
+                        <td>
+                          <input
+                            type="tel"
+                            className="form-control"
+                            required
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Fecha de nacimiento</th>
+                        <td>
+                          <input
+                            type="date"
+                            className="form-control"
+                            required
+                            value={birth_date}
+                            onChange={(e) => setBirthDate(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de usuario</th>
+                        <td>
+                          <select
+                            className="form-select"
+                            required
+                            value={id_user_type}
+                            onChange={(e) => setIdUserType(e.target.value)}
+                          >
+                            <option></option>
+                            <option value={1}>Huésped</option>
+                            <option value={2}>Administrativo</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Correo</th>
+                        <td>
+                          <input
+                            type="email"
+                            className="form-control"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Contraseña</th>
+                        <td>
+                          <div></div>
+                          <input
+                            type="password"
+                            className="form-control"
+                            required
+                            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="modal-footer">
+                  <AlertMessage message={message} type={messageType} />
                 </div>
               </div>
             </div>

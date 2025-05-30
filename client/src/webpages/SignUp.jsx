@@ -1,11 +1,13 @@
 import Navbar from "../components/webpage/NavbarWebpage";
 import FooterWebpage from "../components/webpage/FooterWebpage";
-import ButtonIcon from "../components/ButtonIcon";
-import Button from "../components/Button";
+import ButtonIcon from "../components/common/ButtonIcon";
+import Button from "../components/common/Button";
 import { useState } from "react";
-import AlertMessage from "../components/AlertMessage";
+import AlertMessage from "../components/common/AlertMessage";
 
 export default function SingUp() {
+  // Estado para registrar un usuario
+
   const [name, setName] = useState("");
   const [last_name, setLastName] = useState("");
   const [id_type_id, setIdTypeId] = useState("");
@@ -17,6 +19,10 @@ export default function SingUp() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+
+  {
+    /** Función para registrar un usuario */
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +60,7 @@ export default function SingUp() {
         setMessage("✅ Registro exitoso");
         setMessageType("success");
       } else {
-        setMessage(`❌ ${data.message || "Error al registrar"}`);
+        setMessage(`❌ ${data.message || "Error al registrar el usuario."}`);
         setMessageType("error");
       }
     } catch (err) {

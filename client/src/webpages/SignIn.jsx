@@ -1,9 +1,9 @@
-import Navbar from "../components/webpage/NavbarWebpage";
-import FooterWebpage from "../components/webpage/FooterWebpage";
-import Button from "../components/Button";
+import Navbar from "../components/web/NavbarWebpage";
+import FooterWebpage from "../components/web/FooterWebpage";
+import Button from "../components/common/Button";
 import { Link } from "react-router-dom";
-import ButtonIcon from "../components/ButtonIcon";
-import AlertMessage from "../components/AlertMessage";
+import ButtonIcon from "../components/common/ButtonIcon";
+import AlertMessage from "../components/common/AlertMessage";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
