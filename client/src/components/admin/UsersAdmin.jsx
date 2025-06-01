@@ -22,7 +22,7 @@ export default function UsersDBAdmin() {
   {
     /* Estado para mostrar la información de los usuarios */
   }
-  const [user, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function UsersDBAdmin() {
       try {
         const res = await fetch("http://localhost:4000/api/user/");
         const data = await res.json();
-        setUser(data);
+        setUsers(data);
       } catch (error) {
         console.error("Error al traer la información de los usuarios: ", error);
       } finally {
@@ -52,7 +52,7 @@ export default function UsersDBAdmin() {
   );
 
   // Filtrar usuarios por nombre, número de identificación y correo
-  const filterUsers = user.filter((user) => {
+  const filterUsers = users.filter((user) => {
     const searchBar =
       `${user.name} ${user.last_name} ${user.id_number} ${user.email}`
         .toLowerCase()
@@ -67,6 +67,7 @@ export default function UsersDBAdmin() {
   // Estado para abrir el modal y crear un usuario
 
   const [showModalRegister, setShowModalRegister] = useState(false);
+  const [userRegister, setUserRegister] = useState([]);
   const [name, setName] = useState("");
   const [last_name, setLastName] = useState("");
   const [id_type_id, setIdTypeId] = useState("");
@@ -76,15 +77,33 @@ export default function UsersDBAdmin() {
   const [email, setEmail] = useState("");
   const [id_user_type, setIdUserType] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [messageRegister, setMessageRegister] = useState("");
   const [messageType, setMessageType] = useState("");
 
   {
     /* Función para abrir el modal para crear un usuario */
   }
 
-  const registerUser = async () => {
+  const registerUser = async (user) => {
     setShowModalRegister(true);
+    setUserRegister(user);
+  };
+
+  {
+    /** Volver a llamar todos los usuarios cuando se agregue uno nuevo */
+  }
+
+  const fetchUsers = async () => {
+    const res = await fetch("http://localhost:4000/api/user/");
+    const data = await res.json();
+    setUsers(data);
+  };
+
+  {
+    /* Función para guardar el usuario en la base de datos */
+  }
+
+  const saveRegister = async () => {
     try {
       const res = await fetch(`http://localhost:4000/api/user/register`, {
         method: "POST",
@@ -112,34 +131,37 @@ export default function UsersDBAdmin() {
         setEmail("");
         setIdUserType("");
         setPassword("");
-        setMessage("✅ Registro exitoso");
+        setMessageRegister("✅ Registro exitoso");
         setMessageType("success");
+        // Cerra el modal
         setShowModalRegister(false);
+        // Actualizar la tabla
+        await fetchUsers();
       } else {
-        setMessage(`❌ ${data.message || "Error al registrar el usuario."}`);
+        setMessageRegister(
+          `❌ ${data.message || "Error al registrar el usuario."}`
+        );
         setMessageType("error");
       }
     } catch (error) {
-      setMessage("❌ Error de conexión con el servidor.");
+      setMessageRegister("❌ Error de conexión con el servidor.");
       setMessageType("error");
       console.error(error);
     }
   };
 
-  {
-    /* Función para guardar el usuario en la base de datos */
-  }
-
   // Estado para abrir el modal y eliminar un usuario
 
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [selectedUserDelete, setSelectedUserDelete] = useState(null);
+  const [messageDelete, setMessageDelete] = useState("");
 
   {
     /* Función para abrir el modal para eliminar un usuario */
   }
 
   const deleteUser = async (user) => {
+    setMessageDelete("");
     setSelectedUserDelete(user);
     setShowModalDelete(true);
   };
@@ -147,14 +169,6 @@ export default function UsersDBAdmin() {
   {
     /* Función para actualizar los campos en la tabla */
   }
-
-  const updateUserInTable = async (selectedUserDelete) => {
-    setUser((prevUser) =>
-      prevUser.map((user) =>
-        user.id === selectedUserDelete.id ? selectedUserDelete : user
-      )
-    );
-  };
 
   const saveDelete = async (user) => {
     try {
@@ -171,16 +185,21 @@ export default function UsersDBAdmin() {
 
       // Validar el resultado de la operación
       if (res.ok) {
+        setMessageDelete("✅ Usuario eliminado con éxito.");
+        setMessageType("success");
         // Actualizar la lista de usuarios
-        setUser((prev) =>
-          prev.filter((user) => user.id_number !== user.id_number)
-        );
-        setShowModalDelete(false);
-        updateUserInTable(user);
+        await fetchUsers();
       } else {
-        alert(`Error: ${data.message}`);
+        setMessageDelete(
+          `❌ ${data.message || "Error al eliminar el usuario."}`
+        );
+        setMessageType("error");
       }
     } catch (error) {
+      setMessageDelete(
+        "❌ Error de conexión con el servidor para eliminar el usuario."
+      );
+      messageType("error");
       console.error("Error al eliminar el usuario", error);
       alert("Ocurrió un error al eliminar el usuario.");
     }
@@ -214,6 +233,7 @@ export default function UsersDBAdmin() {
   const [actualUserUpdate, setActualUserUpdate] = useState(null);
   const [updatedUser, setUpdatedUser] = useState(null);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
+  const [messageUpdate, setMessageUpdate] = useState("");
 
   {
     /* Función para abrir el modal y modificar un usuario */
@@ -226,6 +246,7 @@ export default function UsersDBAdmin() {
       setActualUserUpdate(data);
       setUpdatedUser(data);
       setShowModalUpdate(true);
+      setMessageUpdate("");
     } catch (error) {
       console.error("Error al modificar los datos del usuario :", error);
       alert("No se pudo modificar los datos del usuario.");
@@ -233,7 +254,7 @@ export default function UsersDBAdmin() {
   };
 
   const updateUserInState = (updatedUser) => {
-    setUser((prevUser) =>
+    setUsers((prevUser) =>
       prevUser.map((user) => (user.id === updatedUser.id ? updatedUser : user))
     );
   };
@@ -253,10 +274,14 @@ export default function UsersDBAdmin() {
 
       if (res.ok) {
         updateUserInState(user);
-        alert("Usuario actualizado correctamente.");
+        setMessageUpdate("✅ Usuario actualizado correctamente.");
+        setMessageType("success");
         setShowModalUpdate(false);
       } else {
-        alert("Error al actualizar el usuario: " + data.message);
+        setMessageUpdate(
+          `❌ ${data.message || "Error al actualizar el usuario."}`
+        );
+        setMessageType("error");
       }
     } catch (error) {
       console.error("Error al enviar los cambios: ", error);
@@ -417,7 +442,7 @@ export default function UsersDBAdmin() {
         {/* Modal para consultar la información del usuario*/}
 
         {showModalRead && selectUserRead && (
-          <div className="modal show d-block">
+          <div className="modal show d-block modal-overlay">
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
@@ -482,7 +507,7 @@ export default function UsersDBAdmin() {
         {/* Modal para modificar la información del usuario*/}
 
         {showModalUpdate && actualUserUpdate && (
-          <div className="modal show d-block">
+          <div className="modal show d-block modal-overlay">
             <div className="modal-dialog modal-fullscreen-md-down">
               <div className="modal-content">
                 <div className="modal-header">
@@ -680,19 +705,28 @@ export default function UsersDBAdmin() {
                       </tr>
                     </tbody>
                   </table>
-                  <div className="modal-footer">
-                    <button
-                      className="booking-form-btn"
-                      onClick={() => saveUpdate(updatedUser)}
-                    >
-                      Guardar
-                    </button>
-                    <button
-                      className="booking-form-btn"
-                      onClick={() => setShowModalUpdate(false)}
-                    >
-                      Cancelar
-                    </button>
+                  <div className="modal-footer d-flex flex-column">
+                    <div>
+                      <button
+                        className="booking-form-btn"
+                        onClick={() => saveUpdate(updatedUser)}
+                      >
+                        Guardar
+                      </button>
+                      <button
+                        className="booking-form-btn"
+                        onClick={() => setShowModalUpdate(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+
+                    <div className="">
+                      <AlertMessage
+                        message={messageUpdate}
+                        type={messageType}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -703,7 +737,7 @@ export default function UsersDBAdmin() {
         {/* Modal para eliminar usuario */}
 
         {showModalDelete && selectedUserDelete && (
-          <div className="modal show d-block">
+          <div className="modal show d-block modal-overlay">
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
@@ -719,19 +753,25 @@ export default function UsersDBAdmin() {
                 <div className="modal-body">
                   <p>¿Está seguro de eliminar a {selectedUserDelete.name}?</p>
                 </div>
-                <div className="modal-footer">
-                  <button
-                    className="booking-form-btn"
-                    onClick={() => setShowModalDelete(false)}
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    className="booking-form-btn"
-                    onClick={() => saveDelete(selectedUserDelete)}
-                  >
-                    Eliminar
-                  </button>
+                <div className="modal-footer d-flex flex-column">
+                  <div>
+                    <button
+                      className="booking-form-btn"
+                      onClick={() => setShowModalDelete(false)}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      className="booking-form-btn"
+                      onClick={() => saveDelete(selectedUserDelete)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+
+                  <div className="">
+                    <AlertMessage message={messageDelete} type={messageType} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -740,8 +780,8 @@ export default function UsersDBAdmin() {
 
         {/* Modal para crear un usuario */}
 
-        {showModalRegister && (
-          <div className="modal show d-block">
+        {showModalRegister && setUserRegister && (
+          <div className="modal show d-block modal-overlay">
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
@@ -884,8 +924,21 @@ export default function UsersDBAdmin() {
                     </tbody>
                   </table>
                 </div>
-                <div className="modal-footer">
-                  <AlertMessage message={message} type={messageType} />
+                <div className="modal-footer d-flex flex-column">
+                  <div className="g-2">
+                    <button onClick={() => setShowModalRegister(false)}>
+                      Cancelar
+                    </button>
+                    <button onClick={() => saveRegister(userRegister)}>
+                      Guardar
+                    </button>
+                  </div>
+                  <div className="">
+                    <AlertMessage
+                      message={messageRegister}
+                      type={messageType}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

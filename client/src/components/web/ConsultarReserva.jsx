@@ -15,7 +15,7 @@ const ConsultarReserva = () => {
       </button>
 
       {mostrarModal && (
-        <div className="reserva-overlay">
+        <div className="modal-overlay">
           <div className="reserva-modal">
             {/*Título*/}
             <div className="row mb-2">

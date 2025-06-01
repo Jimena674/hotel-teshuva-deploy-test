@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./webpages/Home";
-import SignIn from "./webpages/SignIn";
-import SignUp from "./webpages/SignUp";
-import LayoutAdmin from "./dashboard/admin/LayoutAdmin";
+import Home from "./pages/Home";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import AdminDashboard from "./pages/AdminDashboard";
 import UsersAdmin from "./components/admin/UsersAdmin";
 import RoomsAdmin from "./components/admin/RoomsAdmin";
 import BookingsAdmin from "./components/admin/BookingsAdmin";
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/admin/dashboard" element={<LayoutAdmin />}>
+        <Route path="/admin/dashboard" element={<AdminDashboard />}>
           <Route path="users" element={<UsersAdmin />} />
           <Route path="rooms" element={<RoomsAdmin />} />
           <Route path="bookings" element={<BookingsAdmin />} />

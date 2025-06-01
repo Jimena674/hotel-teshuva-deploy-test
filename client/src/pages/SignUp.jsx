@@ -1,5 +1,5 @@
-import Navbar from "../components/webpage/NavbarWebpage";
-import FooterWebpage from "../components/webpage/FooterWebpage";
+import Navbar from "../components/web/NavbarWebpage";
+import FooterWebpage from "../components/web/FooterWebpage";
 import ButtonIcon from "../components/common/ButtonIcon";
 import Button from "../components/common/Button";
 import { useState } from "react";

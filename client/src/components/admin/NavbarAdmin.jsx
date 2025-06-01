@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Button from "../Button";
+import Button from "../common/Button";
 import { useState, useEffect } from "react";
 
 export default function NavbarDashboard() {

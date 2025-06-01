@@ -60,10 +60,10 @@ const getAllUsers = async () => {
 
 // Función para verificar si un usuario tiene reservas antes de ser eliminado
 
-const hasBooking = async (userId) => {
+const hasBooking = async (idUser) => {
   const [rows] = await db
     .promise()
-    .query(`SELECT id_booking FROM booking WHERE id_user = ?`, [userId]);
+    .query(`SELECT id_booking FROM booking WHERE id_user = ?`, [idUser]);
   return rows.length > 0;
 };
 

@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
-import NavbarAdmin from "../../components/admin/NavbarAdmin";
-import SidebarAdmin from "../../components/admin/SidebarAdmin";
-import UsersAdmin from "../../components/admin/UsersAdmin";
-import RoomsAdmin from "../../components/admin/RoomsAdmin";
-import BookingsAdmin from "../../components/admin/BookingsAdmin";
+import NavbarAdmin from "../components/admin/NavbarAdmin";
+import SidebarAdmin from "../components/admin/SidebarAdmin";
+import UsersAdmin from "../components/admin/UsersAdmin";
+import RoomsAdmin from "../components/admin/RoomsAdmin";
+import BookingsAdmin from "../components/admin/BookingsAdmin";
 
 export default function LayoutDBAdmin() {
   return (

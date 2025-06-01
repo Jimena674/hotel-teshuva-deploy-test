@@ -2,7 +2,9 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/UserModel");
 
-// Función para crear un usuario
+{
+  /*Función para crear un usuario*/
+}
 const register = async function (req, res) {
   try {
     // Datos enviados por el usuario
@@ -63,7 +65,10 @@ const register = async function (req, res) {
   }
 };
 
-// Función para iniciar sesión
+{
+  /*Función para iniciar sesión*/
+}
+
 const login = async function (req, res) {
   try {
     // Información que envía el usuario
@@ -91,10 +96,11 @@ const login = async function (req, res) {
     // Inicio de sesión exitoso
     res.status(200).json({
       message: "Inicio de sesión exitoso.",
+      // Se devuelven algunos datos para mostrar en el panel administrativo
       type: user.user_type,
       name: user.name,
       last_name: user.last_name,
-    }); // Se devuelve un mensaje y algunos datos del usuario
+    });
   } catch (error) {
     console.error("Error al iniciar sesión.", error);
     res.status(500).json({ error: "Error en el servidor." });
@@ -128,6 +134,7 @@ const deteleUser = async (req, res) => {
   try {
     // Datos ingrasados
     const idNumber = req.params.id_number;
+    const idUser = req.params.id;
 
     // Enviar el valor al modelo que se comunica con la BD
     const result = await userModel.deleteUser(idNumber);
@@ -137,8 +144,8 @@ const deteleUser = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
-    // Verificar que es usuario no esté en una reserva
-    if (await userModel.hasBooking(id)) {
+    // Verificar que el usuario no esté en una reserva
+    if (await userModel.hasBooking(idUser)) {
       return res.status(409).json({
         message:
           "No se puede eliminar el usuario porque tiene reservas asociadas.",
