@@ -8,30 +8,27 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function SingIn() {
-  // Definir estados para enviar los datos del frontend al backend
+  // Estados para enviar los datos del frontend al backend
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Solicitar respuesta del backend
       const res = await fetch("http://localhost:4000/api/user/login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+      // Parsear la respuesta a JSON
       const data = await res.json();
-
       if (res.ok) {
         setMessageType("success");
         setMessage("✅ " + data.message);
-
         // Guardar en localStorage
         localStorage.setItem(
           "user",
@@ -41,10 +38,11 @@ export default function SingIn() {
             type: data.type,
           })
         );
-
         // Redireccionar según el tipo de usuario
         if (data.type === "Administrativo") {
           navigate("/admin/dashboard");
+        } else if (data.type === "Cliente") {
+          navigate("/");
         }
       } else {
         setMessageType("error");

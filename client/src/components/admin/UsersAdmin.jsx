@@ -90,7 +90,7 @@ export default function UsersDBAdmin() {
   };
 
   {
-    /** Volver a llamar todos los usuarios cuando se agregue uno nuevo */
+    /** Solicitar los datos de todos los usuarios */
   }
 
   const fetchUsers = async () => {
@@ -105,6 +105,7 @@ export default function UsersDBAdmin() {
 
   const saveRegister = async () => {
     try {
+      // Solicitar respuesta del backend
       const res = await fetch(`http://localhost:4000/api/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -120,6 +121,7 @@ export default function UsersDBAdmin() {
           password,
         }),
       });
+      // Parsear la respuesta a JSON
       const data = await res.json();
       if (res.ok) {
         setName("");
@@ -167,23 +169,20 @@ export default function UsersDBAdmin() {
   };
 
   {
-    /* Función para actualizar los campos en la tabla */
+    /* Función para guardar los cambios en el backend */
   }
 
   const saveDelete = async (user) => {
     try {
-      // Llamar a la función del backend usando fetch
+      // Solicitar respuesta del backend
       const res = await fetch(
         `http://localhost:4000/api/user/${user.id_number}`,
         {
           method: "DELETE",
         }
       );
-
       // Parsear la respuesta del servidor en formato json
       const data = await res.json();
-
-      // Validar el resultado de la operación
       if (res.ok) {
         setMessageDelete("✅ Usuario eliminado con éxito.");
         setMessageType("success");
@@ -241,19 +240,27 @@ export default function UsersDBAdmin() {
 
   const updateUser = async (id) => {
     try {
+      // Solicitar respuesta del backend
       const res = await fetch(`http://localhost:4000/api/user/${id}`);
+      // Parsear respuesta a JSON
       const data = await res.json();
+      // Abrir el modal
+      setShowModalUpdate(true);
       setActualUserUpdate(data);
       setUpdatedUser(data);
-      setShowModalUpdate(true);
       setMessageUpdate("");
     } catch (error) {
-      console.error("Error al modificar los datos del usuario :", error);
-      alert("No se pudo modificar los datos del usuario.");
+      setMessageUpdate("❌ No se pudo modificar los datos del usuario.");
+      setMessageType("error");
+      console.error(
+        "Error al intentar modificar los datos del usuario :",
+        error
+      );
     }
   };
 
   const updateUserInState = (updatedUser) => {
+    // Modificar los datos de un usuario existente si conincide por el id
     setUsers((prevUser) =>
       prevUser.map((user) => (user.id === updatedUser.id ? updatedUser : user))
     );
@@ -264,18 +271,19 @@ export default function UsersDBAdmin() {
   }
   const saveUpdate = async (user) => {
     try {
+      // Solicitar la respuesta del backend
       const res = await fetch(`http://localhost:4000/api/user/${user.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
       });
-
+      // Parsear la respuesta a JSON
       const data = await res.json();
-
       if (res.ok) {
         updateUserInState(user);
         setMessageUpdate("✅ Usuario actualizado correctamente.");
         setMessageType("success");
+        // Cerrar el modal
         setShowModalUpdate(false);
       } else {
         setMessageUpdate(
@@ -706,21 +714,24 @@ export default function UsersDBAdmin() {
                     </tbody>
                   </table>
                   <div className="modal-footer d-flex flex-column">
-                    <div>
-                      <button
-                        className="booking-form-btn"
-                        onClick={() => saveUpdate(updatedUser)}
-                      >
-                        Guardar
-                      </button>
-                      <button
-                        className="booking-form-btn"
-                        onClick={() => setShowModalUpdate(false)}
-                      >
-                        Cancelar
-                      </button>
+                    <div className="row gx-3">
+                      <div className="col">
+                        <button
+                          className="booking-form-btn"
+                          onClick={() => setShowModalUpdate(false)}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                      <div className="col">
+                        <button
+                          className="solid-btn-tertiary"
+                          onClick={() => saveUpdate(updatedUser)}
+                        >
+                          Guardar
+                        </button>
+                      </div>
                     </div>
-
                     <div className="">
                       <AlertMessage
                         message={messageUpdate}
@@ -754,19 +765,23 @@ export default function UsersDBAdmin() {
                   <p>¿Está seguro de eliminar a {selectedUserDelete.name}?</p>
                 </div>
                 <div className="modal-footer d-flex flex-column">
-                  <div>
-                    <button
-                      className="booking-form-btn"
-                      onClick={() => setShowModalDelete(false)}
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      className="booking-form-btn"
-                      onClick={() => saveDelete(selectedUserDelete)}
-                    >
-                      Eliminar
-                    </button>
+                  <div className="row gx-3">
+                    <div className="col">
+                      <button
+                        className="booking-form-btn"
+                        onClick={() => setShowModalDelete(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        className="solid-btn-tertiary"
+                        onClick={() => saveDelete(selectedUserDelete)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
                   </div>
 
                   <div className="">
@@ -925,13 +940,23 @@ export default function UsersDBAdmin() {
                   </table>
                 </div>
                 <div className="modal-footer d-flex flex-column">
-                  <div className="g-2">
-                    <button onClick={() => setShowModalRegister(false)}>
-                      Cancelar
-                    </button>
-                    <button onClick={() => saveRegister(userRegister)}>
-                      Guardar
-                    </button>
+                  <div className="row gx-3">
+                    <div className="col">
+                      <button
+                        className="booking-form-btn"
+                        onClick={() => setShowModalRegister(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        className="solid-btn-tertiary"
+                        onClick={() => saveRegister(userRegister)}
+                      >
+                        Guardar
+                      </button>
+                    </div>
                   </div>
                   <div className="">
                     <AlertMessage

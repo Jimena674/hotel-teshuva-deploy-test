@@ -7,7 +7,7 @@ const userModel = require("../models/UserModel");
 }
 const register = async function (req, res) {
   try {
-    // Datos enviados por el usuario
+    // Datos suministrados por el usuario
     const {
       name,
       last_name,
@@ -50,14 +50,12 @@ const register = async function (req, res) {
       last_name,
       id_type_id,
       id_number,
-
       phone,
       birth_date,
       email,
       id_user_type,
       hashedPassword
     );
-
     res.json({ message: "Usuario creado con éxito." });
   } catch (error) {
     console.error("Error al crear el usuario.", error);
@@ -132,18 +130,15 @@ const getAllUsers = async (req, res) => {
 // Función para eliminar un usuario
 const deteleUser = async (req, res) => {
   try {
-    // Datos ingrasados
+    // Datos de la solicitud
     const idNumber = req.params.id_number;
     const idUser = req.params.id;
-
-    // Enviar el valor al modelo que se comunica con la BD
+    // Solicitar respuesa a la base de datos
     const result = await userModel.deleteUser(idNumber);
-
     // Verificar si el usuario existe
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
-
     // Verificar que el usuario no esté en una reserva
     if (await userModel.hasBooking(idUser)) {
       return res.status(409).json({
@@ -151,7 +146,6 @@ const deteleUser = async (req, res) => {
           "No se puede eliminar el usuario porque tiene reservas asociadas.",
       });
     }
-
     res.json({ message: "Usuario eliminado exitosamente." });
   } catch (error) {
     console.error("Error al eliminar el usuario: ", error);
@@ -159,7 +153,9 @@ const deteleUser = async (req, res) => {
   }
 };
 
-// Función para leer todos los datos de un usuario
+{
+  /*Función para leer todos los datos de un usuario*/
+}
 const readUser = async (req, res) => {
   try {
     // Datos de la soliditud
@@ -170,7 +166,6 @@ const readUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "Usuario no encontraro." });
     }
-
     res.json(user);
   } catch (error) {
     console.error("Error al obtener los datos del usuario : ", error);
@@ -178,11 +173,13 @@ const readUser = async (req, res) => {
   }
 };
 
-// Función para actualizar los datos de un usuario
+{
+  /*Función para actualizar los datos de un usuario*/
+}
 const updateUser = async (req, res) => {
+  // Validar la información suministrada
   const id = req.params.id;
   const updatedData = req.body;
-
   if (!id) {
     return res.status(400).json({ message: "id no proporcionado." });
   }
@@ -190,8 +187,8 @@ const updateUser = async (req, res) => {
   if (!updatedData) {
     return res.status(400).json({ message: "Datos de usuario vacios." });
   }
-
   try {
+    // Datos de la solicitud
     const {
       name,
       last_name,
@@ -203,7 +200,7 @@ const updateUser = async (req, res) => {
       id_user_type,
       password,
     } = req.body;
-
+    // Validar cambios en alguno de los datos
     if (name) {
       updatedData.name = name.trim();
     }
@@ -234,13 +231,11 @@ const updateUser = async (req, res) => {
       const hashedPassword = await bcrypt.hash(clearPassword, salt);
       updatedData.password = hashedPassword;
     }
-
+    // Eliminar la información que no pertenece a la tabla user
     delete updatedData.user_type;
     delete updatedData.id_type;
-
     // Modelo que interactúa con la base de datos
     const result = await userModel.updateUser(id, updatedData);
-
     res.json({ message: "Usuario actualizado correctamente." });
   } catch (error) {
     console.error("Error al actualizar los datos del usuario :", error);

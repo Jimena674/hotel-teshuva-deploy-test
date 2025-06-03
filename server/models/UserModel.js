@@ -75,7 +75,9 @@ const deleteUser = async (id_number) => {
   return result;
 };
 
-// Consultar la información de un usuario
+{
+  /*Consultar la información de un usuario*/
+}
 const readUser = async (id_number) => {
   const [rows] = await db
     .promise()
@@ -86,7 +88,9 @@ const readUser = async (id_number) => {
   return rows[0]; // Devuelve el primer usuario encontrado
 };
 
-// Actualizar la información de un usuario
+{
+  /*Actualizar la información de un usuario*/
+}
 const updateUser = async (id, updatedData) => {
   const fields = [];
   const values = [];
