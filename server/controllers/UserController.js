@@ -20,6 +20,17 @@ const register = async function (req, res) {
       password,
     } = req.body;
     // Validar la entrada de datos
+    console.log(
+      "Datos ingresados: " + name,
+      last_name,
+      id_type_id,
+      id_number,
+      phone,
+      birth_date,
+      email,
+      id_user_type,
+      password
+    );
     if (
       !name ||
       !last_name ||
@@ -82,7 +93,7 @@ const login = async function (req, res) {
     // Verificar si el usuario existe
     const user = await userModel.findUserByEmail(email);
     if (!user) {
-      return res.status(404).json({ message: "El usuario no existe." });
+      return res.status(404).json({ message: "El correo no existe." });
     }
 
     // Comparar contraseñas
@@ -154,7 +165,7 @@ const deteleUser = async (req, res) => {
 };
 
 {
-  /*Función para leer todos los datos de un usuario*/
+  /*Función para leer los datos de un usuario*/
 }
 const readUser = async (req, res) => {
   try {

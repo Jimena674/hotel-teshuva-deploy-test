@@ -1,7 +1,9 @@
 // Importar módulo para interactuar con la base de datos
 const db = require("../config/db");
 
-// Buscar un usuario por el email en la BD
+{
+  /*Buscar un usuario por el email en la BD*/
+}
 const findUserByEmail = async (email) => {
   const [rows] = await db
     .promise()
@@ -12,7 +14,10 @@ const findUserByEmail = async (email) => {
   return rows[0];
 };
 
-// Crear un usuario en la BD
+{
+  /*Crear un usuario en la BD*/
+}
+
 const createUser = async (
   name,
   last_name,
@@ -42,13 +47,19 @@ const createUser = async (
     );
 };
 
-// Total de usuarios
+{
+  /*Total de usuarios*/
+}
+
 const countUsers = async () => {
   const [rows] = await db.promise().query("SELECT COUNT(*) AS total FROM user");
   return rows[0].total;
 };
 
-// Mostrar todos los usuarios
+{
+  /*Mostrar todos los usuarios*/
+}
+
 const getAllUsers = async () => {
   const [rows] = await db
     .promise()
@@ -67,7 +78,9 @@ const hasBooking = async (idUser) => {
   return rows.length > 0;
 };
 
-// Eliminar un usuario por el número de identificación
+{
+  /*Eliminar un usuario por el número de identificación*/
+}
 const deleteUser = async (id_number) => {
   const [result] = await db
     .promise()
