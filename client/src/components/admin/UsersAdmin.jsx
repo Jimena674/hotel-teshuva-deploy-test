@@ -22,6 +22,7 @@ export default function UsersDBAdmin() {
   {
     /* Estado para mostrar la información de los usuarios */
   }
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -195,9 +196,7 @@ export default function UsersDBAdmin() {
         setMessageType("error");
       }
     } catch (error) {
-      setMessageDelete(
-        "❌ Error de conexión con el servidor para eliminar el usuario."
-      );
+      setMessageDelete("❌ Error de conexión con el servidor.");
       messageType("error");
       console.error("Error al eliminar el usuario", error);
       alert("Ocurrió un error al eliminar el usuario.");
@@ -269,6 +268,7 @@ export default function UsersDBAdmin() {
   {
     /* Función para guardar la actualización en el backend */
   }
+
   const saveUpdate = async (user) => {
     try {
       // Solicitar la respuesta del backend
@@ -283,8 +283,6 @@ export default function UsersDBAdmin() {
         updateUserInState(user);
         setMessageUpdate("✅ Usuario actualizado correctamente.");
         setMessageType("success");
-        // Cerrar el modal
-        setShowModalUpdate(false);
       } else {
         setMessageUpdate(
           `❌ ${data.message || "Error al actualizar el usuario."}`
@@ -701,7 +699,6 @@ export default function UsersDBAdmin() {
                           <input
                             type="password"
                             className="form-control"
-                            value={updatedUser.password}
                             onChange={(e) =>
                               setUpdatedUser({
                                 ...updatedUser,

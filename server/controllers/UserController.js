@@ -1,6 +1,7 @@
 // Importar módulos para gestionar las req, res, errores y lógica de la conexión a la bd
 const bcrypt = require("bcrypt");
 const userModel = require("../models/UserModel");
+const db = require("../config/db");
 
 {
   /*Función para crear un usuario*/
@@ -116,7 +117,10 @@ const login = async function (req, res) {
   }
 };
 
-// Total de usuarios registrados
+{
+  /*Total de usuarios registrados*/
+}
+
 const countUsers = async (req, res) => {
   try {
     const total = await userModel.countUsers();
@@ -127,7 +131,10 @@ const countUsers = async (req, res) => {
   }
 };
 
-// Traer todos los usuarios
+{
+  /*Traer todos los usuarios*/
+}
+
 const getAllUsers = async (req, res) => {
   try {
     const users = await userModel.getAllUsers();
@@ -138,25 +145,36 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// Función para eliminar un usuario
+{
+  /*Función para eliminar un usuario*/
+}
+
 const deteleUser = async (req, res) => {
   try {
     // Datos de la solicitud
+
     const idNumber = req.params.id_number;
-    const idUser = req.params.id;
-    // Solicitar respuesa a la base de datos
-    const result = await userModel.deleteUser(idNumber);
-    // Verificar si el usuario existe
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Usuario no encontrado." });
-    }
+    const idUser = req.params.id_user;
+
+    const hasBooking = await userModel.hasBooking(idUser);
+    console.log("¿Tiene reservas asociadas?: " + hasBooking);
     // Verificar que el usuario no esté en una reserva
-    if (await userModel.hasBooking(idUser)) {
+    if (hasBooking) {
       return res.status(409).json({
         message:
           "No se puede eliminar el usuario porque tiene reservas asociadas.",
       });
     }
+
+    // Solicitar respuesta a la base de datos
+    const result = await userModel.deleteUser(idNumber);
+
+    // Verificar si el usuario existe
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
     res.json({ message: "Usuario eliminado exitosamente." });
   } catch (error) {
     console.error("Error al eliminar el usuario: ", error);
@@ -167,6 +185,7 @@ const deteleUser = async (req, res) => {
 {
   /*Función para leer los datos de un usuario*/
 }
+
 const readUser = async (req, res) => {
   try {
     // Datos de la soliditud
@@ -187,19 +206,29 @@ const readUser = async (req, res) => {
 {
   /*Función para actualizar los datos de un usuario*/
 }
+
 const updateUser = async (req, res) => {
   // Validar la información suministrada
+
   const id = req.params.id;
   const updatedData = req.body;
-  if (!id) {
-    return res.status(400).json({ message: "id no proporcionado." });
+
+  if (!id || !updatedData) {
+    return res.status(400).json({ message: "ID o Datos faltantes." });
   }
 
-  if (!updatedData) {
-    return res.status(400).json({ message: "Datos de usuario vacios." });
-  }
   try {
+    const [originalUserArray] = await db
+      .promise()
+      .query("SELECT * FROM user WHERE id = ?", [id]);
+
+    const originalUser = originalUserArray[0];
+
+    console.log("La información existente del usuario es: ");
+    console.log(originalUser);
+
     // Datos de la solicitud
+
     const {
       name,
       last_name,
@@ -211,42 +240,88 @@ const updateUser = async (req, res) => {
       id_user_type,
       password,
     } = req.body;
-    // Validar cambios en alguno de los datos
-    if (name) {
-      updatedData.name = name.trim();
+
+    // Verificar que se hayan enviado todos los campos del formulario
+
+    if (
+      !name ||
+      !last_name ||
+      !id_type_id ||
+      !id_number ||
+      !phone ||
+      !birth_date ||
+      !email ||
+      !id_user_type ||
+      !password
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Todos los campos son obligatorios." });
     }
-    if (last_name) {
-      updatedData.last_name = last_name.trim();
-    }
-    if (id_type_id) {
-      updatedData.id_type_id = parseInt(id_type_id);
-    }
-    if (id_number) {
-      updatedData.id_number = id_number.trim();
-    }
-    if (phone) {
-      updatedData.phone = phone.trim();
-    }
-    if (birth_date) {
-      updatedData.birth_date = birth_date.trim();
-    }
-    if (email) {
-      updatedData.email = email.trim();
-    }
-    if (id_user_type) {
-      updatedData.id_user_type = parseInt(id_user_type);
-    }
-    if (password) {
-      const clearPassword = String(password).trim();
+
+    // Registrar los nuevos valores
+
+    const newData = {
+      name: updatedData.name?.trim(),
+      last_name: updatedData.last_name?.trim(),
+      id_type_id: parseInt(updatedData.id_type_id),
+      id_number: updatedData.id_number?.trim(),
+      phone: updatedData.phone?.trim(),
+      birth_date: updatedData.birth_date?.trim(),
+      email: updatedData.email?.trim(),
+      id_user_type: parseInt(updatedData.id_user_type),
+    };
+
+    console.log("Los datos actualizados son: ");
+    console.log(newData);
+
+    // Comparar los valores originales con los nuevos.
+
+    const noChanges = Object.entries(newData).every(([key, value]) => {
+      const originalValue = originalUser[key];
+      const isDateField = key === "birth_date";
+      // Normalizar las fechas
+      if (isDateField) {
+        const newDate = new Date(value).toISOString().slice(0, 10);
+        const originalDate = new Date(originalValue).toISOString().slice(0, 10);
+        return newDate === originalDate;
+      }
+
+      return String(value).trim() === String(originalValue).trim();
+    });
+
+    console.log("¿No se realizaron cambios?: " + noChanges);
+    console.log("¿No se modificó la contraseña?: " + !updatedData.password);
+
+    // Eliminar la contraseña si está vacía o no se modificó
+
+    if (updatedData.password && updatedData.password.trim() !== "") {
+      // solo si se escribió algo nuevo, la encriptas
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(clearPassword, salt);
-      updatedData.password = hashedPassword;
+      const hashed = await bcrypt.hash(updatedData.password.trim(), salt);
+      updatedData.password = hashed;
+    } else {
+      // si no hay nueva contraseña, eliminar del objeto para que no se sobreescriba
+      delete updatedData.password;
     }
+
+    console.log(updatedData.password);
+
+    if (noChanges && !updatedData.password) {
+      return res
+        .status(400)
+        .json({ message: "No se realizaron cambios en los datos." });
+    }
+
     // Eliminar la información que no pertenece a la tabla user
+
     delete updatedData.user_type;
     delete updatedData.id_type;
+
     // Modelo que interactúa con la base de datos
-    const result = await userModel.updateUser(id, updatedData);
+
+    const result = await userModel.updateUser(id, newData);
+
     res.json({ message: "Usuario actualizado correctamente." });
   } catch (error) {
     console.error("Error al actualizar los datos del usuario :", error);
