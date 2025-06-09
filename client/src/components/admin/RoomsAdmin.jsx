@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function RoomsDBAdmin() {
-  {
-    /* Estado para traer las habitaciones de la base de datos */
-  }
+  //Estado para traer las habitaciones de la base de datos
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,13 +22,12 @@ export default function RoomsDBAdmin() {
     fetchRooms();
   }, []);
 
-  {
-    /* Estado para leer todos los datos de un usuario */
-  }
-
+  // Estado para leer los datos de una habitación
   const [selectRoomRead, setSelectRoomRead] = useState(null);
 
-  // Función para mostrar los datos de una habitación
+  {
+    /*Función para mostrar los datos de una habitación*/
+  }
 
   const readRoom = async (id_room) => {
     try {
@@ -44,8 +41,81 @@ export default function RoomsDBAdmin() {
     }
   };
 
+  // Estados para crear una habitación y abrir el modal
+  const [showModalNewRoom, setShowModalNewRoom] = useState(false);
+  const [registerRoom, setRegisterRoom] = useState([]);
+  const [room_number, setRoomNumber] = useState("");
+  const [rate, setRate] = useState("");
+  const [id_room_type, setRoomType] = useState("");
+  const [id_room_status, setRoomStatus] = useState("");
+  const [id_floor, setFloor] = useState("");
+  const [photo_path, setPhotoPath] = useState("");
+  const [messageRegister, setMessageRegister] = useState("");
+  const [messageType, setMessageType] = useState("");
+
   {
-    /* Estado para modificar los datos de una habitación */
+    /** Función para abrir el modal para crear una habitación */
+  }
+  const newRoom = async (room) => {
+    setShowModalNewRoom(true);
+    setRegisterRoom(room);
+  };
+
+  {
+    /** Función para traer los datos de las habitaciones para actualizar la tabla */
+  }
+  const fetchRooms = async () => {
+    const res = await fetch(`http://localhost:4000/api/room/`);
+    const data = await res.json();
+    setRooms(data);
+  };
+
+  {
+    /** Función para guardar la habitación en la base de datos */
+  }
+  const saveRoom = async () => {
+    try {
+      //Enviar datos y solicitar respuesta del backend
+      const res = await fetch(`http://localhost:4000/api/room/new`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          room_number,
+          rate,
+          id_room_type,
+          id_room_status,
+          id_floor,
+          photo_path,
+        }),
+      });
+      // Parsear la respuesta a JSON
+      const data = await res.json();
+      if (res.ok) {
+        setRoomNumber("");
+        setRate("");
+        setRoomType("");
+        setRoomStatus("");
+        setFloor("");
+        setPhotoPath("");
+        setMessageRegister("✅ Registro exitoso.");
+        setMessageType("success");
+        // Actualizar la tabla
+        await fetchRooms();
+      } else {
+        setMessageRegister(
+          `❌ ${data.message || "Error al registrar el usuario."}`
+        );
+        setMessageType("error");
+      }
+    } catch (error) {
+      setMessageRegister("❌ Error de conexión con el servidor.");
+      setMessageType("error");
+      console.error(error);
+    }
+  };
+
+  {
+    /* Estados para modificar los datos de una habitación */
   }
 
   const [showModalUpdate, setShowModalUpdate] = useState(false);
@@ -170,7 +240,7 @@ export default function RoomsDBAdmin() {
     <>
       <div className="container-fluid">
         <h1 className="title-large">Habitaciones</h1>
-        <button type="button" className="mt-4">
+        <button type="button" className="mt-4" onClick={() => newRoom()}>
           Crear habitación
         </button>
 
@@ -269,6 +339,37 @@ export default function RoomsDBAdmin() {
             </tbody>
           </table>
         )}
+        {/** Modal para crear una habitación */}
+        {showModalNewRoom && setRegisterRoom && (
+          <div className="modal show d-block modal-overlay">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span className="modal-title title-large">
+                    Crear una habitación
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModalNewRoom(false)}
+                  ></button>
+                </div>
+                <div className="modal-body table-responsive">
+                  <table className="table table-striped table-striped-columns border-primary table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th scope="col">Dato</th>
+                        <th scope="col">Valor</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+                <div className="modal-footer"></div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Modal para actualizar los datos de las habitaciones */}
         {showModalUpdate && actualRoomUpdate && (
           <div className="modal show d-block">
@@ -462,18 +563,6 @@ export default function RoomsDBAdmin() {
             </div>
           </div>
         )}
-
-        {/* Mostrar la imagen de la habitación temporalmente */}
-        {/* 
-        {photoPreview && (
-          <img
-            src={URL.createObjectURL(photoPreview)}
-            alt="Vista previa"
-            width="100"
-            className="mt-2 rounded"
-          ></img>
-        )}
-          */}
       </div>
     </>
   );

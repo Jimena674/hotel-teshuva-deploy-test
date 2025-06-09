@@ -2,8 +2,12 @@ import { useEffect, useState } from "react"; //Hooks de react
 import AlertMessage from "../common/AlertMessage";
 
 export default function UsersDBAdmin() {
-  // Definir un estado para el total de usuarios registrados
+  // Estado para el total de usuarios registrados
   const [totalUsers, setTotalUsers] = useState(null); //Variable de estado que inicializa como null
+
+  {
+    /** Función para obtener el total de usuarios registrados */
+  }
 
   useEffect(() => {
     const fetchTotal = async () => {
@@ -19,12 +23,13 @@ export default function UsersDBAdmin() {
     fetchTotal();
   }, []);
 
-  {
-    /* Estado para mostrar la información de los usuarios */
-  }
-
+  //Estado para mostrar la información de los usuarios
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  {
+    /** Función para mostrar todos los usuarios */
+  }
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -42,17 +47,20 @@ export default function UsersDBAdmin() {
     fetchUsers();
   }, []);
 
-  // Definir un estado para la barra de búsqueda de usuarios
+  // Estado para la barra de búsqueda de usuarios
   const [search, setSearch] = useState("");
 
-  // Definir un estado para filtrar por el tipo de usuario
+  // Estado para filtrar por el tipo de usuario
   const [userTypeFilter, setUserTypeFilter] = useState(
     "todos",
     "cliente",
     "administrativo"
   );
 
-  // Filtrar usuarios por nombre, número de identificación y correo
+  {
+    /*Función para filtrar usuarios por nombre, número de identificación y correo*/
+  }
+
   const filterUsers = users.filter((user) => {
     const searchBar =
       `${user.name} ${user.last_name} ${user.id_number} ${user.email}`
@@ -65,8 +73,7 @@ export default function UsersDBAdmin() {
     return searchBar && searchType;
   });
 
-  // Estado para abrir el modal y crear un usuario
-
+  // Estados para abrir el modal y crear un usuario
   const [showModalRegister, setShowModalRegister] = useState(false);
   const [userRegister, setUserRegister] = useState([]);
   const [name, setName] = useState("");
@@ -340,7 +347,7 @@ export default function UsersDBAdmin() {
         {/** Botón para crear un usuario */}
 
         <button type="button" className="mt-4" onClick={() => registerUser()}>
-          Crear un usuario
+          Crear usuario
         </button>
 
         {/*Tabla de usuarios*/}
