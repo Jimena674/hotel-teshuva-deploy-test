@@ -218,6 +218,7 @@ const updateUser = async (req, res) => {
   }
 
   try {
+    // Información existente para comparar
     const [originalUserArray] = await db
       .promise()
       .query("SELECT * FROM user WHERE id = ?", [id]);
@@ -228,7 +229,6 @@ const updateUser = async (req, res) => {
     console.log(originalUser);
 
     // Datos de la solicitud
-
     const {
       name,
       last_name,

@@ -5,7 +5,7 @@ export default function RoomsDBAdmin() {
   //Estado para traer las habitaciones de la base de datos
 
   const [rooms, setRooms] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingRooms, setLoadingRooms] = useState(true);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -17,30 +17,11 @@ export default function RoomsDBAdmin() {
       } catch (error) {
         console.error("Error al cargar los datos de las habitaciones: ", error);
       } finally {
-        setLoading(false);
+        setLoadingRooms(false);
       }
     };
     fetchRooms();
   }, []);
-
-  // Estado para leer los datos de una habitación
-  const [selectRoomRead, setSelectRoomRead] = useState(null);
-
-  {
-    /*Función para mostrar los datos de una habitación*/
-  }
-
-  const readRoom = async (id_room) => {
-    try {
-      // Recibir los datos del backend
-      const res = await fetch(`http://localhost:4000/api/room/${id_room}`);
-      // Parseo de los datos a json
-      const data = await res.json();
-      setSelectRoomRead(data);
-    } catch (error) {
-      console.error("Error al leer los datos de la habitación: ", error);
-    }
-  };
 
   // Estados para crear una habitación y abrir el modal
   const [showModalNewRoom, setShowModalNewRoom] = useState(false);
@@ -115,16 +96,40 @@ export default function RoomsDBAdmin() {
     }
   };
 
+  // Estados para consultar una habitación.
+  const [showModalReadRoom, setShowModalReadRoom] = useState(false);
+  const [messageReadRoom, setMessageReadRoom] = useState("");
+  const [readedRoom, setReadedRoom] = useState(null);
+
   {
-    /* Estados para modificar los datos de una habitación */
+    /** Función para consultar los datos de una habitación. */
   }
 
+  const readRoom = async (id_room) => {
+    try {
+      // Recibir los datos del backend
+      const res = await fetch(`http://localhost:4000/api/room/${id_room}`);
+      // Parseo de los datos a json
+      const data = await res.json();
+      setReadedRoom(data);
+      setShowModalReadRoom(true);
+    } catch (error) {
+      setMessageReadRoom("❌ Error de conexión con el servidor.");
+      setMessageType("error");
+      console.error("Error al leer los datos de la habitación: ", error);
+    }
+  };
+
+  //Estados para abrir el modal y modificar los datos de una habitación
   const [showModalUpdateRoom, setShowModalUpdateRoom] = useState(false);
   const [updatedRoom, setUpdatedRoom] = useState(null);
   const [actualRoomUpdate, setActualRoomUpdate] = useState(null);
-  const [photoPreview, setPhotoPreview] = useState(null);
+  const [photoPreviewRoom, setPhotoPreviewRoom] = useState(null);
+  const [messageUpdateRoom, setMessageUpdateRoom] = useState("");
 
-  // Función para abrir el modal para modificar una habitación
+  {
+    /*Función para abrir el modal para modificar una habitación*/
+  }
 
   const updateRoom = async (id_room) => {
     try {
@@ -133,6 +138,7 @@ export default function RoomsDBAdmin() {
       setActualRoomUpdate(data);
       setUpdatedRoom(data);
       setShowModalUpdateRoom(true);
+      setMessageUpdateRoom("");
     } catch (error) {
       console.error("Error al actualizar los datos de la habitación: ", error);
       alert("No se pudo actualizar los datos de la habitación.");
@@ -178,13 +184,18 @@ export default function RoomsDBAdmin() {
 
       if (res.ok) {
         updateRoomInState(updatedRoom);
-        alert("Habitación actualizada correctamente.");
-        setShowModalUpdateRoom(false);
-        setPhotoPreview(null);
+        setMessageUpdateRoom("✅ Habitación actualizada con éxito.");
+        setMessageType("success");
+        setPhotoPreviewRoom(null);
       } else {
-        alert("Error al actualizar la habitación.");
+        setMessageUpdateRoom(
+          `❌ ${data.message || "Error al actualizar la habitación."} `
+        );
+        setMessageType("error");
       }
     } catch (error) {
+      setMessageUpdateRoom("❌ Error de conexión con el servidor.");
+      setMessageType("error");
       console.error(
         "Error al guardar en el backend la actualización de la habitación."
       );
@@ -207,33 +218,53 @@ export default function RoomsDBAdmin() {
     { id: 2, name: "Piso 2" },
   ];
 
+  // Estados para eliminar una habitación
+  const [showModalDeleteRoom, setShowModalDeteleRoom] = useState(false);
+  const [messageDeleteRoom, setMessageDeleteRoom] = useState("");
+  const [selectedRoomDelete, setSelectedRoomDelete] = useState(null);
+
   {
-    /* Función para eliminar una habitación */
+    /* Función para abrir el modal de eliminar habitación */
   }
 
-  const deleteRoom = async (room_number) => {
+  const deleteRoom = async (room) => {
+    setShowModalDeteleRoom(true);
+    setSelectedRoomDelete(room);
+    setMessageDeleteRoom("");
+  };
+
+  {
+    /* Función para guardar los cambios en el backend */
+  }
+
+  const saveDeleteRoom = async (room) => {
     try {
       // Llamar a la función del backend
-      const res = await fetch(`http://localhost:4000/api/room/${room_number}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `http://localhost:4000/api/room/${room.room_number}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       // Parsear la respuesta
       const data = await res.json();
 
       if (res.ok) {
-        alert("Habitación eliminada con éxito.");
+        setMessageDeleteRoom("✅ Habitación eliminada con éxito.");
+        setMessageType("success");
         // Actualizar la tabla de habitaciones
-
-        setRooms((prev) =>
-          prev.filter((room) => room.room_number !== room_number)
-        );
+        await fetchRooms();
       } else {
-        alert(`Error: ${data.message}`);
+        setMessageDeleteRoom(
+          `❌ ${data.message || "Error al eliminar la habitación."}`
+        );
+        setMessageType("error");
       }
     } catch (error) {
       console.error("Error al eliminar la habitación: ", error);
-      alert("Ocurrió un error al eliminar la habitación.");
+      setMessageDeleteRoom("❌ Error de conexión con el servidor.");
+      setMessageType("error");
     }
   };
 
@@ -247,7 +278,7 @@ export default function RoomsDBAdmin() {
 
         {/* Tabla de habitaciones */}
 
-        {loading ? (
+        {loadingRooms ? (
           <p> Cargando habitaciones ...</p>
         ) : (
           <table className="table mt-4">
@@ -312,6 +343,16 @@ export default function RoomsDBAdmin() {
                           <i className="bi bi-three-dots-vertical"></i>
                         </button>
                         <ul className="dropdown-menu">
+                          {/* GET */}
+                          <li>
+                            <button
+                              className="dropdown-item"
+                              type="button"
+                              onClick={() => readRoom(room.id_room)}
+                            >
+                              Consultar
+                            </button>
+                          </li>
                           {/* PUT */}
                           <li>
                             <button
@@ -326,7 +367,7 @@ export default function RoomsDBAdmin() {
                           <li>
                             <button
                               className="dropdown-item text-danger"
-                              onClick={() => deleteRoom(room.room_number)}
+                              onClick={() => deleteRoom(room)}
                               type="button"
                             >
                               Eliminar
@@ -495,7 +536,7 @@ export default function RoomsDBAdmin() {
                     aria-label="Close"
                     onClick={() => {
                       setShowModalUpdateRoom(false);
-                      setPhotoPreview(null);
+                      setPhotoPreviewRoom(null);
                     }}
                   ></button>
                 </div>
@@ -514,8 +555,8 @@ export default function RoomsDBAdmin() {
                         <td>
                           <img
                             src={
-                              photoPreview
-                                ? URL.createObjectURL(photoPreview)
+                              photoPreviewRoom
+                                ? URL.createObjectURL(photoPreviewRoom)
                                 : actualRoomUpdate.photo_path
                             }
                             alt="Foto actual"
@@ -530,7 +571,7 @@ export default function RoomsDBAdmin() {
                             onChange={(e) => {
                               const file = e.target.files[0];
                               if (file) {
-                                setPhotoPreview(file);
+                                setPhotoPreviewRoom(file);
                                 setUpdatedRoom({
                                   ...updatedRoom,
                                   newPhoto: file,
@@ -649,24 +690,159 @@ export default function RoomsDBAdmin() {
                     </tbody>
                   </table>
                 </div>
-                <div className="modal-footer">
+                <div className="modal-footer d-flex flex-column">
+                  <div className="row gx-3">
+                    <div className="col">
+                      <button
+                        className="booking-form-btn"
+                        onClick={() => {
+                          setShowModalUpdateRoom(false);
+                          setPhotoPreviewRoom(null);
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div className="col">
+                      {" "}
+                      <button
+                        className="solid-btn-tertiary"
+                        onClick={() => {
+                          saveUpdate(updatedRoom);
+                        }}
+                      >
+                        Guardar
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <AlertMessage
+                      message={messageUpdateRoom}
+                      type={messageType}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/** Modal para consultar los datos de una habitación. */}
+
+        {showModalReadRoom && readedRoom && (
+          <div className="modal show d-block modal-overlay">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span className="modal-title title-large">
+                    Consultar habitación
+                  </span>
                   <button
-                    className="booking-form-btn"
-                    onClick={() => {
-                      saveUpdate(updatedRoom);
-                    }}
-                  >
-                    Guardar
-                  </button>
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModalReadRoom(false)}
+                  ></button>
+                </div>
+                <div className="modal-body table-responsive">
+                  <table className="table table-striped table-striped-columns border-primary table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th scope="col">Dato</th>
+                        <th scope="col">Valor actual</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Foto</th>
+                        <td>
+                          <img
+                            src={
+                              photoPreviewRoom
+                                ? URL.createObjectURL(photoPreviewRoom)
+                                : readedRoom.photo_path
+                            }
+                            alt="Foto actual"
+                            width="80"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Número de habitación</th>
+                        <td>{readedRoom.room_number}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tarifa</th>
+                        <td>{readedRoom.rate}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de habitación</th>
+                        <td>{readedRoom.room_type}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Piso</th>
+                        <td>{readedRoom.floor}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Estado</th>
+                        <td>{readedRoom.room_status}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/** Modal para eliminar una habitación. */}
+
+        {showModalDeleteRoom && selectedRoomDelete && (
+          <div className="modal show d-block modal-overlay">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span className="modal-title title-large">
+                    Eliminar habitación
+                  </span>
                   <button
-                    className="booking-form-btn"
-                    onClick={() => {
-                      setShowModalUpdateRoom(false);
-                      setPhotoPreview(null);
-                    }}
-                  >
-                    Cancelar
-                  </button>
+                    type="button"
+                    className="btn-close"
+                    onClick={() => setShowModalDeteleRoom(false)}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <span>
+                    ¿Está seguro de eliminar la habitación{" "}
+                    <b>{selectedRoomDelete.room_number}</b>?
+                  </span>
+                </div>
+                <div className="modal-footer d-flex flex-column">
+                  <div className="row gx-3">
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="booking-form-btn"
+                        onClick={() => setShowModalDeteleRoom(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="solid-btn-tertiary"
+                        onClick={() => saveDeleteRoom(selectedRoomDelete)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <AlertMessage
+                      message={messageDeleteRoom}
+                      type={messageType}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
