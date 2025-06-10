@@ -1,4 +1,5 @@
 const roomModel = require("../models/RoomModel");
+const db = require("../config/db");
 
 /* Controlador para crear una habitación */
 const createRoom = async function (req, res) {
@@ -83,15 +84,24 @@ const updateRoom = async (req, res) => {
   const updatedData = req.body;
 
   // Validar que se hayan ingresado datos para actualizar la habitación
-  if (!idRoom) {
-    return res.status(400).json({ message: "El id no fue proporcionado." });
-  }
-  if (!updatedData) {
-    return res.status(400).json({ message: "No hay datos para actualizar." });
+  if (!idRoom || !updatedData) {
+    return res
+      .status(400)
+      .json({ message: "id de la habitación o Datos faltantes." });
   }
 
   try {
-    // Datos que se pueden modificar
+    // Información existente para comparar
+    const [originalRoomArray] = await db
+      .promise()
+      .query("SELECT * FROM room WHERE id_room = ?", [idRoom]);
+
+    const originalRoom = originalRoomArray[0];
+
+    console.log("La información existente de la habitación es: ");
+    console.log(originalRoom);
+
+    // Datos de la solicitud
     const {
       room_number,
       rate,
@@ -101,6 +111,31 @@ const updateRoom = async (req, res) => {
       photo_path,
     } = req.body;
 
+    // Verificar que se hayan ingresado todos los campos
+    if (
+      !room_number ||
+      !rate ||
+      !id_room_type ||
+      !id_room_status ||
+      !id_floor ||
+      !photo_path
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Todos los campos son obligatorios." });
+    }
+
+    // Validar nuevos valores
+    const newData = {
+      room_number: updatedData.room_number.trim(),
+      rate: parseFloat(updatedData.rate),
+      id_room_type: parseInt(updatedData.id_room_type),
+      id_room_status: parseInt(updatedData.id_room_status),
+      id_floor: parseInt(updatedData.id_floor),
+      photo_path: updatedData.photo_path.trim(),
+    };
+
+    /*
     if (room_number) {
       updatedData.room_number = room_number.trim();
     }
@@ -116,11 +151,30 @@ const updateRoom = async (req, res) => {
     if (id_floor) {
       updatedData.id_floor = parseInt(id_floor);
     }
-    // Guardar la ruta de la imagen
-    if (req.file) {
+      if (req.file) {
       updatedData.photo_path = `/images/${req.file.filename}`;
     } else if (photo_path) {
       updatedData.photo_path = photo_path;
+    }
+    */
+
+    // Guardar la ruta de la imagen
+
+    console.log("Los datos actualizados son: ");
+    console.log(newData);
+
+    // Comparar los valores originales con los nuevos
+    const noChanges = Object.entries(newData).every(([key, value]) => {
+      const originalValue = originalRoom[key];
+      return String(value).trim() === String(originalValue).trim();
+    });
+
+    console.log("¿No se realizaron cambios?: " + noChanges);
+
+    if (noChanges) {
+      return res
+        .status(400)
+        .json({ message: "No se realizaron cambios en los datos." });
     }
 
     // Eliminar los valores que no son una columna en la tabla
