@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AlertMessage from "../common/AlertMessage";
 
 export default function RoomsDBAdmin() {
   //Estado para traer las habitaciones de la base de datos
@@ -118,7 +119,7 @@ export default function RoomsDBAdmin() {
     /* Estados para modificar los datos de una habitación */
   }
 
-  const [showModalUpdate, setShowModalUpdate] = useState(false);
+  const [showModalUpdateRoom, setShowModalUpdateRoom] = useState(false);
   const [updatedRoom, setUpdatedRoom] = useState(null);
   const [actualRoomUpdate, setActualRoomUpdate] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
@@ -131,7 +132,7 @@ export default function RoomsDBAdmin() {
       const data = await res.json();
       setActualRoomUpdate(data);
       setUpdatedRoom(data);
-      setShowModalUpdate(true);
+      setShowModalUpdateRoom(true);
     } catch (error) {
       console.error("Error al actualizar los datos de la habitación: ", error);
       alert("No se pudo actualizar los datos de la habitación.");
@@ -178,7 +179,7 @@ export default function RoomsDBAdmin() {
       if (res.ok) {
         updateRoomInState(updatedRoom);
         alert("Habitación actualizada correctamente.");
-        setShowModalUpdate(false);
+        setShowModalUpdateRoom(false);
         setPhotoPreview(null);
       } else {
         alert("Error al actualizar la habitación.");
@@ -362,16 +363,124 @@ export default function RoomsDBAdmin() {
                         <th scope="col">Valor</th>
                       </tr>
                     </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Número de habitación</th>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={room_number}
+                            onChange={(e) => setRoomNumber(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tarifa</th>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            required
+                            value={rate}
+                            onChange={(e) => setRate(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Tipo de habitación</th>
+                        <td>
+                          <select
+                            className="form-select"
+                            required
+                            value={id_room_type}
+                            onChange={(e) => setRoomType(e.target.value)}
+                          >
+                            <option></option>
+                            <option value={1}>Individual</option>
+                            <option value={2}>Doble</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Estado</th>
+                        <td>
+                          <select
+                            className="form-select"
+                            required
+                            value={id_room_status}
+                            onChange={(e) => setRoomStatus(e.target.value)}
+                          >
+                            <option></option>
+                            <option value={1}>Ocupada</option>
+                            <option value={2}>Vacante limpia</option>
+                            <option value={3}>Vacante sucia</option>
+                            <option value={4}>Fuera de servicio</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Piso</th>
+                        <td>
+                          <select
+                            className="form-select"
+                            required
+                            value={id_floor}
+                            onChange={(e) => setFloor(e.target.value)}
+                          >
+                            <option></option>
+                            <option value={1}>Piso 1</option>
+                            <option value={2}>Piso 2</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Foto</th>
+                        <td>
+                          <input
+                            type="file"
+                            accept="image/"
+                            onChange={(e) => setPhotoPath}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
                 </div>
-                <div className="modal-footer"></div>
+                <div className="modal-footer d-flex flex-column">
+                  <div className="row gx-3">
+                    <div className="col">
+                      <button
+                        className="booking-form-btn"
+                        onClick={() => setShowModalNewRoom(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        className="solid-btn-tertiary"
+                        onClick={() => saveRoom(registerRoom)}
+                      >
+                        Guardar
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <AlertMessage
+                      message={messageRegister}
+                      type={messageType}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {/* Modal para actualizar los datos de las habitaciones */}
-        {showModalUpdate && actualRoomUpdate && (
+        {showModalUpdateRoom && actualRoomUpdate && (
           <div className="modal show d-block">
             <div className="modal-dialog">
               <div className="modal-content">
@@ -385,7 +494,7 @@ export default function RoomsDBAdmin() {
                     data-bs-dismiss="modal"
                     aria-label="Close"
                     onClick={() => {
-                      setShowModalUpdate(false);
+                      setShowModalUpdateRoom(false);
                       setPhotoPreview(null);
                     }}
                   ></button>
@@ -552,7 +661,7 @@ export default function RoomsDBAdmin() {
                   <button
                     className="booking-form-btn"
                     onClick={() => {
-                      setShowModalUpdate(false);
+                      setShowModalUpdateRoom(false);
                       setPhotoPreview(null);
                     }}
                   >
