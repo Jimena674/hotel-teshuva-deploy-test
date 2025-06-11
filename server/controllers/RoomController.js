@@ -101,77 +101,55 @@ const updateRoom = async (req, res) => {
     console.log("La información existente de la habitación es: ");
     console.log(originalRoom);
 
-    // Datos de la solicitud
-    const {
-      room_number,
-      rate,
-      id_room_type,
-      id_room_status,
-      id_floor,
-      photo_path,
-    } = req.body;
-
-    // Verificar que se hayan ingresado todos los campos
-    if (
-      !room_number ||
-      !rate ||
-      !id_room_type ||
-      !id_room_status ||
-      !id_floor ||
-      !photo_path
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Todos los campos son obligatorios." });
+    if (!originalRoom) {
+      return res.status(404).json({ message: "Habitación no encontrada." });
     }
 
-    // Validar nuevos valores
+    // Nuevos valores
     const newData = {
-      room_number: updatedData.room_number.trim(),
+      room_number: updatedData.room_number?.trim(),
       rate: parseFloat(updatedData.rate),
       id_room_type: parseInt(updatedData.id_room_type),
       id_room_status: parseInt(updatedData.id_room_status),
       id_floor: parseInt(updatedData.id_floor),
-      photo_path: updatedData.photo_path.trim(),
+      photo_path: updatedData.photo_path?.trim(),
     };
-
-    /*
-    if (room_number) {
-      updatedData.room_number = room_number.trim();
-    }
-    if (rate) {
-      updatedData.rate = parseFloat(rate);
-    }
-    if (id_room_type) {
-      updatedData.id_room_type = parseInt(id_room_type);
-    }
-    if (id_room_status) {
-      updatedData.id_room_status = parseInt(id_room_status);
-    }
-    if (id_floor) {
-      updatedData.id_floor = parseInt(id_floor);
-    }
-      if (req.file) {
-      updatedData.photo_path = `/images/${req.file.filename}`;
-    } else if (photo_path) {
-      updatedData.photo_path = photo_path;
-    }
-    */
-
-    // Guardar la ruta de la imagen
 
     console.log("Los datos actualizados son: ");
     console.log(newData);
 
+    // Campos onligatorios
+    const mandatoryData = [
+      "room_number",
+      "rate",
+      "id_room_type",
+      "id_room_status",
+      "id_floor",
+    ];
+
+    // Verificar que se hayan ingresado los campos obligatorios
+    const missingData = mandatoryData.filter(
+      (field) => !newData[field] && newData[field] !== 0
+    );
+
+    if (missingData.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "Se deben ingresar todos los campos obligatorio." });
+    }
+
     // Comparar los valores originales con los nuevos
-    const noChanges = Object.entries(newData).every(([key, value]) => {
+    const changes = Object.entries(newData).some(([key, value]) => {
       const originalValue = originalRoom[key];
+      // Si está vacío no comparar
+      if (value === undefined || value === "") return false;
+      // Convertir a string para compararlos de manera segura
       return String(value).trim() === String(originalValue).trim();
     });
 
-    console.log("¿No se realizaron cambios?: " + noChanges);
+    console.log("¿Se realizaron cambios?: " + changes);
 
-    if (noChanges) {
+    if (!changes) {
       return res
         .status(400)
         .json({ message: "No se realizaron cambios en los datos." });
@@ -182,15 +160,8 @@ const updateRoom = async (req, res) => {
     delete updatedData.room_status;
     delete updatedData.floor;
 
-    // Tiene al menos una propiedad válida para actualizar
-    if (Object.keys(updatedData).length === 0) {
-      return res
-        .status(400)
-        .json({ message: "No hay campos válidos para actualizar." });
-    }
-
-    // Comunicación con el modelo que interactúa con la base de datos
-    const result = await roomModel.updateRoom(idRoom, updatedData);
+    // Comunicarse con la base de datos para ejecutar actualización
+    const result = await roomModel.updateRoom(idRoom, newData);
 
     res.json({ message: "Habitación actualizada con éxito." });
   } catch (error) {
