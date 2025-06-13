@@ -118,8 +118,14 @@ const readAllBookings = async (req, res) => {
 
 const readBooking = async (req, res) => {
   try {
+    // Dato que envía el frontend
     const code = req.params.code;
+
     const booking = await bookingModel.readBooking(code);
+    if (!booking) {
+      return res.status(404).json({ message: "El código no existe." });
+    }
+
     res.json(booking);
   } catch (error) {
     console.error("Error al leer los datos de la reserva: ", error);

@@ -103,6 +103,9 @@ export default function BookingDBAdmin() {
   }
 
   const readBooking = async (code) => {
+    if (!code) {
+      return res.status(404).json({ message: "El código no existe." });
+    }
     try {
       const res = await fetch(`http://localhost:4000/api/booking/${code}`);
       const data = await res.json();
@@ -269,8 +272,8 @@ export default function BookingDBAdmin() {
         )}
         {/* Modal para consultar una reserva */}
         {showModalRead && selectedBooking && (
-          <div className="modal show d-block">
-            <div className="modal-dialog">
+          <div className="modal show d-block modal-overlay">
+            <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
                   <span className="modal-title title-large">
@@ -286,8 +289,8 @@ export default function BookingDBAdmin() {
                   <table className="table table-striped-columns table-bordered align-middle">
                     <thead>
                       <tr>
-                        <th scope="col">Dato</th>
-                        <th scope="col">Dato Actual</th>
+                        <th scope="col">Tipo de Dato</th>
+                        <th scope="col">Valor Actual</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -322,11 +325,6 @@ export default function BookingDBAdmin() {
                       </tr>
                     </tbody>
                   </table>
-                </div>
-                <div className="modal-footer">
-                  <button className="" onClick={() => setShowModalRead(false)}>
-                    Cerrar
-                  </button>
                 </div>
               </div>
             </div>
