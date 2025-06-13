@@ -1,4 +1,5 @@
 const bookingModel = require("../models/BookingModel");
+const roomModel = require("../models/RoomModel");
 const db = require("../config/db");
 
 /* Función para crear un código de reserva */
@@ -20,14 +21,30 @@ const createBooking = async (req, res) => {
   try {
     // Datos de la solicitud
 
-    const { id_user, check_in, check_out, total } = req.body;
+    const { id_number, check_in, check_out, room_number, total } = req.body;
+    console.log(
+      "Los datos ingresados son: " + id_number,
+      check_in,
+      check_out,
+      room_number,
+      total
+    );
 
     // Validar que se hayan ingresado todos los datos
 
-    if (!id_user || !check_in || !check_out || !total) {
+    if (!id_number || !check_in || !check_out || !room_number || !total) {
       return res
         .status(400)
         .json({ message: "Todos los campos son obligatorios." });
+    }
+
+    // Verificar que el room_number existe
+    const room = await roomModel.findRoom(room_number);
+    console.log("La habitación es: ");
+    console.log(room);
+
+    if (!room) {
+      return res.status(409).json({ message: "La habitación no existe." });
     }
 
     let code;
@@ -43,10 +60,41 @@ const createBooking = async (req, res) => {
       }
     }
 
-    // Enviar los datos a la base de datos
+    // Obtener el id_room del room_number
+    const [roomResult] = await db
+      .promise()
+      .query("SELECT id_room FROM room WHERE room_number = ?", [room_number]);
 
-    const bookingData = { id_user, check_in, check_out, total, code };
-    await bookingModel.createBooking(bookingData);
+    const id_room = roomResult[0]?.id_room;
+    console.log("El id_room es: " + id_room);
+
+    if (!id_room) {
+      return res.status(404).json({ message: "No se encontró la habitación." });
+    }
+
+    // Enviar los datos a la base de datos
+    const bookingData = {
+      id_number,
+      check_in,
+      check_out,
+      total,
+      code,
+    };
+    console.log("Los datos enviados de la reserva son: ");
+    console.log(bookingData);
+
+    // Crear la reserva
+    const [result] = await bookingModel.createBooking(bookingData);
+    console.log("La reserva creada es: ");
+    console.log(result);
+
+    // Obtener el id_booking de la nueva reserva
+    const id_booking = result.insertId;
+    console.log("El id_booking es: " + id_booking);
+
+    // Crear booking_room
+    await bookingModel.bookingRoom({ id_booking, id_room });
+
     res.status(200).json({ message: "Reserva creada con éxito." });
   } catch (error) {
     console.error("Error al crear la reserva: ", error);
@@ -104,10 +152,10 @@ const updateBooking = async (req, res) => {
   }
 
   try {
-    const { id_user, check_in, check_out, total } = req.body;
+    const { id_number, check_in, check_out, total } = req.body;
 
-    if (id_user) {
-      data.id_user = parseInt(id_user);
+    if (id_number) {
+      data.id_number = parseInt(id_number);
     }
     if (check_in) {
       data.check_in = check_in;

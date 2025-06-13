@@ -29,9 +29,10 @@ export default function BookingDBAdmin() {
   const [showModalNewBooking, setShowModalNewBooking] = useState(false);
   const [messageNewBooking, setMessageNewBooking] = useState("");
   const [newBooking, setNewBooking] = useState([]);
-  const [id_user, setIdUser] = useState("");
+  const [id_number, setIdNumber] = useState("");
   const [check_in, setCheckIn] = useState("");
   const [check_out, setCheckOut] = useState("");
+  const [room_number, setRoomNumber] = useState("");
   const [total, setTotal] = useState("");
 
   {
@@ -61,25 +62,29 @@ export default function BookingDBAdmin() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id_user,
+          id_number,
           check_in,
           check_out,
+          room_number,
           total,
         }),
       });
       const data = await res.json();
       if (res.ok) {
-        setIdUser("");
+        setIdNumber("");
         setCheckIn("");
         setCheckOut("");
+        setRoomNumber("");
         setTotal("");
         setMessageType("success");
-        messageNewBooking("✅ La reserva se creó con éxito.");
+        setMessageNewBooking("✅ La reserva se creó con éxito.");
         // recargar la información en la tabla
         await fetchBookings();
       } else {
         setMessageType("error");
-        messageNewBooking(`❌ ${data.message || "Error al crear la reserva."}`);
+        setMessageNewBooking(
+          `❌ ${data.message || "Error al crear la reserva."}`
+        );
       }
     } catch (error) {
       setMessageType("error");
@@ -191,9 +196,7 @@ export default function BookingDBAdmin() {
         <button
           type="button"
           className="mt-4"
-          onClick={() => {
-            setShowModalNewBooking(true);
-          }}
+          onClick={() => registerBooking()}
         >
           Crear reserva
         </button>
@@ -220,7 +223,7 @@ export default function BookingDBAdmin() {
                   <tr key={booking.id_booking}>
                     <td>{index + 1}</td>
                     <td>{booking.code}</td>
-                    <td>{booking.user_name}</td>
+                    <td>{booking.id_number}</td>
                     <td>{formatToLocalDate(booking.check_in)}</td>
                     <td>{formatToLocalDate(booking.check_out)}</td>
                     <td>{booking.room}</td>
@@ -293,10 +296,13 @@ export default function BookingDBAdmin() {
                         <td>{selectedBooking.code}</td>
                       </tr>
                       <tr>
-                        <th scope="row">Usuario</th>
+                        <th scope="row">Identificación del Usuario</th>
+                        <td>{selectedBooking.id_number}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Nombre del Usuario</th>
                         <td>{selectedBooking.user_name}</td>
                       </tr>
-
                       <tr>
                         <th scope="row">Ingreso</th>
                         <td>{formatToLocalDate(selectedBooking.check_in)}</td>
@@ -338,9 +344,7 @@ export default function BookingDBAdmin() {
                   <button
                     type="button"
                     className="btn-close"
-                    onClick={() => {
-                      setShowModalNewBooking(false);
-                    }}
+                    onClick={() => setShowModalNewBooking(false)}
                   ></button>
                 </div>
                 <div className="modal-body table-responsive">
@@ -353,14 +357,14 @@ export default function BookingDBAdmin() {
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">Usuario</th>
+                        <th scope="row">Identiciación del Usuario</th>
                         <td>
                           <input
                             type="text"
                             className="form-control"
                             required
-                            value={id_user}
-                            onClick={(e) => setIdUser(e.target.value)}
+                            value={id_number}
+                            onChange={(e) => setIdNumber(e.target.value)}
                           />
                         </td>
                       </tr>
@@ -372,9 +376,7 @@ export default function BookingDBAdmin() {
                             className="form-control"
                             required
                             value={check_in}
-                            onClick={(e) => {
-                              setCheckIn(e.target.value);
-                            }}
+                            onChange={(e) => setCheckIn(e.target.value)}
                           />
                         </td>
                       </tr>
@@ -386,23 +388,19 @@ export default function BookingDBAdmin() {
                             className="form-control"
                             required
                             value={check_out}
-                            onClick={(e) => {
-                              setCheckOut(e.target.value);
-                            }}
+                            onChange={(e) => setCheckOut(e.target.value)}
                           />
                         </td>
                       </tr>
                       <tr>
-                        <th scope="row">Habitación</th>
+                        <th scope="row">Número de Habitación</th>
                         <td>
                           <input
                             type="text"
                             className="form-control"
                             required
-                            value=""
-                            onClick={(e) => {
-                              e.target.value;
-                            }}
+                            value={room_number}
+                            onChange={(e) => setRoomNumber(e.target.value)}
                           />
                         </td>
                       </tr>
@@ -414,9 +412,7 @@ export default function BookingDBAdmin() {
                             className="form-control"
                             required
                             value={total}
-                            onClick={(e) => {
-                              setTotal(e.target.value);
-                            }}
+                            onChange={(e) => setTotal(e.target.value)}
                           />
                         </td>
                       </tr>
@@ -429,9 +425,7 @@ export default function BookingDBAdmin() {
                       <button
                         type="button"
                         className="booking-form-btn"
-                        onClick={() => {
-                          setShowModalNewBooking(false);
-                        }}
+                        onClick={() => setShowModalNewBooking(false)}
                       >
                         Cancelar
                       </button>
@@ -440,20 +434,18 @@ export default function BookingDBAdmin() {
                       <button
                         type="button"
                         className="solid-btn-tertiary"
-                        onClick={() => {
-                          saveNewBooking(newBooking);
-                        }}
+                        onClick={() => saveNewBooking(newBooking)}
                       >
                         Guardar
                       </button>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <AlertMessage
-                    type={messageType}
-                    message={messageNewBooking}
-                  />
+                  <div>
+                    <AlertMessage
+                      type={messageType}
+                      message={messageNewBooking}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

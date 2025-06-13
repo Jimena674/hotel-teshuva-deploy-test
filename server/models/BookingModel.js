@@ -1,24 +1,32 @@
 const db = require("../config/db");
 
 /* Modelo para crear una reserva */
-
 const createBooking = async (data) => {
-  const { id_user, check_in, check_out, total, code } = data;
-  await db
+  const { id_number, check_in, check_out, total, code } = data;
+  return await db
     .promise()
     .query(
-      `INSERT INTO booking ( id_user, check_in, check_out, total, code) VALUES ( ?, ?, ?, ?, ?)`,
-      [id_user, check_in, check_out, total, code]
+      `INSERT INTO booking ( id_number, check_in, check_out, total, code) VALUES ( ?, ?, ?, ?, ?)`,
+      [id_number, check_in, check_out, total, code]
     );
 };
 
-/* Modelo para leer todas las reserva */
+/** Modelo para crear el booking_room */
+const bookingRoom = async ({ id_booking, id_room }) => {
+  await db
+    .promise()
+    .query(`INSERT INTO booking_room (id_booking, id_room) VALUES (?, ?)`, [
+      id_booking,
+      id_room,
+    ]);
+};
 
+/* Modelo para leer todas las reserva */
 const readAllBookings = async () => {
   const [rows] = await db
     .promise()
     .query(
-      `SELECT booking.id_booking, booking.id_user, booking.check_in, booking.check_out, booking.total, booking.code, user.name AS user_name, room.room_number AS room FROM booking JOIN user ON booking.id_user = user.id JOIN booking_room ON booking.id_booking = booking_room.id_booking JOIN room ON booking_room.id_room = room.id_room`
+      `SELECT booking.id_booking, booking.id_number, booking.check_in, booking.check_out, booking.total, booking.code, user.id_number AS id_number, user.name AS user_name, room.room_number AS room FROM booking JOIN user ON booking.id_number = user.id JOIN booking_room ON booking.id_booking = booking_room.id_booking JOIN room ON booking_room.id_room = room.id_room`
     );
   return rows;
 };
@@ -29,7 +37,7 @@ const readBooking = async (code) => {
   const [rows] = await db
     .promise()
     .query(
-      `SELECT booking.*, user.name AS user_name, room.room_number AS room FROM booking JOIN user ON booking.id_user = user.id JOIN booking_room ON booking.id_booking = booking_room.id_booking JOIN room ON booking_room.id_room = room.id_room WHERE code = ?`,
+      `SELECT booking.*, user.id_number AS id_number, user.name AS user_name, room.room_number AS room FROM booking JOIN user ON booking.id_number = user.id JOIN booking_room ON booking.id_booking = booking_room.id_booking JOIN room ON booking_room.id_room = room.id_room WHERE code = ?`,
       [code]
     );
   return rows[0];
@@ -64,6 +72,7 @@ const updateBooking = async (code, data) => {
 
 module.exports = {
   createBooking,
+  bookingRoom,
   readAllBookings,
   readBooking,
   deleteBooking,
