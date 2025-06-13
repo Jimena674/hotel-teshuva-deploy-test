@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
+import AlertMessage from "../common/AlertMessage";
 
 export default function BookingDBAdmin() {
   // Estado para obtener todas las reservas
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [messageType, setMessageType] = useState("");
 
   {
     /* Función para obtener y mostrar los datos de las reservas */
   }
-
   useEffect(() => {
     const fetchTotal = async () => {
       try {
@@ -23,6 +24,69 @@ export default function BookingDBAdmin() {
     };
     fetchTotal();
   }, []);
+
+  // Estado para abrir el modal para crear una reserva
+  const [showModalNewBooking, setShowModalNewBooking] = useState(false);
+  const [messageNewBooking, setMessageNewBooking] = useState("");
+  const [newBooking, setNewBooking] = useState([]);
+  const [id_user, setIdUser] = useState("");
+  const [check_in, setCheckIn] = useState("");
+  const [check_out, setCheckOut] = useState("");
+  const [total, setTotal] = useState("");
+
+  {
+    /** Función para abrir el modal para crear una reserva */
+  }
+  const registerBooking = async (booking) => {
+    setShowModalNewBooking(true);
+    setMessageNewBooking("");
+    setNewBooking(booking);
+  };
+
+  {
+    /** Función para volver a cargar todos los datos en la tabla */
+  }
+  const fetchBookings = async () => {
+    const res = await fetch(`http://localhost:4000/api/booking/`);
+    const data = await res.json();
+    setBookings(data);
+  };
+
+  {
+    /** Función para guardar la reserva en base de datos */
+  }
+  const saveNewBooking = async () => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/booking/new`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id_user,
+          check_in,
+          check_out,
+          total,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setIdUser("");
+        setCheckIn("");
+        setCheckOut("");
+        setTotal("");
+        setMessageType("success");
+        messageNewBooking("✅ La reserva se creó con éxito.");
+        // recargar la información en la tabla
+        await fetchBookings();
+      } else {
+        setMessageType("error");
+        messageNewBooking(`❌ ${data.message || "Error al crear la reserva."}`);
+      }
+    } catch (error) {
+      setMessageType("error");
+      setMessageNewBooking("❌ Error de conexión con el servidor");
+      console.error(error);
+    }
+  };
 
   // Estado para abrir el modal y consultar una reserva
 
@@ -124,7 +188,13 @@ export default function BookingDBAdmin() {
     <>
       <div className="container-fluid">
         <h1 className="title-large">Reservas</h1>
-        <button type="button" className="mt-4">
+        <button
+          type="button"
+          className="mt-4"
+          onClick={() => {
+            setShowModalNewBooking(true);
+          }}
+        >
           Crear reserva
         </button>
         {/* Tabla de reservas */}
@@ -256,9 +326,142 @@ export default function BookingDBAdmin() {
             </div>
           </div>
         )}
+        {/** Modal para crear una reserva */}
+        {showModalNewBooking && setNewBooking && (
+          <div className="modal show d-block modal-overlay">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <span className="modal-title title-large">
+                    Crear una reserva
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={() => {
+                      setShowModalNewBooking(false);
+                    }}
+                  ></button>
+                </div>
+                <div className="modal-body table-responsive">
+                  <table className="table table-striped table-striped-columns border-primary table-hover table-bordered align-middle">
+                    <thead>
+                      <tr>
+                        <th scope="col">Dato</th>
+                        <th scope="col">Valor</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Usuario</th>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value={id_user}
+                            onClick={(e) => setIdUser(e.target.value)}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Ingreso</th>
+                        <td>
+                          <input
+                            type="date"
+                            className="form-control"
+                            required
+                            value={check_in}
+                            onClick={(e) => {
+                              setCheckIn(e.target.value);
+                            }}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Salida</th>
+                        <td>
+                          <input
+                            type="date"
+                            className="form-control"
+                            required
+                            value={check_out}
+                            onClick={(e) => {
+                              setCheckOut(e.target.value);
+                            }}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Habitación</th>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            required
+                            value=""
+                            onClick={(e) => {
+                              e.target.value;
+                            }}
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Total</th>
+                        <td>
+                          <input
+                            type="number"
+                            className="form-control"
+                            required
+                            value={total}
+                            onClick={(e) => {
+                              setTotal(e.target.value);
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className="modal-footer d-flex flex-column">
+                  <div className="row gx-3">
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="booking-form-btn"
+                        onClick={() => {
+                          setShowModalNewBooking(false);
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        type="button"
+                        className="solid-btn-tertiary"
+                        onClick={() => {
+                          saveNewBooking(newBooking);
+                        }}
+                      >
+                        Guardar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <AlertMessage
+                    type={messageType}
+                    message={messageNewBooking}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Modal para modificar una reserva */}
         {showModalUpdate && actualBooking && (
-          <div className="modal show d-block">
+          <div className="modal show d-block modal-overlay">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">

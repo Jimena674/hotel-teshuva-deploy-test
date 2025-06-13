@@ -118,7 +118,7 @@ const updateRoom = async (req, res) => {
     console.log("Los datos actualizados son: ");
     console.log(newData);
 
-    // Campos onligatorios
+    // Campos obligatorios
     const mandatoryData = [
       "room_number",
       "rate",
@@ -143,6 +143,10 @@ const updateRoom = async (req, res) => {
       const originalValue = originalRoom[key];
       // Si está vacío no comparar
       if (value === undefined || value === "") return false;
+      // Si ambos son números
+      if (!isNaN(value) && !isNaN(originalValue)) {
+        return Number(value) !== Number(originalValue);
+      }
       // Convertir a string para compararlos de manera segura
       return String(value).trim() === String(originalValue).trim();
     });
