@@ -6,6 +6,7 @@ export default function BookingDBAdmin() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [messageType, setMessageType] = useState("");
+  const [messageReadBookings, setMessageReadBookings] = useState("");
 
   {
     /* Función para obtener y mostrar los datos de las reservas */
@@ -14,6 +15,9 @@ export default function BookingDBAdmin() {
     const fetchTotal = async () => {
       try {
         const res = await fetch(`http://localhost:4000/api/booking/`);
+        if (!res.ok) {
+          throw new Error("Error en la respuesta del servidor");
+        }
         const data = await res.json();
         setBookings(data);
       } catch (error) {
@@ -29,7 +33,7 @@ export default function BookingDBAdmin() {
   const [showModalNewBooking, setShowModalNewBooking] = useState(false);
   const [messageNewBooking, setMessageNewBooking] = useState("");
   const [newBooking, setNewBooking] = useState([]);
-  const [id_number, setIdNumber] = useState("");
+  const [user_id_number, setUserIdNumber] = useState("");
   const [check_in, setCheckIn] = useState("");
   const [check_out, setCheckOut] = useState("");
   const [room_number, setRoomNumber] = useState("");
@@ -62,7 +66,7 @@ export default function BookingDBAdmin() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          id_number,
+          user_id_number,
           check_in,
           check_out,
           room_number,
@@ -71,14 +75,14 @@ export default function BookingDBAdmin() {
       });
       const data = await res.json();
       if (res.ok) {
-        setIdNumber("");
+        setUserIdNumber("");
         setCheckIn("");
         setCheckOut("");
         setRoomNumber("");
         setTotal("");
         setMessageType("success");
         setMessageNewBooking("✅ La reserva se creó con éxito.");
-        // recargar la información en la tabla
+        // Recargar la información en la tabla
         await fetchBookings();
       } else {
         setMessageType("error");
@@ -122,6 +126,7 @@ export default function BookingDBAdmin() {
   const [actualBooking, setActualBooking] = useState(null);
   const [updatedBooking, setUpdatedBooking] = useState(null);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
+  const [messageUpdateBooking, setMessageUpdateBooking] = useState("");
 
   {
     /* Función para abrir el modal de modificar */
@@ -134,6 +139,7 @@ export default function BookingDBAdmin() {
       setActualBooking(data);
       setShowModalUpdate(true);
       setUpdatedBooking(data);
+      setMessageUpdateBooking("");
     } catch (error) {
       console.error("Error al modificar la reserva: ", error);
       alert("Error al modificar la reserva.");
@@ -168,14 +174,20 @@ export default function BookingDBAdmin() {
       );
       const data = await res.json();
       if (res.ok) {
-        alert("Reserva actualizada.");
-        setShowModalUpdate(false);
-        updateBookingInTable(booking);
+        setMessageUpdateBooking("✅ Reserva actualizada.");
+        setMessageType("success");
+        // Recargar la información en la tabla
+        await fetchBookings();
       } else {
-        alert("Error al guardar los cambios: " + data.message);
+        setMessageType("error");
+        setMessageUpdateBooking(
+          `❌ ${data.message || "Error al guardar los cambios."}`
+        );
       }
     } catch (error) {
-      console.error("Error al guardar los cambios: ", error);
+      setMessageType("error");
+      setMessageUpdateBooking("❌ Error de conexión con el servidor.");
+      console.error(error);
     }
   };
 
@@ -226,10 +238,10 @@ export default function BookingDBAdmin() {
                   <tr key={booking.id_booking}>
                     <td>{index + 1}</td>
                     <td>{booking.code}</td>
-                    <td>{booking.id_number}</td>
+                    <td>{booking.user_id_number}</td>
                     <td>{formatToLocalDate(booking.check_in)}</td>
                     <td>{formatToLocalDate(booking.check_out)}</td>
-                    <td>{booking.room}</td>
+                    <td>{booking.room_number}</td>
                     <td>{booking.total}</td>
                     <td>
                       <div className="dropdown">
@@ -300,7 +312,7 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Identificación del Usuario</th>
-                        <td>{selectedBooking.id_number}</td>
+                        <td>{selectedBooking.user_id_number}</td>
                       </tr>
                       <tr>
                         <th scope="row">Nombre del Usuario</th>
@@ -317,7 +329,7 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Habitación</th>
-                        <td>{selectedBooking.room}</td>
+                        <td>{selectedBooking.room_number}</td>
                       </tr>
                       <tr>
                         <th scope="row">Total</th>
@@ -361,8 +373,8 @@ export default function BookingDBAdmin() {
                             type="text"
                             className="form-control"
                             required
-                            value={id_number}
-                            onChange={(e) => setIdNumber(e.target.value)}
+                            value={user_id_number}
+                            onChange={(e) => setUserIdNumber(e.target.value)}
                           />
                         </td>
                       </tr>
@@ -432,7 +444,7 @@ export default function BookingDBAdmin() {
                       <button
                         type="button"
                         className="solid-btn-tertiary"
-                        onClick={() => saveNewBooking(newBooking)}
+                        onClick={saveNewBooking}
                       >
                         Guardar
                       </button>
@@ -477,23 +489,28 @@ export default function BookingDBAdmin() {
                       <tr>
                         <th scope="row">Código</th>
                         <td>{actualBooking.code}</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Nombre de Usuario</th>
+                        <td>{actualBooking.user_name}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Identificación de Usuario</th>
+                        <td>{actualBooking.user_id_number}</td>
                         <td>
                           <input
                             type="text"
                             className="form-control"
-                            value={updatedBooking.code}
+                            value={updatedBooking.user_id_number}
                             onChange={(e) =>
                               setUpdatedBooking({
                                 ...updatedBooking,
-                                code: e.target.value,
+                                user_id_number: e.target.value,
                               })
                             }
                           />
                         </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Usuario</th>
-                        <td>{actualBooking.user_name}</td>
                       </tr>
                       <tr>
                         <th scope="row">Ingreso</th>
@@ -531,16 +548,16 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Habitación</th>
-                        <td>{actualBooking.room}</td>
+                        <td>{actualBooking.room_number}</td>
                         <td>
                           <input
                             type="text"
                             className="form-control"
-                            value={updatedBooking.room}
+                            value={updatedBooking.room_number}
                             onChange={(e) =>
                               setUpdatedBooking({
                                 ...updatedBooking,
-                                room: e.target.value,
+                                room_number: e.target.value,
                               })
                             }
                           />
@@ -566,19 +583,31 @@ export default function BookingDBAdmin() {
                     </tbody>
                   </table>
                 </div>
-                <div className="modal-footer">
-                  <button
-                    className="booking-form-btn"
-                    onClick={() => saveUpdate(updatedBooking)}
-                  >
-                    Guardar
-                  </button>
-                  <button
-                    className="booking-form-btn"
-                    onClick={() => setShowModalUpdate(false)}
-                  >
-                    Cerrar
-                  </button>
+                <div className="modal-footer d-flex flex-column">
+                  <div className="row gx-3">
+                    <div className="col">
+                      <button
+                        className="booking-form-btn"
+                        onClick={() => setShowModalUpdate(false)}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                    <div className="col">
+                      <button
+                        className="solid-btn-tertiary"
+                        onClick={() => saveUpdate(updatedBooking)}
+                      >
+                        Guardar
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <AlertMessage
+                      type={messageType}
+                      message={messageUpdateBooking}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

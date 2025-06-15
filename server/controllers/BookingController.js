@@ -21,9 +21,10 @@ const createBooking = async (req, res) => {
   try {
     // Datos de la solicitud
 
-    const { id_number, check_in, check_out, room_number, total } = req.body;
+    const { user_id_number, check_in, check_out, room_number, total } =
+      req.body;
     console.log(
-      "Los datos ingresados son: " + id_number,
+      "Los datos ingresados son: " + user_id_number,
       check_in,
       check_out,
       room_number,
@@ -32,7 +33,7 @@ const createBooking = async (req, res) => {
 
     // Validar que se hayan ingresado todos los datos
 
-    if (!id_number || !check_in || !check_out || !room_number || !total) {
+    if (!user_id_number || !check_in || !check_out || !room_number || !total) {
       return res
         .status(400)
         .json({ message: "Todos los campos son obligatorios." });
@@ -72,9 +73,17 @@ const createBooking = async (req, res) => {
       return res.status(404).json({ message: "No se encontró la habitación." });
     }
 
+    // Obtener el id del user con el user_id_number
+    const [userResult] = await db
+      .promise()
+      .query(`SELECT id FROM user WHERE id_number = ?`, [user_id_number]);
+
+    const id_user = userResult[0]?.id;
+    console.log("El id del usuario es: " + id_user);
+
     // Enviar los datos a la base de datos
     const bookingData = {
-      id_number,
+      id_user,
       check_in,
       check_out,
       total,
@@ -108,6 +117,7 @@ const readAllBookings = async (req, res) => {
   try {
     const getAll = await bookingModel.readAllBookings();
     res.status(200).json(getAll);
+    console.log(getAll);
   } catch (error) {
     console.error("Error al leer los datos de todas las reservas: ", error);
     res.status(500).json({ error: "Error en el servidor." });
@@ -151,38 +161,126 @@ const deleteBooking = async (req, res) => {
 const updateBooking = async (req, res) => {
   const code = req.params.code;
   const data = req.body;
-  if (!data) {
-    res
-      .status(400)
-      .json({ message: "No se han proporcionado datos para actualizar." });
+  if (!data || !code) {
+    res.status(400).json({ message: "Código y datos faltantes." });
   }
 
   try {
-    const { id_number, check_in, check_out, total } = req.body;
+    // Información existente de booking
+    const [originalBookingArray] = await db
+      .promise()
+      .query(`SELECT * FROM booking WHERE code = ?`, [code]);
 
-    if (id_number) {
-      data.id_number = parseInt(id_number);
-    }
-    if (check_in) {
-      data.check_in = check_in;
-    }
-    if (check_out) {
-      data.check_out = check_out;
-    }
-    if (total) {
-      data.total = parseFloat(total);
+    const originalBooking = originalBookingArray[0];
+    console.log("Los valores originales del booking son: ");
+    console.log(originalBooking);
+
+    // Información existente de booking_room
+    const [originalBookingRoomArray] = await db
+      .promise()
+      .query(`SELECT * FROM booking_room WHERE id_booking = ?`, [
+        originalBooking.id_booking,
+      ]);
+    const originalBookingRoom = originalBookingRoomArray[0];
+    console.log("Los valores originales del booking_room son: ");
+    console.log(originalBookingRoom);
+
+    // Datos de la solicitud
+    const { user_id_number, check_in, check_out, room_number, total } =
+      req.body;
+
+    // Verificar que se hayan recibido todos los campos obligatorios
+    if (!user_id_number || !check_in || !check_out || !room_number || !total) {
+      return res
+        .status(409)
+        .json({ message: "Se deben ingresar todos los campos obligatorios." });
     }
 
-    delete data.user_name;
-    delete data.room;
+    // Obtener el id del user con el user_id_number
 
-    if (Object.keys(data).length === 0) {
+    const [userResult] = await db
+      .promise()
+      .query(`SELECT id FROM user WHERE id_number = ?`, [user_id_number]);
+
+    const id_user = userResult[0]?.id;
+    console.log("El id del nuevo usuario es: " + id_user);
+
+    // Registrar nuevos valores
+    const newData = {
+      id_user: id_user,
+      check_in: data.check_in?.trim(),
+      check_out: data.check_out?.trim(),
+      total: parseFloat(data.total),
+    };
+    console.log("Los nuevos valores son: ");
+    console.log(newData);
+
+    // Verificar que el nuevo room_number existe
+    const room = await roomModel.findRoom(room_number);
+    console.log("La nueva habitación es: ");
+    console.log(room);
+
+    if (!room) {
+      return res.status(400).json({ message: "No existe la habitación." });
+    }
+
+    // Obtener el id_room del nuevo room_number
+    const [roomResult] = await db
+      .promise()
+      .query(`SELECT id_room FROM room WHERE room_number=?`, [room_number]);
+    const id_room = roomResult[0]?.id_room;
+    console.log("El id_room de la nueva habitación es: " + id_room);
+
+    // Obtener el id_booking
+    const id_booking = originalBooking.id_booking;
+    console.log("El id_booking existente es: " + id_booking);
+
+    // Actualizar booking_room
+    if (originalBookingRoom.id_room !== id_room) {
+      const newBookingRoom = await bookingModel.updateBookingRoom(
+        id_booking,
+        id_room
+      );
+      console.log("Los nuevos valores de booking_room son: ");
+      console.log(newBookingRoom);
+    } else {
+      console.log("No hubo cambios en la habitación.");
+    }
+
+    // Comparar los valores originales del booking con los nuevos
+    const changes = Object.entries(newData).some(([key, value]) => {
+      const originalValue = originalBooking[key];
+      // Si está vacío no comparar
+      if (value === undefined || value === "") return false;
+      // Si ambos son números
+      if (!isNaN(value) && !isNaN(originalValue)) {
+        return Number(value) !== Number(originalValue);
+      }
+      // Si ambos son fechas
+      const isDateField = key === "check_in" || key === "check_out";
+      if (isDateField) {
+        const newDate = new Date(value).toISOString().slice(0, 10);
+        const originalDate = new Date(originalValue).toISOString().slice(0, 10);
+        return newDate !== originalDate;
+      }
+      // Convertir a String para compararlos de manera segura
+      return String(value).trim() === String(originalValue).trim();
+    });
+    console.log("¿Se realizaron cambios?: " + changes);
+
+    if (!changes) {
       return res
         .status(400)
-        .json({ message: "No se proporcionaron datos válidos." });
+        .json({ message: "No se realizaron cambios en los datos." });
     }
 
-    const result = await bookingModel.updateBooking(code, data);
+    // Eliminar los valores que no son columnas en la tabla
+    delete data.user_name;
+    delete data.id_number;
+    delete data.room;
+    // Comunicarse con la base de datos para modificar la reserva
+    const result = await bookingModel.updateBooking(code, newData);
+
     res.status(200).json({ message: "Reserva actualizada con éxito." });
   } catch (error) {
     console.error("Error al modificar la reserva: ", error);
