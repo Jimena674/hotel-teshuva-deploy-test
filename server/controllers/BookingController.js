@@ -21,19 +21,33 @@ const createBooking = async (req, res) => {
   try {
     // Datos de la solicitud
 
-    const { user_id_number, check_in, check_out, room_number, total } =
-      req.body;
+    const {
+      user_id_number,
+      check_in,
+      check_out,
+      room_number,
+      total,
+      booking_status_name,
+    } = req.body;
     console.log(
       "Los datos ingresados son: " + user_id_number,
       check_in,
       check_out,
       room_number,
-      total
+      total,
+      booking_status_name
     );
 
     // Validar que se hayan ingresado todos los datos
 
-    if (!user_id_number || !check_in || !check_out || !room_number || !total) {
+    if (
+      !user_id_number ||
+      !check_in ||
+      !check_out ||
+      !room_number ||
+      !total ||
+      !booking_status_name
+    ) {
       return res
         .status(400)
         .json({ message: "Todos los campos son obligatorios." });
@@ -81,6 +95,16 @@ const createBooking = async (req, res) => {
     const id_user = userResult[0]?.id;
     console.log("El id del usuario es: " + id_user);
 
+    // Obtener el id_booking_status
+    const [bookingResult] = await db
+      .promise()
+      .query(`SELECT id_booking_status FROM booking_status WHERE name = ?`, [
+        booking_status_name,
+      ]);
+
+    const id_booking_status = bookingResult[0]?.id_booking_status;
+    console.log("El id del booking_status es: " + id_booking_status);
+
     // Enviar los datos a la base de datos
     const bookingData = {
       id_user,
@@ -88,6 +112,7 @@ const createBooking = async (req, res) => {
       check_out,
       total,
       code,
+      id_booking_status,
     };
     console.log("Los datos enviados de la reserva son: ");
     console.log(bookingData);
@@ -186,11 +211,24 @@ const updateBooking = async (req, res) => {
     console.log(originalBookingRoom);
 
     // Datos de la solicitud
-    const { user_id_number, check_in, check_out, room_number, total } =
-      req.body;
+    const {
+      user_id_number,
+      check_in,
+      check_out,
+      room_number,
+      total,
+      booking_status_name,
+    } = req.body;
 
     // Verificar que se hayan recibido todos los campos obligatorios
-    if (!user_id_number || !check_in || !check_out || !room_number || !total) {
+    if (
+      !user_id_number ||
+      !check_in ||
+      !check_out ||
+      !room_number ||
+      !total ||
+      !booking_status_name
+    ) {
       return res
         .status(409)
         .json({ message: "Se deben ingresar todos los campos obligatorios." });
@@ -205,12 +243,23 @@ const updateBooking = async (req, res) => {
     const id_user = userResult[0]?.id;
     console.log("El id del nuevo usuario es: " + id_user);
 
+    // Obtener el id del booking_status
+    const [bookingResult] = await db
+      .promise()
+      .query(`SELECT id_booking_status FROM booking_status WHERE name = ?`, [
+        booking_status_name,
+      ]);
+
+    const id_status = bookingResult[0]?.id_booking_status;
+    console.log("El id del booking_status es: " + id_status);
+
     // Registrar nuevos valores
     const newData = {
       id_user: id_user,
       check_in: data.check_in?.trim(),
       check_out: data.check_out?.trim(),
       total: parseFloat(data.total),
+      id_status: id_status,
     };
     console.log("Los nuevos valores son: ");
     console.log(newData);
@@ -277,7 +326,8 @@ const updateBooking = async (req, res) => {
     // Eliminar los valores que no son columnas en la tabla
     delete data.user_name;
     delete data.id_number;
-    delete data.room;
+    delete data.room_number;
+    delete data.booking_status_name;
     // Comunicarse con la base de datos para modificar la reserva
     const result = await bookingModel.updateBooking(code, newData);
 

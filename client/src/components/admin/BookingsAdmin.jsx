@@ -12,7 +12,7 @@ export default function BookingDBAdmin() {
     /* Función para obtener y mostrar los datos de las reservas */
   }
   useEffect(() => {
-    const fetchTotal = async () => {
+    const fetchBookings = async () => {
       try {
         const res = await fetch(`http://localhost:4000/api/booking/`);
         if (!res.ok) {
@@ -26,7 +26,7 @@ export default function BookingDBAdmin() {
         setLoading(false);
       }
     };
-    fetchTotal();
+    fetchBookings();
   }, []);
 
   // Estado para abrir el modal para crear una reserva
@@ -38,6 +38,7 @@ export default function BookingDBAdmin() {
   const [check_out, setCheckOut] = useState("");
   const [room_number, setRoomNumber] = useState("");
   const [total, setTotal] = useState("");
+  const [booking_status_name, setBookingStatusName] = useState("");
 
   {
     /** Función para abrir el modal para crear una reserva */
@@ -51,10 +52,12 @@ export default function BookingDBAdmin() {
   {
     /** Función para volver a cargar todos los datos en la tabla */
   }
+
   const fetchBookings = async () => {
     const res = await fetch(`http://localhost:4000/api/booking/`);
     const data = await res.json();
     setBookings(data);
+    console.log(bookings);
   };
 
   {
@@ -71,6 +74,7 @@ export default function BookingDBAdmin() {
           check_out,
           room_number,
           total,
+          booking_status_name,
         }),
       });
       const data = await res.json();
@@ -80,10 +84,12 @@ export default function BookingDBAdmin() {
         setCheckOut("");
         setRoomNumber("");
         setTotal("");
+        setBookingStatusName("");
         setMessageType("success");
         setMessageNewBooking("✅ La reserva se creó con éxito.");
         // Recargar la información en la tabla
         await fetchBookings();
+        setShowModalNewBooking(false);
       } else {
         setMessageType("error");
         setMessageNewBooking(
@@ -204,6 +210,13 @@ export default function BookingDBAdmin() {
     return new Intl.DateTimeFormat("es-CO").format(new Date(dateStr));
   };
 
+  const bookingStatusName = [
+    { id: 1, name: "Pendiente" },
+    { id: 2, name: "Confirmada" },
+    { id: 3, name: "Cancelada" },
+    { id: 4, name: "Completada" },
+  ];
+
   return (
     <>
       <div className="container-fluid">
@@ -229,6 +242,7 @@ export default function BookingDBAdmin() {
                 <th scope="col">Salida</th>
                 <th scope="col">Habitación</th>
                 <th scope="col">Total</th>
+                <th scope="col">Estado</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
@@ -243,6 +257,7 @@ export default function BookingDBAdmin() {
                     <td>{formatToLocalDate(booking.check_out)}</td>
                     <td>{booking.room_number}</td>
                     <td>{booking.total}</td>
+                    <td>{booking.booking_status_name}</td>
                     <td>
                       <div className="dropdown">
                         <button
@@ -335,6 +350,10 @@ export default function BookingDBAdmin() {
                         <th scope="row">Total</th>
                         <td>{selectedBooking.total}</td>
                       </tr>
+                      <tr>
+                        <th scope="row">Estado</th>
+                        <td>{selectedBooking.booking_status_name}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -424,6 +443,25 @@ export default function BookingDBAdmin() {
                             value={total}
                             onChange={(e) => setTotal(e.target.value)}
                           />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Estado</th>
+                        <td>
+                          <select
+                            id="bookingStatusName"
+                            className="form-select"
+                            value={booking_status_name}
+                            onChange={(e) =>
+                              setBookingStatusName(e.target.value)
+                            }
+                          >
+                            <option></option>
+                            <option value={1}>Pendiente</option>
+                            <option value={2}>Confirmada</option>
+                            <option value={3}>Cancelada</option>
+                            <option value={4}>Completada</option>
+                          </select>
                         </td>
                       </tr>
                     </tbody>
