@@ -36,11 +36,12 @@ const readAllBookings = async () => {
       user.id_number AS user_id_number,
       room.room_number AS room_number,
       booking_status.name AS booking_status_name
-      FROM booking 
+      FROM booking
       JOIN user ON booking.id_user = user.id
       JOIN booking_status ON booking.id_status = booking_status.id_booking_status
       JOIN booking_room ON booking.id_booking = booking_room.id_booking 
-      JOIN room ON booking_room.id_room = room.id_room`
+      JOIN room ON booking_room.id_room = room.id_room
+      ORDER BY id_booking DESC`
   );
   return rows;
 };
