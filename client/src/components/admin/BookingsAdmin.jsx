@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import AlertMessage from "../common/AlertMessage";
+import BookingStatusColor from "../common/BookingStatusColor";
 
 export default function BookingDBAdmin() {
   // Estado para obtener todas las reservas
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [messageType, setMessageType] = useState("");
-  const [messageReadBookings, setMessageReadBookings] = useState("");
+  const [bookingStatusType, setBookingStatusType] = useState("");
 
   {
     /* Función para obtener y mostrar los datos de las reservas */
@@ -20,6 +21,7 @@ export default function BookingDBAdmin() {
         }
         const data = await res.json();
         setBookings(data);
+        setBookingStatusType(data.booking_status_name);
       } catch (error) {
         console.error("Error al leer los datos de las reservas: ", error);
       } finally {
@@ -210,13 +212,6 @@ export default function BookingDBAdmin() {
     return new Intl.DateTimeFormat("es-CO").format(new Date(dateStr));
   };
 
-  const bookingStatusName = [
-    { id: 1, name: "Pendiente" },
-    { id: 2, name: "Confirmada" },
-    { id: 3, name: "Cancelada" },
-    { id: 4, name: "Completada" },
-  ];
-
   return (
     <>
       <div className="container-fluid">
@@ -257,7 +252,9 @@ export default function BookingDBAdmin() {
                     <td>{formatToLocalDate(booking.check_out)}</td>
                     <td>{booking.room_number}</td>
                     <td>{booking.total}</td>
-                    <td>{booking.booking_status_name}</td>
+                    <td>
+                      <BookingStatusColor type={booking.booking_status_name} />
+                    </td>
                     <td>
                       <div className="dropdown">
                         <button
@@ -352,7 +349,11 @@ export default function BookingDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Estado</th>
-                        <td>{selectedBooking.booking_status_name}</td>
+                        <td>
+                          <BookingStatusColor
+                            type={selectedBooking.booking_status_name}
+                          />
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -457,10 +458,10 @@ export default function BookingDBAdmin() {
                             }
                           >
                             <option></option>
-                            <option value={1}>Pendiente</option>
-                            <option value={2}>Confirmada</option>
-                            <option value={3}>Cancelada</option>
-                            <option value={4}>Completada</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Confirmada">Confirmada</option>
+                            <option value="Cancelada">Cancelada</option>
+                            <option value="Completada">Completada</option>
                           </select>
                         </td>
                       </tr>
@@ -616,6 +617,28 @@ export default function BookingDBAdmin() {
                               })
                             }
                           />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Estado</th>
+                        <td>{actualBooking.booking_status_name}</td>
+                        <td>
+                          <select
+                            className="form-select"
+                            value={updatedBooking.booking_status_name}
+                            onChange={(e) =>
+                              setUpdatedBooking({
+                                ...updatedBooking,
+                                booking_status_name: e.target.value,
+                              })
+                            }
+                          >
+                            <option></option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Confirmada">Confirmada</option>
+                            <option value="Cancelada">Cancelada</option>
+                            <option value="Completada">Completada</option>
+                          </select>
                         </td>
                       </tr>
                     </tbody>
