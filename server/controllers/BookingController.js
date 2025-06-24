@@ -325,8 +325,10 @@ const updateBooking = async (req, res) => {
 
     // Eliminar los valores que no son columnas en la tabla
     delete data.user_name;
+    delete data.user_last_name;
     delete data.id_number;
     delete data.room_number;
+    delete data.room_rate;
     delete data.booking_status_name;
     // Comunicarse con la base de datos para modificar la reserva
     const result = await bookingModel.updateBooking(code, newData);

@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../common/Button";
-import { Link } from "react-router-dom";
 import AlertMessage from "../common/AlertMessage";
-import { bookingRoom } from "../../../../server/models/BookingModel";
+import BookingStatusColor from "../common/BookingStatusColor";
 
 const ConsultarReserva = () => {
   // Estado para el modal del formulario
@@ -11,35 +10,59 @@ const ConsultarReserva = () => {
   const [messageReadBooking, setMessageReadBooking] = useState("");
 
   // Estado para el modal de la consulta
+  const [code, setCode] = useState("");
   const [showModalRead, setShowModalRead] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
 
   {
     /** Función para el modal de la consulta */
   }
-  const readBooking = async (code, id_user) => {
-    if (!code || !id_user) {
-      return res
-        .status(404)
-        .json({ message: "El código o el id del usuario no existe" });
+  const readBooking = async (code) => {
+    const url = `/api/booking/${code}`;
+    console.log("🌐 Consultando:", url);
+    if (!code) {
+      setMessageType("error");
+      setMessageReadBooking("❌ Se debe ingresar un código de reserva.");
+      return;
     }
     try {
-      const res = await fetch(`http://localhost:4000/api/booking/${code}`);
+      const res = await fetch(url);
+      console.log("🛑 res.ok:", res.ok, "status:", res.status);
       const data = await res.json();
-      setShowModalRead(true);
-      setSelectedBooking(data);
+      console.log("🔄 Respuesta del backend:", data);
+
+      if (res.ok) {
+        console.log("✅ Estado res.ok:", res.ok);
+        setShowModalRead(true);
+        setSelectedBooking(data);
+      } else {
+        setMessageType("error");
+        setMessageReadBooking(`❌ ${data.message || "Reserva no encontrada."}`);
+      }
     } catch (error) {
       setMessageType("error");
-      setMessageReadBooking("Error al consultar los datos de la reserva.");
+      setMessageReadBooking("❌ Error al consultar los datos de la reserva.");
       console.error(error);
     }
+  };
+
+  useEffect(() => {
+    console.log("🔍 Estado showModalRead cambió:", showModalRead);
+  }, [showModalRead]);
+
+  const formatToLocalDate = (dateStr) => {
+    return new Intl.DateTimeFormat("es-CO").format(new Date(dateStr));
   };
 
   return (
     <>
       <button
         className="btn navbar-btn body-medium"
-        onClick={() => setMostrarModal(true)}
+        onClick={() => {
+          setMostrarModal(true);
+          setCode("");
+          setMessageReadBooking("");
+        }}
       >
         Buscar Reserva
       </button>
@@ -61,55 +84,88 @@ const ConsultarReserva = () => {
             </div>
             <hr />
             {/*Cuerpo*/}
-            <div className="">
-              <span className="m-0 form-text body-medium">
-                Todos los campos son requeridos.
-              </span>
-            </div>
             <div className="mt-4">
-              <label htmlFor="" className="form-label label-medium">
-                Código
-              </label>
-              <input type="text" className="form-control" id="" required="" />
-            </div>
-            <div className="mt-4">
-              <label htmlFor="" className="form-label label-medium">
-                No. de Identificació del usuario
-              </label>
-              <input type="text" className="form-control" id="" required="" />
+              <label className="form-label label-medium">Código</label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
             </div>
             {/* Botón */}
             <div className="mt-4">
-              <Link>
-                <Button
-                  name="Buscar"
-                  btnCustom="solid-btn-tertiary"
-                  btnText="label-medium"
-                  btnSize="w-100"
-                  btnType="button"
-                  onClick={() => readBooking(code)}
-                />
-              </Link>
+              <Button
+                name="Buscar"
+                btnCustom="solid-btn-tertiary"
+                btnText="label-medium"
+                btnSize="w-100"
+                btnType="button"
+                onClick={() => readBooking(code)}
+              />
+            </div>
+            <div>
+              <AlertMessage type={messageType} message={messageReadBooking} />
             </div>
           </div>
         </div>
       )}
       {/** Modal para mostrar la consulta. */}
       {showModalRead && selectedBooking && (
-        <div className="modal-overlay">
-          <div className="reserva-modal">
-            {/** Título modal */}
-            <div className="row mb-2">
-              <div className="col d-flex flex-column justify-content-center">
-                <span className="headline-small">
-                  Reserva {selectedBooking.code}
+        <div className="modal show d-block modal-overlay">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <span className="modal-title headline-small">
+                  Información de la reserva
                 </span>
                 <button
-                  className="col-auto d-flex flex-column justify-content-center close"
+                  type="button"
+                  className="btn-close"
                   onClick={() => setShowModalRead(false)}
-                >
-                  <i className="bi bi-x-square"></i>
-                </button>
+                ></button>
+              </div>
+              <div className="modal-body">
+                <p>
+                  <strong>Código:</strong> {selectedBooking.code}
+                </p>
+                <p>
+                  <strong>Estado:</strong>{" "}
+                  <BookingStatusColor
+                    type={selectedBooking.booking_status_name}
+                  />
+                </p>
+                <p>
+                  <strong>Nombre del usuario:</strong>{" "}
+                  {selectedBooking.user_name +
+                    " " +
+                    selectedBooking.user_last_name}
+                </p>
+                <p>
+                  <strong>Documento de identidad:</strong>{" "}
+                  {selectedBooking.user_id_number}
+                </p>
+                <p>
+                  <strong>Fecha de ingreso:</strong>{" "}
+                  {formatToLocalDate(selectedBooking.check_in)}
+                </p>
+                <p>
+                  <strong>Fecha de salida:</strong>
+                  {" " + formatToLocalDate(selectedBooking.check_out)}
+                </p>
+                <p>
+                  <strong>Habitación:</strong>
+                  {" " + selectedBooking.room_number}
+                </p>
+                <p>
+                  <strong>Tarifa:</strong>
+                  {" " + "$ " + selectedBooking.room_rate}
+                </p>
+                <p>
+                  <strong>Total:</strong>
+                  {" " + "$ " + selectedBooking.total}
+                </p>
               </div>
             </div>
           </div>

@@ -3,6 +3,7 @@ export default function Button(props) {
   return (
     <button
       type={`${props.btnType}`}
+      onClick={props.onClick}
       className={`btn ${props.btnCustom} ${props.btnText} ${props.paddingBtn} ${props.marginBtn} ${props.btnSize}`}
     >
       {props.name}
