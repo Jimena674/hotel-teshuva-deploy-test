@@ -1,7 +1,7 @@
 import NavbarWebpage from "../components/web/NavbarWebpage";
 import FooterWebpage from "../components/web/FooterWebpage";
 import BookingForm from "../components/web/BookingForm";
-import CardITDB from "../components/web/CardITDB";
+import RoomCard from "../components/web/RoomCard";
 import CardITD from "../components/web/CardITD";
 import TitleWebpage from "../components/web/TitleWebpage";
 import CardHorITDB from "../components/web/CardHorITDB";
@@ -99,7 +99,7 @@ export default function Home() {
           />
           <div className="row gx-2">
             <div className="col-12 col-sm-6 col-lg-3">
-              <CardITDB
+              <RoomCard
                 image="/images/room-1.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
@@ -109,7 +109,7 @@ export default function Home() {
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
-              <CardITDB
+              <RoomCard
                 image="/images/room-2.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
@@ -119,7 +119,7 @@ export default function Home() {
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
-              <CardITDB
+              <RoomCard
                 image="/images/room-3.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
@@ -129,7 +129,7 @@ export default function Home() {
               />
             </div>
             <div className="col-12 col-sm-6 col-lg-3">
-              <CardITDB
+              <RoomCard
                 image="/images/room-4.jpg"
                 title="Habitación"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."

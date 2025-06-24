@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Button from "../common/Button";
 import AlertMessage from "../common/AlertMessage";
-import BookingStatusColor from "../common/BookingStatusColor";
+import ModalBookingDetail from "../common/ModalBookingDetail";
 
 const ConsultarReserva = () => {
   // Estado para el modal del formulario
@@ -50,10 +50,6 @@ const ConsultarReserva = () => {
     console.log("🔍 Estado showModalRead cambió:", showModalRead);
   }, [showModalRead]);
 
-  const formatToLocalDate = (dateStr) => {
-    return new Intl.DateTimeFormat("es-CO").format(new Date(dateStr));
-  };
-
   return (
     <>
       <button
@@ -72,11 +68,11 @@ const ConsultarReserva = () => {
           <div className="reserva-modal">
             {/*Título*/}
             <div className="row mb-2">
-              <div className="col d-flex flex-column justify-content-center">
+              <div className="col-auto d-flex flex-column justify-content-center">
                 <span className="headline-small">Encuentra tu Reserva</span>
               </div>
               <button
-                className="col-auto d-flex flex-column justify-content-center close"
+                className="col d-flex flex-column justify-content-center close"
                 onClick={() => setMostrarModal(false)}
               >
                 <i className="bi bi-x-square"></i>
@@ -113,63 +109,10 @@ const ConsultarReserva = () => {
       )}
       {/** Modal para mostrar la consulta. */}
       {showModalRead && selectedBooking && (
-        <div className="modal show d-block modal-overlay">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <span className="modal-title headline-small">
-                  Información de la reserva
-                </span>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowModalRead(false)}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <p>
-                  <strong>Código:</strong> {selectedBooking.code}
-                </p>
-                <p>
-                  <strong>Estado:</strong>{" "}
-                  <BookingStatusColor
-                    type={selectedBooking.booking_status_name}
-                  />
-                </p>
-                <p>
-                  <strong>Nombre del usuario:</strong>{" "}
-                  {selectedBooking.user_name +
-                    " " +
-                    selectedBooking.user_last_name}
-                </p>
-                <p>
-                  <strong>Documento de identidad:</strong>{" "}
-                  {selectedBooking.user_id_number}
-                </p>
-                <p>
-                  <strong>Fecha de ingreso:</strong>{" "}
-                  {formatToLocalDate(selectedBooking.check_in)}
-                </p>
-                <p>
-                  <strong>Fecha de salida:</strong>
-                  {" " + formatToLocalDate(selectedBooking.check_out)}
-                </p>
-                <p>
-                  <strong>Habitación:</strong>
-                  {" " + selectedBooking.room_number}
-                </p>
-                <p>
-                  <strong>Tarifa:</strong>
-                  {" " + "$ " + selectedBooking.room_rate}
-                </p>
-                <p>
-                  <strong>Total:</strong>
-                  {" " + "$ " + selectedBooking.total}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <ModalBookingDetail
+          booking={selectedBooking}
+          onClose={() => setShowModalRead(false)}
+        />
       )}
     </>
   );
