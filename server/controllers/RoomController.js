@@ -163,6 +163,7 @@ const updateRoom = async (req, res) => {
     delete updatedData.room_type;
     delete updatedData.room_status;
     delete updatedData.floor;
+    delete updatedData.facility_name;
 
     // Comunicarse con la base de datos para ejecutar actualización
     const result = await roomModel.updateRoom(idRoom, newData);

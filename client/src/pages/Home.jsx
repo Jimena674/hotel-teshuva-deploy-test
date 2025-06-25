@@ -6,7 +6,7 @@ import CardITD from "../components/web/CardITD";
 import TitleWebpage from "../components/web/TitleWebpage";
 import CardHorITDB from "../components/web/CardHorITDB";
 import IconText from "../components/common/IconText";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function Home() {
@@ -23,6 +23,42 @@ export default function Home() {
       }
     }
   }, [location]);
+
+  // Estado para mostrar mensajes
+  const [messageType, setMessageType] = useState("");
+
+  // Estado para obtener los datos de las habitaciones
+  const [rooms, setRooms] = useState([]);
+  const [messageReadRooms, setMessageReadRooms] = useState("");
+
+  // Función para obtener los datos de las habitaciones
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const res = await fetch(`/api/room/`);
+        const data = await res.json();
+        console.log("Datos recibidos:", data);
+        if (res.ok) {
+          setRooms(data);
+        } else {
+          setMessageType("error");
+          setMessageReadRooms(
+            `❌ ${
+              data.message ||
+              "Error al consultar los datos de las habitaciones."
+            }`
+          );
+        }
+      } catch (error) {
+        setMessageReadRooms(
+          "❌ Error al consultar los datos de las habitaciones."
+        );
+        setMessageType("error");
+        console.error(error);
+      }
+    };
+    fetchRooms();
+  }, []);
   return (
     <>
       <div className="container p-0">
@@ -98,16 +134,12 @@ export default function Home() {
             descriptionFont="body-large"
           />
           <div className="row gx-2">
-            <div className="col-12 col-sm-6 col-lg-3">
-              <RoomCard
-                image="/images/room-1.jpg"
-                title="Habitación"
-                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
-                heightImg="200px"
-                widthImg="100%"
-                objectFitImg="cover"
-              />
-            </div>
+            {rooms.map((room) => (
+              <div className="col-12 col-sm-6 col-lg-3" key={room.id_room}>
+                <RoomCard room={room} />
+              </div>
+            ))}
+            {/** 
             <div className="col-12 col-sm-6 col-lg-3">
               <RoomCard
                 image="/images/room-2.jpg"
@@ -138,6 +170,7 @@ export default function Home() {
                 objectFitImg="cover"
               />
             </div>
+            */}
           </div>
         </section>
 

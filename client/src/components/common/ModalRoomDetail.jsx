@@ -1,39 +1,61 @@
-export default function ModalRoomDetail({ room, onClose, props }) {
+export default function ModalRoomDetail({ room, onClose }) {
   return (
     <div className="modal show d-block modal-overlay">
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content reserva-modal">
-          <div className="modal-header row mb-2">
-            <div className="col d-flex flex-column justify-content-center">
-              <span className="modal-title title-large">
-                Información de la Habitación
+          <div className="modal-header row mb-2 px-0 pt-0">
+            <div className="col ">
+              <span className="modal-title headline-medium">
+                {"Habitación " + room.room_number}
               </span>
             </div>
-            <button
-              className="col-auto d-flex flex-column justify-content-center close"
-              type="button"
-              onClick={onClose}
-            ></button>
+            <button className="col-auto close" type="button" onClick={onClose}>
+              <i className="bi bi-x-square"></i>
+            </button>
           </div>
-          <div className="modal-body d-flex">
-            <div className="flex-column">
+          <div className="modal-body d-flex flex-column px-0">
+            <div className="px-0">
               <img
                 src={room.photo_path}
                 alt={"Habitación " + room.room_number}
                 className="img-fluid rounded"
                 style={{
-                  width: props.widthImg,
-                  height: props.heightImg,
-                  objectFit: props.objectFitImg,
+                  width: "100%",
                 }}
               />
             </div>
-            <div className="flex-column">
+            <div className="px-0 pt-3">
               <table className="table align-middle">
                 <tbody>
-                  <tr>
-                    <th scope="row">Servicios:</th>
-                    <td>{}</td>
+                  <tr className="p-0">
+                    <th scope="row" className="p-0 headline-xsmall">
+                      Características
+                    </th>
+                    <td className="p-0"></td>
+                  </tr>
+                  <tr className="p-0">
+                    <td className="p-0">
+                      <strong>Tipo de habitación: </strong>
+                    </td>
+                    <td className="p-0">{room.room_type}</td>
+                  </tr>
+                  <tr className="p-0">
+                    <td className="p-0">
+                      <strong>Piso: </strong>
+                    </td>
+                    <td className="p-0">{room.floor}</td>
+                  </tr>
+                  <tr className="p-0">
+                    <th scope="row" className="headline-xsmall p-0">
+                      Servicios
+                    </th>
+                    <td className="p-0"></td>
+                  </tr>
+                  <tr className="p-0">
+                    <td className="p-0">
+                      <strong>Piso: </strong>
+                    </td>
+                    <td className="p-0">{room.floor}</td>
                   </tr>
                 </tbody>
               </table>

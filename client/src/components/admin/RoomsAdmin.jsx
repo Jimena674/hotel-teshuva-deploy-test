@@ -786,6 +786,10 @@ export default function RoomsDBAdmin() {
                         <th scope="row">Estado</th>
                         <td>{readedRoom.room_status}</td>
                       </tr>
+                      <tr>
+                        <th scope="row">Servicios</th>
+                        <td>{readedRoom.facility}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
