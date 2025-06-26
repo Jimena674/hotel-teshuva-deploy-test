@@ -41,5 +41,26 @@ const createOffer = async (
 };
 
 /** Modelo para modificar una oferta. */
+const updateOffer = async (id_offer, updatedData) => {
+  // Se crean dos objetos
+  const columns = [];
+  const values = [];
 
-module.exports = { readAllOffers, readOffer, createOffer };
+  // Se recorren las claves del objeto updatedData
+  // Se construye la solicitud SQL de cada columna, ejem: tittle = ?
+  // Se obtienen los valores de cada clave o propiedad y se unen en un array en orden
+  for (let key in updatedData) {
+    columns.push(`${key} = ?`);
+    values.push(updatedData[key]);
+  }
+
+  const sql = `UPDATE offer SET ${columns.join(", ")} WHERE id_offer = ?`;
+  values.push(id_offer);
+
+  // Solicitud a la base de datos
+  const [result] = await db.promise().query(sql, values);
+
+  return result;
+};
+
+module.exports = { readAllOffers, readOffer, createOffer, updateOffer };

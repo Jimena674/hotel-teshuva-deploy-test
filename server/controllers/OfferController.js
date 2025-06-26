@@ -63,5 +63,61 @@ const createOffer = async (req, res) => {
 };
 
 /** Función para modificar una oferta */
+const updateOffer = async (req, res) => {
+  // Datos que suministra el usuario
+  const idOffer = req.params.id_offer;
+  const updatedData = req.body;
+  try {
+    // Datos existentes en la base de datos
+    const [actualOffer] = await db
+      .promise()
+      .query(`SELECT * FROM offer WHERE id_offer = ?`, [idOffer]);
+    const originalOffer = actualOffer[0];
 
-module.exports = { readAllOffers, readOffer, createOffer };
+    console.log("La infomación existente de la oferta es: ");
+    console.log(originalOffer);
+
+    // Nuevos valores para la oferta
+    const newData = {
+      title: updatedData.title?.trim(),
+      description: updatedData.description,
+      image_path: updatedData.image_path?.trim(),
+      start_date: updatedData.start_date?.trim(),
+      end_date: updatedData.end_date?.trim(),
+    };
+
+    console.log("Los nuevos datos de la oferta son: ");
+    console.log(newData);
+
+    // Comparar los valores existente con los nuevos
+    const changes = Object.entries(newData).some(([key, value]) => {
+      const originalValue = originalOffer[key];
+      // Si los valores son fechas
+      const isDateField = key === "start_date" || key === "end_date";
+      if (isDateField) {
+        const newDate = new Date(value).toISOString().slice(0, 10);
+        const originalDate = new Date(originalValue).toISOString().slice(0, 10);
+        return newDate !== originalDate;
+      }
+      // Convertir a String para comparar de manera segura
+      return String(value).trim() === String(originalValue).trim();
+    });
+
+    // Verificar si no hubo cambios en los valores
+    if (!changes) {
+      return res
+        .status()
+        .json({ error: "No se realizaron cambios en los datos." });
+    }
+
+    // Comunicarse con las base de datos
+    const result = await offerModel.updateOffer(idOffer, newData);
+
+    res.status(200).json({ message: "Oferta actualizada con éxito." });
+  } catch (error) {
+    res.status(500).json({ error: "Error en el servidor." });
+    console.log("Error al actualizar la oferta.", error);
+  }
+};
+
+module.exports = { readAllOffers, readOffer, createOffer, updateOffer };
