@@ -15,6 +15,22 @@ const readAllOffers = async (req, res) => {
 };
 
 /** Función para leer una oferta */
+const readOffer = async (req, res) => {
+  try {
+    // Dato enviado por el usuario
+    const idOffer = req.params.id_offer;
+    // Conexión con la base de datos
+    const offer = await offerModel.readOffer(idOffer);
+    // Verificar si la oferta existe
+    if (!offer) {
+      res.status(404).json({ error: "La oferta no existe." });
+    }
+    res.status(200).json(offer);
+  } catch (error) {
+    res.status(500).json({ error: "Error en el servidor." });
+    console.log("Error al leer la oferta.", error);
+  }
+};
 
 /** Función para crear una oferta */
 
@@ -48,4 +64,4 @@ const createOffer = async (req, res) => {
 
 /** Función para modificar una oferta */
 
-module.exports = { readAllOffers, createOffer };
+module.exports = { readAllOffers, readOffer, createOffer };
