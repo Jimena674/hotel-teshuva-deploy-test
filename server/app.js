@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const userRoutes = require("./routes/UserRoutes");
 const roomRoutes = require("./routes/RoomRoutes");
 const bookingRoutes = require("./routes/BookingRoutes");
+const offerRoutes = require("./routes/OfferRoutes");
 const cors = require("cors");
 require("./config/db");
 
@@ -20,6 +21,7 @@ app.use(express.json()); // Parsear las request en formato JSON
 app.use("/api/user", userRoutes);
 app.use("/api/room", roomRoutes);
 app.use("/api/booking", bookingRoutes);
+app.use("/api/offer", offerRoutes);
 
 // Definir el puerto en el que se ejecutará el servidor
 const PORT = process.env.PORT || 4000;

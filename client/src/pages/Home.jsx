@@ -154,7 +154,7 @@ export default function Home() {
           <div className="row gx-2">
             <div className="col-12 col-lg-6 mb-4">
               <CardHorITDB
-                image="/images/hotel-freepik-1.jpg"
+                image="/images/offer-1.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
                 heightImg="200px"
@@ -164,7 +164,7 @@ export default function Home() {
             </div>
             <div className="col-12 col-lg-6 mb-4">
               <CardHorITDB
-                image="/images/hotel-dcstudio.jpg"
+                image="/images/offer-2.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
                 heightImg="200px"
@@ -174,7 +174,7 @@ export default function Home() {
             </div>
             <div className="col-12 col-lg-6 mb-4">
               <CardHorITDB
-                image="/images/hotel-freepik-2.jpg"
+                image="/images/offer-3.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
                 heightImg="200px"
@@ -184,7 +184,7 @@ export default function Home() {
             </div>
             <div className="col-12 col-lg-6">
               <CardHorITDB
-                image="/images/hotel-jcomp.jpg"
+                image="/images/offer-4.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
                 heightImg="200px"
