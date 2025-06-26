@@ -139,38 +139,6 @@ export default function Home() {
                 <RoomCard room={room} />
               </div>
             ))}
-            {/** 
-            <div className="col-12 col-sm-6 col-lg-3">
-              <RoomCard
-                image="/images/room-2.jpg"
-                title="Habitación"
-                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
-                heightImg="200px"
-                widthImg="100%"
-                objectFitImg="cover"
-              />
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <RoomCard
-                image="/images/room-3.jpg"
-                title="Habitación"
-                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
-                heightImg="200px"
-                widthImg="100%"
-                objectFitImg="cover"
-              />
-            </div>
-            <div className="col-12 col-sm-6 col-lg-3">
-              <RoomCard
-                image="/images/room-4.jpg"
-                title="Habitación"
-                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros. Nulla purus est, euismod ornare tempor vel, lacinia quis mauris."
-                heightImg="200px"
-                widthImg="100%"
-                objectFitImg="cover"
-              />
-            </div>
-            */}
           </div>
         </section>
 

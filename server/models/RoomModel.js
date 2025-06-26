@@ -71,6 +71,7 @@ const getAllRooms = async () => {
       room.room_number, 
       room.rate, 
       room.photo_path, 
+      room.room_description,
       room_type.name AS room_type, 
       room_status.name AS room_status, 
       floor.name AS floor,
@@ -96,6 +97,7 @@ const getAllRooms = async () => {
         room_number: row.room_number,
         rate: row.rate,
         photo_path: row.photo_path,
+        room_description: row.room_description,
         room_type: row.room_type,
         room_status: row.room_status,
         floor: row.floor,
@@ -130,7 +132,24 @@ const readRoom = async (id_room) => {
       WHERE room.id_room = ?`,
     [id_room]
   );
-  return rows[0];
+
+  const room = {
+    id_room: rows[0].id_room,
+    room_number: rows[0].room_number,
+    rate: rows[0].rate,
+    photo_path: rows[0].photo_path,
+    room_description: rows[0].room_description,
+    room_type: rows[0].room_type,
+    room_status: rows[0].room_status,
+    floor: rows[0].floor,
+    facilities: [],
+  };
+
+  rows.forEach((row) => {
+    room.facilities.push(row.facility_name);
+  });
+
+  return room;
 };
 
 module.exports = {

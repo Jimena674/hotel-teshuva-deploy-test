@@ -52,9 +52,11 @@ export default function RoomCard({ room }) {
           }}
         />
         <div className="card-body px-0">
-          <h5 className="card-title title-medium mb-3">{room.room_number}</h5>
+          <h5 className="card-title title-medium mb-3">
+            {"Habitación " + room.room_number}
+          </h5>
 
-          <p className="card-text body-medium">{room.room_number}</p>
+          <p className="card-text body-medium">{room.room_description}</p>
 
           <Button
             name="Ver más detalles"

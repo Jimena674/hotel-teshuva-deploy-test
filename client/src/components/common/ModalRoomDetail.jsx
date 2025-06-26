@@ -27,35 +27,41 @@ export default function ModalRoomDetail({ room, onClose }) {
             <div className="px-0 pt-3">
               <table className="table align-middle">
                 <tbody>
-                  <tr className="p-0">
+                  <tr className="px-0">
                     <th scope="row" className="p-0 headline-xsmall">
                       Características
                     </th>
-                    <td className="p-0"></td>
+                    <td className="px-0"></td>
                   </tr>
-                  <tr className="p-0">
-                    <td className="p-0">
+                  <tr className="px-0">
+                    <td className="px-0">
                       <strong>Tipo de habitación: </strong>
                     </td>
-                    <td className="p-0">{room.room_type}</td>
+                    <td className="px-0">{room.room_type}</td>
                   </tr>
-                  <tr className="p-0">
-                    <td className="p-0">
+                  <tr className="px-0">
+                    <td className="px-0">
                       <strong>Piso: </strong>
                     </td>
-                    <td className="p-0">{room.floor}</td>
+                    <td className="px-0">{room.floor}</td>
                   </tr>
-                  <tr className="p-0">
+                  <tr className="px-0">
                     <th scope="row" className="headline-xsmall p-0">
                       Servicios
                     </th>
-                    <td className="p-0"></td>
+                    <td className="px-0"></td>
                   </tr>
-                  <tr className="p-0">
-                    <td className="p-0">
-                      <strong>Piso: </strong>
+                  <tr className="px-0">
+                    <td className="px-0">
+                      <ul>
+                        {/** Recorrer cada elemento del array facilities */}
+                        {/** Key identifica cada dafility de forma única */}
+                        {room.facilities.map((facility, index) => (
+                          <li key={index}>{facility}</li>
+                        ))}
+                      </ul>
                     </td>
-                    <td className="p-0">{room.floor}</td>
+                    <td className="px-0"></td>
                   </tr>
                 </tbody>
               </table>
