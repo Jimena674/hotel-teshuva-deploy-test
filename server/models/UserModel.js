@@ -11,6 +11,9 @@ const findUserByEmail = async (email) => {
       "SELECT user.*, user_type.name AS user_type FROM user JOIN user_type ON user.id_user_type = user_type.id_user_type WHERE user.email= ?",
       [email]
     );
+  if (rows.length === 0) {
+    return { error: "Usuario no encontrado." };
+  }
   return rows[0];
 };
 
@@ -29,7 +32,7 @@ const createUser = async (
   id_user_type,
   hashedPassword
 ) => {
-  await db
+  const [result] = await db
     .promise()
     .query(
       "INSERT INTO user (name, last_name, id_type_id, id_number, phone, birth_date, email, id_user_type, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -45,6 +48,7 @@ const createUser = async (
         hashedPassword,
       ]
     );
+  return result;
 };
 
 {
