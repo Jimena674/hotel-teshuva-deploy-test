@@ -30,7 +30,7 @@ describe("findUserByEmail", () => {
       query: jest.fn().mockResolvedValue([[]]),
     });
     //Mockear el input
-    const email = "gabriel@email.com";
+    const email = "";
     //Ejecutar la consulta
     const user = await userModel.findUserByEmail(email);
     expect(user).toEqual({ error: "Usuario no encontrado." });
@@ -76,7 +76,7 @@ describe("getAllUsers", () => {
         ],
       ]),
     });
-    //Ejecutar consulta
+    //Ejecutar consulta del modelo
     const getAllUsers = await userModel.getAllUsers();
     //Prueba
     expect(getAllUsers).toEqual([

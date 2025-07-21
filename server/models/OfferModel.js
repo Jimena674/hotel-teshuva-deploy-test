@@ -63,4 +63,17 @@ const updateOffer = async (id_offer, updatedData) => {
   return result;
 };
 
-module.exports = { readAllOffers, readOffer, createOffer, updateOffer };
+/** Modelo para eliminar una oferta */
+const deleteOffer = async (id_offer) => {
+  const [result] = await db
+    .promise()
+    .query(`DELETE FROM offer WHERE id_offer = ?`, [id_offer]);
+  return result;
+};
+module.exports = {
+  readAllOffers,
+  readOffer,
+  createOffer,
+  updateOffer,
+  deleteOffer,
+};

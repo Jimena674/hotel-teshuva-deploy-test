@@ -1,3 +1,4 @@
+const { json } = require("express");
 const db = require("../config/db");
 const offerModel = require("../models/OfferModel");
 
@@ -120,4 +121,27 @@ const updateOffer = async (req, res) => {
   }
 };
 
-module.exports = { readAllOffers, readOffer, createOffer, updateOffer };
+/** Función para eliminar una oferta */
+const deleteOffer = async (req, res) => {
+  try {
+    // Información obtenida del frontend
+    const idOffer = req.params.id_offer;
+    // Consulta a la base de datos
+    const result = await offerModel.deleteOffer(idOffer);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "La oferta no existe." });
+    }
+    res.status(200).json({ message: "Oferta eliminada con éxito." });
+  } catch (error) {
+    res.status(500).json({ error: "Error en el servidor." });
+    console.log("Error al eliminar la oferta.", error);
+  }
+};
+
+module.exports = {
+  readAllOffers,
+  readOffer,
+  createOffer,
+  updateOffer,
+  deleteOffer,
+};

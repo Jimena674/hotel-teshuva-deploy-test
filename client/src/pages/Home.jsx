@@ -4,10 +4,11 @@ import BookingForm from "../components/web/BookingForm";
 import RoomCard from "../components/web/RoomCard";
 import CardITD from "../components/web/CardITD";
 import TitleWebpage from "../components/web/TitleWebpage";
-import CardHorITDB from "../components/web/CardHorITDB";
+import OfferCard from "../components/web/OfferCard";
 import IconText from "../components/common/IconText";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import AlertMessage from "../components/common/AlertMessage";
 
 export default function Home() {
   const location = useLocation();
@@ -59,6 +60,36 @@ export default function Home() {
     };
     fetchRooms();
   }, []);
+
+  // Estado para obtener los datos de las ofertas
+  const [offers, setOffers] = useState([]);
+  const [messageReadOffers, setMessageReadOffers] = useState("");
+
+  // Función para obtener los datos de las ofertas
+  // useEffect hace una llamada a la API con fetch, esta es la API que creamos con express, la API es la que hace la consulta a la BD.
+  useEffect(() => {
+    const fetchOffers = async () => {
+      try {
+        // Consulta a base de datos
+        const res = await fetch(`/api/offer/`);
+        // Parsear la respuesta a JSON
+        const data = await res.json();
+        console.log("Datos recibidos:", data);
+        if (res.ok) {
+          setOffers(data);
+        } else {
+          setMessageType("error");
+          setMessageReadOffers(
+            "❌ Error al consultar los datos de las ofertas."
+          );
+        }
+      } catch (error) {
+        console.error("Error al leer las ofertas.", error);
+      }
+    };
+    fetchOffers();
+  }, []);
+
   return (
     <>
       <div className="container p-0">
@@ -124,6 +155,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+
         {/*Información de las habitaciones.*/}
 
         <section id="habitaciones" className="container p-0 mb-5">
@@ -152,8 +184,17 @@ export default function Home() {
             descriptionFont="body-large"
           />
           <div className="row gx-2">
+            {offers.map((offer) => (
+              <div className="col-12 col-lg-6 mb-4" key={offer.id_offer}>
+                <OfferCard offer={offer} />
+                <AlertMessage type={messageType} message={messageReadOffers} />
+              </div>
+            ))}
+          </div>
+          {/** 
+          <div className="row gx-2">
             <div className="col-12 col-lg-6 mb-4">
-              <CardHorITDB
+              <OfferCard
                 image="/images/offer-1.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
@@ -163,7 +204,7 @@ export default function Home() {
               />
             </div>
             <div className="col-12 col-lg-6 mb-4">
-              <CardHorITDB
+              <OfferCard
                 image="/images/offer-2.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
@@ -173,7 +214,7 @@ export default function Home() {
               />
             </div>
             <div className="col-12 col-lg-6 mb-4">
-              <CardHorITDB
+              <OfferCard
                 image="/images/offer-3.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
@@ -183,7 +224,7 @@ export default function Home() {
               />
             </div>
             <div className="col-12 col-lg-6">
-              <CardHorITDB
+              <OfferCard
                 image="/images/offer-4.jpg"
                 title="Ofertas"
                 description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a volutpat leo, a laoreet eros."
@@ -193,6 +234,7 @@ export default function Home() {
               />
             </div>
           </div>
+          */}
         </section>
 
         {/*Información de contacto y ubicación*/}
