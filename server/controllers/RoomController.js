@@ -1,5 +1,6 @@
 const roomModel = require("../models/RoomModel");
 const db = require("../config/db");
+const path = require("path");
 
 /* Controlador para crear una habitación */
 const createRoom = async function (req, res) {
@@ -105,6 +106,13 @@ const updateRoom = async (req, res) => {
       return res.status(404).json({ message: "Habitación no encontrada." });
     }
 
+    // En caso de que se suba un archivo
+    let photoPath = originalRoom.photo_path;
+    if (req.file) {
+      const fileName = req.file.filename;
+      photoPath = `/images/${fileName}`;
+    }
+
     // Nuevos valores
     const newData = {
       room_number: updatedData.room_number?.trim(),
@@ -112,7 +120,8 @@ const updateRoom = async (req, res) => {
       id_room_type: parseInt(updatedData.id_room_type),
       id_room_status: parseInt(updatedData.id_room_status),
       id_floor: parseInt(updatedData.id_floor),
-      photo_path: updatedData.photo_path?.trim(),
+      photo_path: photoPath || updatedData.photo_path?.trim(),
+      room_description: updatedData.room_description,
     };
 
     console.log("Los datos actualizados son: ");
@@ -135,7 +144,7 @@ const updateRoom = async (req, res) => {
     if (missingData.length > 0) {
       return res
         .status(400)
-        .json({ message: "Se deben ingresar todos los campos obligatorio." });
+        .json({ message: "Todos los campos son obligatorios." });
     }
 
     // Comparar los valores originales con los nuevos
@@ -148,7 +157,7 @@ const updateRoom = async (req, res) => {
         return Number(value) !== Number(originalValue);
       }
       // Convertir a string para compararlos de manera segura
-      return String(value).trim() === String(originalValue).trim();
+      return String(value).trim() !== String(originalValue).trim();
     });
 
     console.log("¿Se realizaron cambios?: " + changes);

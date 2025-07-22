@@ -138,23 +138,26 @@ export default function RoomsDBAdmin() {
       const res = await fetch(`http://localhost:4000/api/room/${id_room}`);
       const data = await res.json();
       setActualRoomUpdate(data);
-      setUpdatedRoom(data);
+      setUpdatedRoom({
+        // Se asignan valores por defecto como estado inicial
+        // Operador ?? nullish coalescing asigna el valor de la derecha solo si el de la izquierda es null
+        id_room: data.id_room,
+        room_number: data.room_number ?? "",
+        rate: data.rate ?? 0,
+        id_room_type: data.id_room_type ?? 1,
+        id_room_status: data.id_room_status ?? 1,
+        id_floor: data.id_floor ?? 1,
+        photo_path: data.photo_path ?? "",
+        room_description: data.room_description ?? "",
+      });
       setShowModalUpdateRoom(true);
       setMessageUpdateRoom("");
+      console.log("Los valores actuales de la habitación son: ");
+      console.log(data);
     } catch (error) {
       console.error("Error al actualizar los datos de la habitación: ", error);
       alert("No se pudo actualizar los datos de la habitación.");
     }
-  };
-
-  //Actualizar la información en la tabla
-
-  const updateRoomInState = (updatedRoom) => {
-    setRooms((prevRooms) =>
-      prevRooms.map((room) =>
-        room.id_room === updatedRoom.id_room ? updatedRoom : room
-      )
-    );
   };
 
   {
@@ -169,9 +172,10 @@ export default function RoomsDBAdmin() {
       formData.append("id_room_type", updatedRoom.id_room_type);
       formData.append("id_room_status", updatedRoom.id_room_status);
       formData.append("id_floor", updatedRoom.id_floor);
+      formData.append("room_description", updatedRoom.room_description);
 
       if (updatedRoom.newPhoto) {
-        formData.append("photo_path", updatedRoom.newPhoto);
+        formData.append("newPhoto", updatedRoom.newPhoto);
       }
 
       const res = await fetch(
@@ -182,10 +186,11 @@ export default function RoomsDBAdmin() {
         }
       );
 
-      const data = await res.json();
-
       if (res.ok) {
-        updateRoomInState(updatedRoom);
+        const data = await res.json();
+        console.log("Los nuevos valores de la habitación son: ");
+        console.log(data);
+        await fetchRooms();
         setMessageUpdateRoom("✅ Habitación actualizada con éxito.");
         setMessageType("success");
         setPhotoPreviewRoom(null);
@@ -269,8 +274,6 @@ export default function RoomsDBAdmin() {
       setMessageType("error");
     }
   };
-
-  console.log("facilities:", readedRoom.facilities);
 
   return (
     <>
@@ -526,7 +529,7 @@ export default function RoomsDBAdmin() {
 
         {/* Modal para actualizar los datos de las habitaciones */}
         {showModalUpdateRoom && actualRoomUpdate && (
-          <div className="modal show d-block">
+          <div className="modal show d-block modal-overlay">
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
@@ -625,7 +628,7 @@ export default function RoomsDBAdmin() {
                         <td>
                           <label htmlFor="idRoomType">Tipo de habitación</label>
                           <select
-                            id="idRoomType"
+                            name="id_room_type"
                             className="form-select"
                             value={updatedRoom.id_room_type}
                             onChange={(e) =>
@@ -635,9 +638,9 @@ export default function RoomsDBAdmin() {
                               })
                             }
                           >
-                            {idRoomType.map((type) => (
-                              <option key={type.id} value={type.id}>
-                                {type.name}
+                            {idRoomType.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.name}
                               </option>
                             ))}
                           </select>
@@ -649,7 +652,7 @@ export default function RoomsDBAdmin() {
                         <td>
                           <label htmlFor="idFloor">Piso</label>
                           <select
-                            id="idFloor"
+                            name="id_floor"
                             className="form-select"
                             value={updatedRoom.id_floor}
                             onChange={(e) =>
@@ -659,9 +662,9 @@ export default function RoomsDBAdmin() {
                               })
                             }
                           >
-                            {idFloor.map((type) => (
-                              <option key={type.id} value={type.id}>
-                                {type.name}
+                            {idFloor.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.name}
                               </option>
                             ))}
                           </select>
@@ -683,12 +686,29 @@ export default function RoomsDBAdmin() {
                               })
                             }
                           >
-                            {idRoomStatus.map((type) => (
-                              <option key={type.id} value={type.id}>
-                                {type.name}
+                            {idRoomStatus.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.name}
                               </option>
                             ))}
                           </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Descripción</th>
+                        <td>{actualRoomUpdate.room_description}</td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={updatedRoom.room_description}
+                            onChange={(e) =>
+                              setUpdatedRoom({
+                                ...updatedRoom,
+                                room_description: e.target.value,
+                              })
+                            }
+                          />
                         </td>
                       </tr>
                     </tbody>

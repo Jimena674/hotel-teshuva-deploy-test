@@ -17,7 +17,9 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 ); // Permitir peticiones desde otro origen
+
 app.use(express.json()); // Parsear las request en formato JSON
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/user", userRoutes);
 app.use("/api/room", roomRoutes);
 app.use("/api/booking", bookingRoutes);
