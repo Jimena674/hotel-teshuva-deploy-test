@@ -112,6 +112,8 @@ export default function RoomsDBAdmin() {
       // Parseo de los datos a json
       const data = await res.json();
       setReadedRoom(data);
+      console.log("Los datos de la habitación son: ");
+      console.log(data);
       setShowModalReadRoom(true);
     } catch (error) {
       setMessageReadRoom("❌ Error de conexión con el servidor.");
@@ -267,6 +269,8 @@ export default function RoomsDBAdmin() {
       setMessageType("error");
     }
   };
+
+  console.log("facilities:", readedRoom.facilities);
 
   return (
     <>
@@ -788,7 +792,25 @@ export default function RoomsDBAdmin() {
                       </tr>
                       <tr>
                         <th scope="row">Servicios</th>
-                        <td>{readedRoom.facility}</td>
+                        <td>
+                          {readedRoom.facilities?.map((facility, index) => (
+                            <>
+                              <li key={index}>{facility}</li>
+                              {/** 
+                              <span key={index}>
+                                {facility}{" "}
+                                {index < readedRoom.facilities.length - 1
+                                  ? ", "
+                                  : "."}
+                              </span>
+                              */}
+                            </>
+                          ))}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Descripción</th>
+                        <td>{readedRoom.room_description}</td>
                       </tr>
                     </tbody>
                   </table>

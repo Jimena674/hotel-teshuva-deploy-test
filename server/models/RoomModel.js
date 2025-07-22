@@ -86,7 +86,7 @@ const getAllRooms = async () => {
 
   // Objeto para agrupar la información
   const roomMap = {};
-  // Agrupas habitaciones y servicios
+  // Agrupar habitaciones y servicios
   // Se recorre cada fila que viene de la base de datos
   rows.forEach((row) => {
     // Si no existe la habitación o id_room en roomMap
