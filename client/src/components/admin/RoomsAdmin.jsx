@@ -149,6 +149,7 @@ export default function RoomsDBAdmin() {
         id_floor: data.id_floor ?? 1,
         photo_path: data.photo_path ?? "",
         room_description: data.room_description ?? "",
+        facilities: data.facilities ?? [],
       });
       setShowModalUpdateRoom(true);
       setMessageUpdateRoom("");
@@ -173,6 +174,7 @@ export default function RoomsDBAdmin() {
       formData.append("id_room_status", updatedRoom.id_room_status);
       formData.append("id_floor", updatedRoom.id_floor);
       formData.append("room_description", updatedRoom.room_description);
+      formData.append("facilities", JSON.stringify(updatedRoom.facilities)); // Convertir el array recibido en un string JSOn válido para el backend
       // newPhoto coincide con RoomRoutes y multerConfig
       if (updatedRoom.newPhoto) {
         formData.append("newPhoto", updatedRoom.newPhoto);
@@ -549,13 +551,11 @@ export default function RoomsDBAdmin() {
                 </div>
                 <div className="modal-body table-responsive">
                   <table className="table table-striped-columns table-bordered align-middle">
-                    <thead>
+                    <thead className="table-light">
                       <tr>
                         <th scope="col">Dato</th>
                         <th scope="col">Valor actual</th>
-                        <th scope="col" className="w-custom-33">
-                          Nuevo valor
-                        </th>
+                        <th scope="col">Nuevo valor</th>
                       </tr>
                     </thead>
                     <tbody className="table-group-divider">
@@ -711,6 +711,29 @@ export default function RoomsDBAdmin() {
                               })
                             }
                           />
+                        </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Servicios</th>
+                        <td colSpan="2">
+                          <table className="table">
+                            <thead className="table-light">
+                              <tr>
+                                <th scope="col">Valor actual</th>
+                                <th scope="col">Nuevo valor</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                {facilities.map(() => (
+                                  <>
+                                    <td>{actualRoomUpdate.facilities}</td>
+                                    <td></td>
+                                  </>
+                                ))}
+                              </tr>
+                            </tbody>
+                          </table>
                         </td>
                       </tr>
                     </tbody>

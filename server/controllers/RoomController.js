@@ -84,6 +84,10 @@ const updateRoom = async (req, res) => {
   const idRoom = req.params.id_room;
   const updatedData = req.body;
 
+  // Separar las facilities antes de procesar el contenido de la tabla room
+  const facilities = JSON.parse(req.body.facilities); //Extraer los IDs de las facilities
+  delete updatedData.facilities;
+
   // Validar que se hayan ingresado datos para actualizar la habitación
   if (!idRoom || !updatedData) {
     return res
@@ -177,6 +181,20 @@ const updateRoom = async (req, res) => {
     // Comunicarse con la base de datos para ejecutar actualización
     const result = await roomModel.updateRoom(idRoom, newData);
 
+    if (Array.isArray(facilities)) {
+      await db
+        .promise()
+        .query("DELETE FROM room_facility WHERE id_room = ?", [idRoom]);
+
+      for (const id_facility of facilities) {
+        await db
+          .promise()
+          .query(
+            "INSERT INTO room_facility (id_room, id_facility) VALUES (?,?)",
+            [idRoom, id_facility]
+          );
+      }
+    }
     res.json({ message: "Habitación actualizada con éxito." });
   } catch (error) {
     console.error("Error al actualizar los datos de la habitación: ", error);
