@@ -173,7 +173,7 @@ export default function RoomsDBAdmin() {
       formData.append("id_room_status", updatedRoom.id_room_status);
       formData.append("id_floor", updatedRoom.id_floor);
       formData.append("room_description", updatedRoom.room_description);
-
+      // newPhoto coincide con RoomRoutes y multerConfig
       if (updatedRoom.newPhoto) {
         formData.append("newPhoto", updatedRoom.newPhoto);
       }
@@ -530,7 +530,7 @@ export default function RoomsDBAdmin() {
         {/* Modal para actualizar los datos de las habitaciones */}
         {showModalUpdateRoom && actualRoomUpdate && (
           <div className="modal show d-block modal-overlay">
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-lg">
               <div className="modal-content">
                 <div className="modal-header">
                   <h1 className="modal-title title-large">
@@ -553,7 +553,9 @@ export default function RoomsDBAdmin() {
                       <tr>
                         <th scope="col">Dato</th>
                         <th scope="col">Valor actual</th>
-                        <th scope="col">Nuevo valor</th>
+                        <th scope="col" className="w-custom-33">
+                          Nuevo valor
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="table-group-divider">

@@ -1,4 +1,11 @@
+// functions (necesarios para manipular mapas)
+@import "bootstrap/scss/functions";
+// variables (necesarias si usas breakpoints o colores)
+@import "bootstrap/scss/variables";
 // Importar variables personalizadas
+
+// utility API
+
 @import "_custom.scss";
 
 // Formato de columnas en las tablas en los modal del adshboard administrativo

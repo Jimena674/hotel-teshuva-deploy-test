@@ -1,0 +1,14 @@
+$utilities: map-merge
+  (
+    $utilities,
+    (
+      "width-curtom": (
+        property: width,
+        class: w-custom,
+        responsive: true,
+        values: (
+          33: "33%",
+        ),
+      ),
+    )
+  );
