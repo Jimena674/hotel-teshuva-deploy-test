@@ -227,6 +227,20 @@ export default function RoomsDBAdmin() {
     { id: 2, name: "Piso 2" },
   ];
 
+  const idFacilities = [
+    { id: 1, name: "Conexión Wi-Fi" },
+    { id: 2, name: "TV" },
+    { id: 3, name: "Aire acondicionado" },
+    { id: 4, name: "Articulos de aseo" },
+    { id: 5, name: "Secador de pelo" },
+    { id: 6, name: "Minibar" },
+    { id: 7, name: "Teléfono" },
+    { id: 8, name: "Servicio a la habitación" },
+    { id: 9, name: "Caja fuerte" },
+    { id: 10, name: "Ventana con vista" },
+    { id: 11, name: "Mesa y silla" },
+  ];
+
   // Estados para eliminar una habitación
   const [showModalDeleteRoom, setShowModalDeteleRoom] = useState(false);
   const [messageDeleteRoom, setMessageDeleteRoom] = useState("");
@@ -725,13 +739,57 @@ export default function RoomsDBAdmin() {
                             </thead>
                             <tbody>
                               <tr>
-                                {facilities.map(() => (
-                                  <>
-                                    <td>{actualRoomUpdate.facilities}</td>
-                                    <td></td>
-                                  </>
-                                ))}
+                                <td>{rooms.facilities}</td>
+                                <td>
+                                  <input
+                                    type="radio"
+                                    value={updatedRoom.facilities}
+                                    onChange={(e) =>
+                                      setUpdatedRoom({
+                                        ...updatedRoom,
+                                        facilities: e.target.value,
+                                      })
+                                    }
+                                  />
+                                </td>
                               </tr>
+                              {availableFacilities.map((facility, index) => (
+                                <>
+                                  <tr key={facility.id_facility}>
+                                    <td>
+                                      {actualRoomUpdate.facilities.some(
+                                        (f) =>
+                                          f.id_facility === facility.id_facility
+                                      )
+                                        ? facility.facility_name
+                                        : "-"}
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        value={facility.id_facility}
+                                        checked={updatedRoom.facilities.includes(
+                                          facility.id_facility
+                                        )}
+                                        onChange={(e) => {
+                                          const value = parseInt(
+                                            e.target.value
+                                          );
+                                          const isChecked = e.target.checked;
+                                          setUpdatedRoom((prev) => ({
+                                            ...prev,
+                                            facilities: isChecked
+                                              ? [...prev.facilities, value]
+                                              : prev.facilities.filter(
+                                                  (id) => id !== value
+                                                ),
+                                          }));
+                                        }}
+                                      />
+                                    </td>
+                                  </tr>
+                                </>
+                              ))}
                             </tbody>
                           </table>
                         </td>

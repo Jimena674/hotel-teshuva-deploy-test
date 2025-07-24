@@ -234,4 +234,25 @@ const readRoom = async (req, res) => {
   }
 };
 
-module.exports = { createRoom, deleteRoom, updateRoom, getAllRooms, readRoom };
+/** Función para obtener todas los servicios de las habitaciones */
+
+const getAllFacilities = async (req, res) => {
+  try {
+    const facilities = await roomModel.getAllFacilities();
+    if (res.ok) {
+      res.status(200).json(facilities);
+    }
+  } catch (error) {
+    console.error("Error al leer los datos de los servicios.", error);
+    res.status(500).json({ error: "Error en el servidor." });
+  }
+};
+
+module.exports = {
+  createRoom,
+  deleteRoom,
+  updateRoom,
+  getAllRooms,
+  readRoom,
+  getAllFacilities,
+};
