@@ -5,6 +5,7 @@ const userRoutes = require("./routes/UserRoutes");
 const roomRoutes = require("./routes/RoomRoutes");
 const bookingRoutes = require("./routes/BookingRoutes");
 const offerRoutes = require("./routes/OfferRoutes");
+const facilityRoutes = require("./routes/FacilityRoutes");
 const cors = require("cors");
 require("./config/db");
 
@@ -24,6 +25,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/room", roomRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/offer", offerRoutes);
+app.use("/api/facility", facilityRoutes);
 
 // Definir el puerto en el que se ejecutará el servidor
 const PORT = process.env.PORT || 4000;

@@ -152,12 +152,6 @@ const readRoom = async (id_room) => {
   return room;
 };
 
-/** Petición para obtener todos los servicios de las habitaciones */
-const getAllFacilities = async () => {
-  const [rows] = await db.promise().query("SELECT * FROM facility");
-  return rows;
-};
-
 module.exports = {
   createRoom,
   findRoom,
@@ -165,5 +159,4 @@ module.exports = {
   updateRoom,
   getAllRooms,
   readRoom,
-  getAllFacilities,
 };

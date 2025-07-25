@@ -10,6 +10,5 @@ router.delete("/:room_number", roomController.deleteRoom);
 router.put("/:id_room", upload.single("newPhoto"), roomController.updateRoom);
 router.get("/", roomController.getAllRooms);
 router.get("/:id_room", roomController.readRoom);
-router.get("/facilities", roomController.getAllFacilities);
 
 module.exports = router;
