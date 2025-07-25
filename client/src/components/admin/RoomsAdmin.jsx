@@ -3,10 +3,12 @@ import AlertMessage from "../common/AlertMessage";
 
 export default function RoomsDBAdmin() {
   //Estado para traer las habitaciones de la base de datos
-
   const [rooms, setRooms] = useState([]);
   const [loadingRooms, setLoadingRooms] = useState(true);
 
+  {
+    /** Función para obtener los datos de las habitaciones */
+  }
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -21,6 +23,26 @@ export default function RoomsDBAdmin() {
       }
     };
     fetchRooms();
+  }, []);
+
+  // Estado para obtener los datos de los servicios de las habitaciones
+  const [facilities, setFacilities] = useState([]);
+
+  {
+    /** Función para obtener los datos de los servicios de las habitaciones */
+  }
+  useEffect(() => {
+    const fetchFacilities = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/facility/");
+        const data = await res.json();
+        console.log("Los servicios de las habitaciones son: ", data);
+        setFacilities(data);
+      } catch (error) {
+        console.error("Error al cargar los datos de los servicios: ", error);
+      }
+    };
+    fetchFacilities();
   }, []);
 
   // Estados para crear una habitación y abrir el modal
@@ -738,32 +760,10 @@ export default function RoomsDBAdmin() {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>{rooms.facilities}</td>
-                                <td>
-                                  <input
-                                    type="radio"
-                                    value={updatedRoom.facilities}
-                                    onChange={(e) =>
-                                      setUpdatedRoom({
-                                        ...updatedRoom,
-                                        facilities: e.target.value,
-                                      })
-                                    }
-                                  />
-                                </td>
-                              </tr>
-                              {availableFacilities.map((facility, index) => (
+                              {facilities.map((facility) => (
                                 <>
                                   <tr key={facility.id_facility}>
-                                    <td>
-                                      {actualRoomUpdate.facilities.some(
-                                        (f) =>
-                                          f.id_facility === facility.id_facility
-                                      )
-                                        ? facility.facility_name
-                                        : "-"}
-                                    </td>
+                                    <td>{facility.name}</td>
                                     <td>
                                       <input
                                         type="checkbox"
