@@ -155,6 +155,20 @@ export default function RoomsDBAdmin() {
     /*Función para abrir el modal para modificar una habitación*/
   }
 
+  const idFacilities = [
+    { id: 1, name: "Conexión Wi-Fi" },
+    { id: 2, name: "TV" },
+    { id: 3, name: "Aire acondicionado" },
+    { id: 4, name: "Articulos de aseo" },
+    { id: 5, name: "Secador de pelo" },
+    { id: 6, name: "Minibar" },
+    { id: 7, name: "Teléfono" },
+    { id: 8, name: "Servicio a la habitación" },
+    { id: 9, name: "Caja fuerte" },
+    { id: 10, name: "Ventana con vista" },
+    { id: 11, name: "Mesa y silla" },
+  ];
+
   const updateRoom = async (id_room) => {
     try {
       const res = await fetch(`http://localhost:4000/api/room/${id_room}`);
@@ -171,8 +185,14 @@ export default function RoomsDBAdmin() {
         id_floor: data.id_floor ?? 1,
         photo_path: data.photo_path ?? "",
         room_description: data.room_description ?? "",
-        facilities: data.facilities ?? [],
+        facilities: data.facilities
+          .map((name) => {
+            const found = idFacilities.find((f) => f.name === name);
+            return found ? found.id : null;
+          })
+          .filter((id) => id !== null),
       });
+      console.log("Facilities recibidas: ", data.facilities);
       setShowModalUpdateRoom(true);
       setMessageUpdateRoom("");
       console.log("Los valores actuales de la habitación son: ");
@@ -196,7 +216,8 @@ export default function RoomsDBAdmin() {
       formData.append("id_room_status", updatedRoom.id_room_status);
       formData.append("id_floor", updatedRoom.id_floor);
       formData.append("room_description", updatedRoom.room_description);
-      formData.append("facilities", JSON.stringify(updatedRoom.facilities)); // Convertir el array recibido en un string JSOn válido para el backend
+      formData.append("facilities", JSON.stringify(updatedRoom.facilities)); // Convertir el array recibido en un string JSON válido para el backend
+
       // newPhoto coincide con RoomRoutes y multerConfig
       if (updatedRoom.newPhoto) {
         formData.append("newPhoto", updatedRoom.newPhoto);
@@ -247,20 +268,6 @@ export default function RoomsDBAdmin() {
   const idFloor = [
     { id: 1, name: "Piso 1" },
     { id: 2, name: "Piso 2" },
-  ];
-
-  const idFacilities = [
-    { id: 1, name: "Conexión Wi-Fi" },
-    { id: 2, name: "TV" },
-    { id: 3, name: "Aire acondicionado" },
-    { id: 4, name: "Articulos de aseo" },
-    { id: 5, name: "Secador de pelo" },
-    { id: 6, name: "Minibar" },
-    { id: 7, name: "Teléfono" },
-    { id: 8, name: "Servicio a la habitación" },
-    { id: 9, name: "Caja fuerte" },
-    { id: 10, name: "Ventana con vista" },
-    { id: 11, name: "Mesa y silla" },
   ];
 
   // Estados para eliminar una habitación
@@ -760,16 +767,16 @@ export default function RoomsDBAdmin() {
                               </tr>
                             </thead>
                             <tbody>
-                              {facilities.map((facility) => (
-                                <>
-                                  <tr key={facility.id_facility}>
+                              {updatedRoom &&
+                                idFacilities.map((facility) => (
+                                  <tr key={facility.id}>
                                     <td>{facility.name}</td>
                                     <td>
                                       <input
                                         type="checkbox"
-                                        value={facility.id_facility}
+                                        value={facility.id}
                                         checked={updatedRoom.facilities.includes(
-                                          facility.id_facility
+                                          facility.id
                                         )}
                                         onChange={(e) => {
                                           const value = parseInt(
@@ -788,8 +795,7 @@ export default function RoomsDBAdmin() {
                                       />
                                     </td>
                                   </tr>
-                                </>
-                              ))}
+                                ))}
                             </tbody>
                           </table>
                         </td>
