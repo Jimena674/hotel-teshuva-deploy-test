@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "../common/Button";
 import { useState, useEffect } from "react";
 
-export default function NavbarDashboard() {
+export default function NavbarAdmin() {
   // Traer la información del backend
   const [user, setUser] = useState(null);
 

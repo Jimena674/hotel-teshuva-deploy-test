@@ -4,6 +4,8 @@ import SidebarAdmin from "../components/admin/SidebarAdmin";
 import UsersAdmin from "../components/admin/UsersAdmin";
 import RoomsAdmin from "../components/admin/RoomsAdmin";
 import BookingsAdmin from "../components/admin/BookingsAdmin";
+import OffersAdmin from "../components/admin/OffersAdmin";
+import FacilitiesAdmin from "../components/admin/FacilitiesAdmin";
 
 export default function LayoutDBAdmin() {
   return (
@@ -20,6 +22,8 @@ export default function LayoutDBAdmin() {
               <UsersAdmin />
               <RoomsAdmin />
               <BookingsAdmin />
+              <OffersAdmin />
+              <FacilitiesAdmin />
             </Outlet>
           </main>
         </div>

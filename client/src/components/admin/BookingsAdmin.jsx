@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import AlertMessage from "../common/AlertMessage";
 import BookingStatusColor from "../common/BookingStatusColor";
+import { formatToLocalDate } from "../../utils/FormatDateUtils";
+import { formatDateForInput } from "../../utils/FormatDateUtils";
 
-export default function BookingDBAdmin() {
+export default function BookingsAdmin() {
   // Estado para obtener todas las reservas
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -202,15 +204,6 @@ export default function BookingDBAdmin() {
   {
     /* Función para hacer compatible los formatos de fecha */
   }
-
-  const formatDateForInput = (isoString) => {
-    if (!isoString) return "";
-    return new Date(isoString).toISOString().split("T")[0]; // Solo yyyy-MM-dd
-  };
-
-  const formatToLocalDate = (dateStr) => {
-    return new Intl.DateTimeFormat("es-CO").format(new Date(dateStr));
-  };
 
   return (
     <>

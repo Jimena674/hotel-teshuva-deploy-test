@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AlertMessage from "../common/AlertMessage";
 
-export default function RoomsDBAdmin() {
+export default function RoomsAdmin() {
   //Estado para traer las habitaciones de la base de datos
   const [rooms, setRooms] = useState([]);
   const [loadingRooms, setLoadingRooms] = useState(true);
@@ -376,7 +376,11 @@ export default function RoomsDBAdmin() {
                   <tr key={room.id_room}>
                     <td>{index + 1}</td>
                     <td>
-                      <img src={room.photo_path} alt="Foto" width="80" />
+                      <img
+                        src={room.photo_path}
+                        alt="Foto de la habitación"
+                        width="80"
+                      />
                     </td>
                     <td>{room.room_number}</td>
                     <td>{room.rate}</td>

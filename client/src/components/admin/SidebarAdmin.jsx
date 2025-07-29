@@ -1,6 +1,10 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 
-export default function SidebarDBAdmin() {
+export default function SidebarAdmin() {
+  // Estado para abrir el submenú en habitaciones
+  const [roomOpen, setRoomOpen] = useState(false);
+
   return (
     <>
       <div
@@ -17,6 +21,15 @@ export default function SidebarDBAdmin() {
           Inicio
         </NavLink>
         <NavLink
+          to="/admin/dashboard/users"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium" +
+            (isActive ? "active label-medium" : "")
+          }
+        >
+          Usuarios
+        </NavLink>
+        <NavLink
           to="/admin/dashboard/bookings"
           className={({ isActive }) =>
             "list-group-item list-group-item-action label-medium" +
@@ -31,8 +44,34 @@ export default function SidebarDBAdmin() {
             "list-group-item list-group-item-action label-medium" +
             (isActive ? "active label-medium" : "")
           }
+          onClick={() => setRoomOpen(!roomOpen)}
         >
           Habitaciones
+        </NavLink>
+
+        {/** Submenú de las habitaciones */}
+        {roomOpen && (
+          <div className="submenu">
+            <NavLink
+              to="/admin/dashboard/facilities"
+              className={({ isActive }) =>
+                "list-group-item list-group-item-action label-small nav-link" +
+                (isActive ? "active " : "")
+              }
+            >
+              Servicios de las habitaciones
+            </NavLink>
+          </div>
+        )}
+
+        <NavLink
+          to="/admin/dashboard/offers"
+          className={({ isActive }) =>
+            "list-group-item list-group-item-action label-medium" +
+            (isActive ? "active label-medium" : "")
+          }
+        >
+          Ofertas
         </NavLink>
         <NavLink
           to="/admin/dashboard/payments"
@@ -43,15 +82,7 @@ export default function SidebarDBAdmin() {
         >
           Pagos
         </NavLink>
-        <NavLink
-          to="/admin/dashboard/users"
-          className={({ isActive }) =>
-            "list-group-item list-group-item-action label-medium" +
-            (isActive ? "active label-medium" : "")
-          }
-        >
-          Usuarios
-        </NavLink>
+
         <NavLink
           to="/admin/dashboard/reports"
           className={({ isActive }) =>

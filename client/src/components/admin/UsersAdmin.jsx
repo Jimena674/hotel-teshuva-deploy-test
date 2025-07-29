@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"; //Hooks de react
 import AlertMessage from "../common/AlertMessage";
 
-export default function UsersDBAdmin() {
+export default function UsersAdmin() {
   // Estado para el total de usuarios registrados
   const [totalUsers, setTotalUsers] = useState(null); //Variable de estado que inicializa como null
 
