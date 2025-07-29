@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import AlertMessage from "../../common/AlertMessage";
 import { formatToLocalDate } from "../../../utils/FormatDateUtils";
 import OfferStatusColor from "../../common/OfferStatusColor";
+import DeleteOffer from "./DeleteOffer";
 
 export default function ReadOffers() {
   //Estados para obtener las ofertas existentes
@@ -27,6 +28,16 @@ export default function ReadOffers() {
     };
     fetchOffers();
   }, []);
+
+  const fetchOffers = async () => {
+    const res = await fetch("http://localhost:4000/api/offer/");
+    const data = await res.json();
+    setReadOffers(data);
+  };
+
+  // Estados para abrir el modal de eliminar y modificar una oferta
+  const [showModalDeleteOffer, setShowModalDeleteOffer] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState(null);
 
   return (
     <div>
@@ -91,7 +102,14 @@ export default function ReadOffers() {
                           </button>
                         </li>
                         <li>
-                          <button className="dropdown-item" type="button">
+                          <button
+                            className="dropdown-item"
+                            type="button"
+                            onClick={() => {
+                              setSelectedOffer(offer);
+                              setShowModalDeleteOffer(true);
+                            }}
+                          >
                             Eliminar
                           </button>
                         </li>
@@ -100,8 +118,16 @@ export default function ReadOffers() {
                   </td>
                 </tr>
               ))}
+            <AlertMessage type={messageType} message={messageReadOffers} />
           </tbody>
         </table>
+      )}
+      {showModalDeleteOffer && selectedOffer && (
+        <DeleteOffer
+          offer={selectedOffer}
+          onClose={() => setShowModalDeleteOffer(false)}
+          onDeleteSuccess={fetchOffers}
+        />
       )}
     </div>
   );
