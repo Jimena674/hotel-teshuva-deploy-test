@@ -1,4 +1,4 @@
-import ReadOffers from "./offers/ReadOffers";
+import ReadOffers from "./offers/ReadOffers.jsx";
 
 export default function OffersAdmin() {
   return (
