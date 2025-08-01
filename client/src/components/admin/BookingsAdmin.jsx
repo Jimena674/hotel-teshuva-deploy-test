@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import AlertMessage from "../common/AlertMessage";
 import BookingStatusColor from "../common/BookingStatusColor";
-import { formatToLocalDate } from "../../utils/FormatDateUtils";
-import { formatDateForInput } from "../../utils/FormatDateUtils";
+import { formatToLocalDate } from "../../utils/formatDateUtils";
+import { formatDateForInput } from "../../utils/formatDateUtils";
 
 export default function BookingsAdmin() {
   // Estado para obtener todas las reservas
